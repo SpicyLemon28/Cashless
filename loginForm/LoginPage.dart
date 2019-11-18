@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './ForgetPin.dart';
 import '../menuForm/Dashboard.dart';
+import './RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -25,10 +26,10 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       appName('AppName'),
+                      register('Sign Up'),
                       phoneNumber('Phone Number', Icons.phone_android),
                       pin('Pin', Icons.lock),
                       forgotPin('Forgot Pin?'),
-                      //register(),
                       login('Sign In'),
                     ],
                   ),
@@ -44,6 +45,17 @@ class _LoginPageState extends State<LoginPage> {
   Widget appName(txt) => Padding(
     padding: const EdgeInsets.only(top: 200, bottom: 50),
     child: Text('AppName', style: TextStyle(fontSize: 30),),
+  );
+
+  Widget register(txt) => Padding(
+    padding: const EdgeInsets.only(top:20, left:200),
+    child: FlatButton(
+      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue,),),
+      onPressed: () {
+        Navigator.pushReplacement(context, new MaterialPageRoute(
+          builder: (BuildContext context) => Register()));
+      },
+    ),
   );
 
   Widget phoneNumber(hntTxt, iconTxt) => Padding(
