@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import './ForgetPin.dart';
+import 'ForgetPin.dart';
 import '../menuForm/Dashboard.dart';
 import './RegisterPage.dart';
 
