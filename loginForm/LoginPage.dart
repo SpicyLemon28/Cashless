@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import './ForgetPin.dart';
 import '../menuForm/Dashboard.dart';
-import './RegisterPage.dart';
+import 'RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -52,8 +54,9 @@ class _LoginPageState extends State<LoginPage> {
     child: FlatButton(
       child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue,),),
       onPressed: () {
-        Navigator.pushReplacement(context, new MaterialPageRoute(
-          builder: (BuildContext context) => Register()));
+        Navigator.of(context).push(
+          CupertinoPageRoute<Null>(builder: (
+            BuildContext context) => Register()));
       },
     ),
   );
@@ -89,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
     child: FlatButton(
      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue),),
       onPressed:() {
-       Navigator.pushReplacement(context, new MaterialPageRoute(
+       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (BuildContext context) => ForgetPin()));
       }
     ),
@@ -100,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
     child: RaisedButton(
       child: Text(txt),
       onPressed: () {
-        Navigator.pushReplacement(context, new MaterialPageRoute(
+        Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (BuildContext context) => Dashboard()));
       },
     ),
