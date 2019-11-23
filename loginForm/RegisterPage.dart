@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'LoginPage.dart';
 
 class Register extends StatefulWidget {
   Register({Key key}) : super(key: key);
@@ -124,9 +127,52 @@ class _RegisterState extends State<Register> {
     padding: const EdgeInsets.only(top: 10),
     child: RaisedButton(
       child: Text(txt),
-      onPressed: () {
-
-      },
+      onPressed: () => dialog(),
     ),
+  );
+
+  dialog() => showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: Colors.grey[100],
+      title: Column(
+        children: <Widget>[
+          Text('We sent you a Confirmation Code',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text('Please Check your Inbox',
+            textAlign: TextAlign.center, 
+            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),),
+          )
+        ],
+      ),
+      content: TextField(
+        decoration: InputDecoration(
+          hintText: 'Enter Confirmation Code',
+          hintStyle: TextStyle(fontSize: 12),
+          prefixIcon: Icon(Icons.code),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12)
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Proceed to Login'),
+          onPressed: (){
+            Navigator.of(context).push(
+          CupertinoPageRoute<Null>(builder: (
+            BuildContext context) => LoginPage()));
+          },
+        ),
+      ],
+    ),
+
   );
 }
