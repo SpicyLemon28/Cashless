@@ -92,8 +92,9 @@ class _LoginPageState extends State<LoginPage> {
     child: FlatButton(
      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue),),
       onPressed:() {
-       Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (BuildContext context) => ForgetPin()));
+        Navigator.of(context).push(
+          CupertinoPageRoute<Null>(builder: (
+            BuildContext context) => ForgetPin()));
       }
     ),
   );
@@ -103,8 +104,9 @@ class _LoginPageState extends State<LoginPage> {
     child: RaisedButton(
       child: Text(txt),
       onPressed: () {
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (BuildContext context) => Dashboard()));
+        Navigator.of(context).push(
+          CupertinoPageRoute<Null>(builder: (
+            BuildContext context) => Dashboard()));
       },
     ),
   );
