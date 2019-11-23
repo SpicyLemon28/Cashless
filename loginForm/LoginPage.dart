@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import './ForgetPin.dart';
 import '../menuForm/Dashboard.dart';
-import 'RegisterPage.dart';
+import './RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);

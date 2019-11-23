@@ -13,9 +13,9 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
        body: Container(
          child: Center(
-           child: Text('Dashboard Here'),
+           child: Text('DASHBOARD HERE'),
          ),
-       ),
+         ),
     );
   }
 }
