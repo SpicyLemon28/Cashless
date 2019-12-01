@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import './ForgetPin.dart';
-import '../menuForm/Dashboard.dart';
+import '../menuForm/NavBar.dart';
 import './RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         Navigator.of(context).push(
           CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => Dashboard()));
+            BuildContext context) => NavBar()));
       },
     ),
   );
