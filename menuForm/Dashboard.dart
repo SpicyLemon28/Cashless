@@ -13,6 +13,9 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Center(
+        child: Text('Dashboard', style: TextStyle(fontSize: 30)),
+      ),
        bottomNavigationBar: NavBar() ,
     );
   }
