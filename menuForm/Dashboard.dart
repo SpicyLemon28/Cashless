@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'NavBar.dart';
+
 class Dashboard extends StatefulWidget {
   Dashboard({Key key}) : super(key: key);
 
@@ -11,11 +13,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: Container(
-         child: Center(
-           child: Text('DASHBOARD HERE'),
-         ),
-         ),
+       bottomNavigationBar: NavBar() ,
     );
   }
 }
