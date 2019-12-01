@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'ForgetPin.dart';
-
-import './RegisterPage.dart';
+import './ForgetPin.dart';
 import '../menuForm/NavBar.dart';
-import 'RegisterPage.dart';
+import './RegisterPage.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
