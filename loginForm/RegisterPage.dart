@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'LoginPage.dart';
+import '../menuForm/Dashboard.dart';
 
 class Register extends StatefulWidget {
   Register({Key key}) : super(key: key);
@@ -26,12 +26,12 @@ class _RegisterState extends State<Register> {
                    children: <Widget>[
                      appName('AppName & Logo'),
                      text('Create a New Profile'),
-                     name('Name','Enter Full Name', Icons.person,),
-                     email('Email', 'Enter email address', Icons.email),
-                     phoneNum('Phone Number', 'Enter phone number', Icons. phone_android),
-                     idNum('ID Number', 'Enter School ID Number', Icons.perm_identity),
-                     pin('Pin', 'At least 6-8 characters'),
-                     pin('Confirm Pin', 'Re-enter Pin'),
+                     nameEmail('Name','Enter Full Name', Icons.person,),
+                     nameEmail('Email', 'Enter email address', Icons.email),
+                     phoneIdNum('Phone Number', 'Enter phone number', Icons. phone_android),
+                     phoneIdNum('ID Number', 'Enter School ID Number', Icons.perm_identity),
+                     pin('Pin', 'At least 6-8 characters', Icons.lock),
+                     pin('Confirm Pin', 'Re-enter Pin', Icons.lock),
                      signUp('Register'),
                    ],
                  ),
@@ -54,11 +54,12 @@ class _RegisterState extends State<Register> {
     child: Text(txt, style: TextStyle(fontSize: 18),)
   );
 
-  Widget name(lblTxt, hntTxt, iconTxt) => Padding(
-    padding: const EdgeInsets.only(top: 20, bottom: 10),
+//Name and Email
+  Widget nameEmail(lbltxt,hntTxt, iconTxt) => Padding(
+    padding: const EdgeInsets.only(top: 10, bottom: 10),
     child: TextField(
       decoration: InputDecoration(
-        labelText: lblTxt,
+        labelText: lbltxt,
         hintText: hntTxt,
         prefixIcon: Icon(iconTxt, color: Colors.grey,),
         enabledBorder: OutlineInputBorder(
@@ -68,8 +69,25 @@ class _RegisterState extends State<Register> {
     ),
   );
 
-  Widget email(lblTxt, hntTxt, iconTxt) => Padding(
-    padding: const EdgeInsets.only(bottom: 10),
+//Phone num and ID num
+  Widget phoneIdNum(lblTxt, hntTxt, iconTxt) => Padding(
+    padding: const EdgeInsets.only(top: 10, bottom: 10),
+    child:TextField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: lblTxt,
+        hintText: hntTxt,
+        prefixIcon: Icon(iconTxt, color: Colors.grey),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15)
+        ),
+      ),
+      ),
+  );
+
+//Pin and Confirm Pin
+  Widget pin(lblTxt,hntTxt,iconTxt) => Padding(
+    padding: const EdgeInsets.only(top: 10, bottom: 10),
     child: TextField(
       decoration: InputDecoration(
         labelText: lblTxt,
@@ -82,35 +100,7 @@ class _RegisterState extends State<Register> {
     ),
   );
 
-  Widget phoneNum(lblTxt, hntTxt, iconTxt) => Padding(
-    padding: const EdgeInsets.only(bottom: 10),
-    child:TextField(
-      decoration: InputDecoration(
-        labelText: lblTxt,
-        hintText: hntTxt,
-        prefixIcon: Icon(iconTxt, color: Colors.grey),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15)
-        ),
-      ),
-      ),
-  );
-
-  Widget idNum(lblTxt, hntTxt, iconTxt) => Padding(
-    padding: const EdgeInsets.only(bottom: 10),
-    child:TextField(
-      decoration: InputDecoration(
-        labelText: lblTxt,
-        hintText: hntTxt,
-        prefixIcon: Icon(iconTxt, color: Colors.grey),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15)
-        ),
-      ),
-      ),
-  );
-
-  Widget pin(lblTxt, hntTxt) => Padding(
+  /*Widget pin(lblTxt, hntTxt) => Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: TextField(
       decoration: InputDecoration(
@@ -121,7 +111,7 @@ class _RegisterState extends State<Register> {
         ),
       ),
     ),
-  );
+  ); */
 
   Widget signUp(txt) => Padding(
     padding: const EdgeInsets.only(top: 10),
@@ -164,11 +154,11 @@ class _RegisterState extends State<Register> {
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Proceed to Login'),
+          child: Text('Login'),
           onPressed: (){
             Navigator.of(context).push(
           CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => LoginPage()));
+            BuildContext context) => Dashboard()));
           },
         ),
       ],
