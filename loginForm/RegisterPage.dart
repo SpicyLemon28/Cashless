@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../menuForm/Dashboard.dart';
+import '../menuForm/NavBar.dart';
 
 class Register extends StatefulWidget {
   Register({Key key}) : super(key: key);
@@ -158,7 +158,7 @@ class _RegisterState extends State<Register> {
           onPressed: (){
             Navigator.of(context).push(
           CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => Dashboard()));
+            BuildContext context) => NavBar()));
           },
         ),
       ],
