@@ -93,11 +93,7 @@ class _LoginPageState extends State<LoginPage> {
     padding: const EdgeInsets.only(left: 200),
     child: FlatButton(
      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue),),
-      onPressed:() {
-        Navigator.of(context).push(
-          CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => ForgetPin()));
-      }
+      onPressed:() => forgotPinDialog(),
     ),
   );
   
@@ -111,5 +107,50 @@ class _LoginPageState extends State<LoginPage> {
             BuildContext context) => NavBar()));
       },
     ),
+  );
+
+  forgotPinDialog() => showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: Colors.grey[100],
+      title: Column(
+        children: <Widget>[
+          Text('We sent you a Confirmation Code',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text('Please Check your Inbox',
+            textAlign: TextAlign.center, 
+            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),),
+          )
+        ],
+      ),
+      content: TextField(
+        decoration: InputDecoration(
+          hintText: 'Enter Confirmation Code',
+          hintStyle: TextStyle(fontSize: 12),
+          prefixIcon: Icon(Icons.code),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12)
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('OKAY'),
+          onPressed: (){
+            Navigator.of(context).push(
+          CupertinoPageRoute<Null>(builder: (
+            BuildContext context) => ForgetPin()));
+          },
+        ),
+      ],
+    ),
+
   );
 }
