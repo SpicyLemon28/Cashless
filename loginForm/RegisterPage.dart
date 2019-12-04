@@ -100,19 +100,7 @@ class _RegisterState extends State<Register> {
     ),
   );
 
-  /*Widget pin(lblTxt, hntTxt) => Padding(
-    padding: const EdgeInsets.only(bottom: 10),
-    child: TextField(
-      decoration: InputDecoration(
-        labelText: lblTxt,
-        hintText: hntTxt,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15)
-        ),
-      ),
-    ),
-  ); */
-
+//SignUp Button
   Widget signUp(txt) => Padding(
     padding: const EdgeInsets.only(top: 10),
     child: RaisedButton(
