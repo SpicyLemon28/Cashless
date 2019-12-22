@@ -22,8 +22,8 @@ class _ForgetPinState extends State<ForgetPin> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               text('Create a New Pin'),
-              pin('New Pin', 'Enter new pin'),
-              pin('Re-confirm Pin', 'Re-type new pin'),
+              pass('New Password', 'Enter new password'),
+              pass('Re-confirm Password', 'Re-type new password'),
               confirm('Confirm')
             ],
           ),
@@ -37,7 +37,7 @@ class _ForgetPinState extends State<ForgetPin> {
     child: Text(txt, style: TextStyle(fontSize: 25)),
   );
 
-  Widget pin(lblTxt, hntTxt) => Padding(
+  Widget pass(lblTxt, hntTxt) => Padding(
     padding: const EdgeInsets.only(top: 10, bottom: 10),
     child: TextField(
       decoration: InputDecoration(

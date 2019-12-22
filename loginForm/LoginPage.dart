@@ -30,10 +30,10 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       appName('AppName'),
-                      register('Sign Up'),
                       phoneNumber('Phone Number', Icons.phone_android),
-                      pin('Pin', Icons.lock),
-                      forgotPin('Forgot Pin?'),
+                      pass('Password', Icons.lock),
+                      forgotPass('Forgot Password?'),
+                      register('Sign Up'),
                       login('Sign In'),
                     ],
                   ),
@@ -51,18 +51,6 @@ class _LoginPageState extends State<LoginPage> {
     child: Text('AppName', style: TextStyle(fontSize: 30),),
   );
 
-  Widget register(txt) => Padding(
-    padding: const EdgeInsets.only(top:20, left:200),
-    child: FlatButton(
-      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue,),),
-      onPressed: () {
-        Navigator.of(context).push(
-          CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => Register()));
-      },
-    ),
-  );
-
   Widget phoneNumber(hntTxt, iconTxt) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10,),
     child: TextField(
@@ -76,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     ),
   );
 
-  Widget pin(hntTxt,preIconTxt,) => Padding(
+  Widget pass(hntTxt,preIconTxt,) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 10,),
     child: TextField(
       decoration: InputDecoration(
@@ -89,11 +77,23 @@ class _LoginPageState extends State<LoginPage> {
       ),
   );
 
-  Widget forgotPin(txt) => Padding(
+  Widget forgotPass(txt) => Padding(
     padding: const EdgeInsets.only(left: 200),
     child: FlatButton(
      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue),),
       onPressed:() => forgotPinDialog(),
+    ),
+  );
+
+  Widget register(txt) => Padding(
+    padding: const EdgeInsets.only(top:10, left:200),
+    child: FlatButton(
+      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue,),),
+      onPressed: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute<Null>(builder: (
+            BuildContext context) => Register()));
+      },
     ),
   );
   

@@ -30,8 +30,7 @@ class _RegisterState extends State<Register> {
                      nameEmail('Email', 'Enter email address', Icons.email),
                      phoneIdNum('Phone Number', 'Enter phone number', Icons. phone_android),
                      phoneIdNum('ID Number', 'Enter School ID Number', Icons.perm_identity),
-                     pin('Pin', 'At least 6-8 characters', Icons.lock),
-                     pin('Confirm Pin', 'Re-enter Pin', Icons.lock),
+                     pass('Password', 'At least 6-8 characters', Icons.lock),
                      signUp('Register'),
                    ],
                  ),
@@ -85,8 +84,8 @@ class _RegisterState extends State<Register> {
       ),
   );
 
-//Pin and Confirm Pin
-  Widget pin(lblTxt,hntTxt,iconTxt) => Padding(
+//Password
+  Widget pass(lblTxt,hntTxt,iconTxt) => Padding(
     padding: const EdgeInsets.only(top: 10, bottom: 10),
     child: TextField(
       decoration: InputDecoration(
