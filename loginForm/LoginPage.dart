@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      appName('AppName'),
+                      appName('SmartPay'),
                       phoneNumber('Phone Number', Icons.phone_android),
                       pass('Password', Icons.lock),
                       forgotPass('Forgot Password?'),
