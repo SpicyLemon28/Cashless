@@ -31,11 +31,11 @@ class _RegisterState extends State<Register> {
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: <Widget>[
                        text('Create a New Profile'),
-                       nameEmail('Name','Enter Full Name', Icons.person,),
-                       nameEmail('Email', 'Enter email address', Icons.email),
-                       phoneIdNum('Phone Number', 'Enter phone number', Icons. phone_android),
-                       phoneIdNum('School ID', 'Enter School ID Number', Icons.perm_identity),
-                       pass('Password', 'Enter a Password', Icons.lock),
+                       txtFormField(Icons.person, 'Name', 'Enter Full Name', TextInputType.text),
+                       txtFormField(Icons.email, 'Email', 'Enter email address', TextInputType.emailAddress),
+                       txtFormField(Icons. phone_android, 'Phone Number', 'Enter phone number', TextInputType.number),
+                       txtFormField(Icons.perm_identity, 'School ID', 'Enter School ID Number', TextInputType.number),
+                       txtFormField(Icons.lock, 'Password', 'Enter a Password', TextInputType.text),
                        signUp('Sign Up'),
                      ],
                    ),
@@ -49,53 +49,20 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  /*Widget appName(txt) => Padding(
-    padding: const EdgeInsets.only(top: 70,),
-    child: Text(txt, style: TextStyle(fontSize: 25),),
-  ); */
-
   Widget text(txt) => Padding(
     padding: const EdgeInsets.only(top: 20),
     child: Text(txt, style: TextStyle(fontSize: 18),)
   );
 
-//Name and Email
-  Widget nameEmail(lblTxt,hntTxt, iconTxt) => Padding(
-    padding: const EdgeInsets.only(top: 10, bottom: 10),
+  Widget txtFormField(icnTxt, lblTxt, hntTxt, keyType) => Padding(
+    padding: const EdgeInsets.only(top: 10, bottom: 8),
     child: TextFormField(
+      keyboardType: keyType,
       validator: (String value) => textValidate(lblTxt, value),
       decoration: InputDecoration(
         labelText: lblTxt,
         hintText: hntTxt,
-        prefixIcon: Icon(iconTxt, color: Colors.grey,),
-      ),
-    ),
-  );
-
-//Phone num and ID num
-  Widget phoneIdNum(lblTxt, hntTxt, iconTxt) => Padding(
-    padding: const EdgeInsets.only(top: 10, bottom: 10),
-    child:TextFormField(
-      keyboardType: TextInputType.number,
-      validator: (String value) => textValidate(lblTxt, value),
-      decoration: InputDecoration(
-        labelText: lblTxt,
-        hintText: hntTxt,
-        prefixIcon: Icon(iconTxt, color: Colors.grey),
-      ),
-      ),
-  );
-
-
-//Password
-  Widget pass(lblTxt,hntTxt,iconTxt) => Padding(
-    padding: const EdgeInsets.only(top: 10, bottom: 10),
-    child: TextFormField(
-      validator: (String value) => textValidate(lblTxt, value),
-      decoration: InputDecoration(
-        labelText: lblTxt,
-        hintText: hntTxt,
-        prefixIcon: Icon(iconTxt, color: Colors.grey),
+        prefixIcon: Icon(icnTxt, color: Colors.grey),
       ),
     ),
   );
@@ -122,14 +89,10 @@ class _RegisterState extends State<Register> {
 
     case 'Email':
       Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-      RegExp regex = new RegExp(pattern);
-
-      if(value.isEmpty){
-        return 'Email should not be empty';
-      }
+      RegExp regex = RegExp(pattern);
 
       if(!regex.hasMatch(value)){
-        return ('Enter a valid email address');
+        return ('Invalid Email');
       }
     break;
 
@@ -148,8 +111,8 @@ class _RegisterState extends State<Register> {
         return 'School ID should not be empty';
       }
 
-      if(value.length < 11){
-        return 'School ID must be 11 digits';
+      if(value.length < 6){
+        return 'School ID must be 6 digits';
       }
     break;
 

@@ -18,6 +18,14 @@ class _LoginPageState extends State<LoginPage> {
 
   var _formKey = GlobalKey<FormState>();
 
+  bool passwordVisible;
+
+  @override
+  void initState() {
+    passwordVisible = false;
+    super.initState();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         appName('SmartPay'),
                         passNreg('Sign Up', () => registerPage()),
-                        phoneNpass('Phone Number', Icons.phone_android),
-                        phoneNpass('Password', Icons.lock),
+                        txtFormField(Icons.phone_android, 'Phone Number', TextInputType.number),
+                        txtFormField(Icons.lock, 'Password', TextInputType.text),
                         passNreg('Forgot Password?', () => forgotPassDialog()),
                         login('Sign In'),
                       ],
@@ -57,26 +65,8 @@ class _LoginPageState extends State<LoginPage> {
     child: Text(txt, style: TextStyle(fontSize: 30),),
     
   );
-//Phone Number and Password
-  Widget phoneNpass(hntTxt, icnTxt) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10,),
-    child: TextFormField(
-      validator: (String value,) {
-        if (value.isEmpty) {
-          return 'Field should not be empty!';
-        }
-      },
-      decoration: InputDecoration(
-        hintText: hntTxt,
-        prefixIcon: Icon(icnTxt, color: Colors.grey),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-    ),
-  );
 
-  //Forgot Password and Sign Up
+  //Forgot Password and Sign Up Button
   Widget passNreg(txt, onClick) => Padding(
     padding: const EdgeInsets.only(left: 150),
     child: FlatButton(
@@ -84,34 +74,84 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: onClick
     ),
   );
-//Registration
-  Widget register(txt) => Padding(
-    padding: const EdgeInsets.only(top:10, left:200),
-    child: FlatButton(
-      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue,),),
-      onPressed: () {
-        Navigator.of(context).push(
-          CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => Register()));
-      },
+
+  Widget txtFormField(icnTxt, hntTxt, keyType) => Padding(
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 10,),
+    child: TextFormField(
+      keyboardType: keyType,
+      obscureText: hntTxt == 'Password' ? !passwordVisible : false,
+      validator: (String value,) => textValidate(hntTxt, value),
+      decoration: InputDecoration(
+        hintText: hntTxt,
+        prefixIcon: Icon(icnTxt, color: Colors.grey),
+        suffixIcon: hntTxt == 'Password' ? IconButton(
+          icon: Icon(
+            passwordVisible 
+            ? Icons.visibility
+            : Icons.visibility_off
+            ),
+          onPressed: () {
+            setState(() {
+              passwordVisible = !passwordVisible;
+            });
+          },
+        ):IconButton(
+          icon: Icon(
+            Icons.check_box_outline_blank),
+            onPressed: (){},
+            color: Colors.white
+            ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
     ),
   );
+
  //Login Button 
   Widget login(txt) => Padding(
     padding: const EdgeInsets.only(top: 15),
     child: RaisedButton(
+      color: Colors.greenAccent,
       child: Text(txt),
-      onPressed: () {
-        setState(() {
-          if(_formKey.currentState.validate()){
-            Navigator.of(context).push(
-            CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => NavBar()));
-          }
-        });
-      },
+      onPressed: () => textValidated(),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
   );
+
+//Functions
+
+
+  textValidate(hntTxt, value){
+    var userInput = '123456';
+
+    switch (hntTxt){
+      case 'Phone Number':
+        if(value.isEmpty){
+          return 'Phone Number should not be empty';
+        }
+
+        if(value.length < 11){
+          return 'Phone Number should be 11 digits';
+        }
+      break;
+
+      case 'Password':
+        if(value != userInput){
+          return ('Incorrect Password');
+        }
+      break;
+    }
+  }
+
+  textValidated() {
+    if(_formKey.currentState.validate()){
+      Navigator.of(context).push(
+        CupertinoPageRoute<Null>(
+          builder: (
+            BuildContext context) => NavBar()));
+    }
+  }
 
   registerPage() => Navigator.of(context).push(
     CupertinoPageRoute<Null>(
@@ -156,13 +196,13 @@ class _LoginPageState extends State<LoginPage> {
           child: Text('OKAY'),
           onPressed: (){
             Navigator.of(context).push(
-          CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => ForgetPin()));
-          },
-        ),
-      ],
-    ),
-
-  );
+              CupertinoPageRoute<Null>(
+                builder: (
+                  BuildContext context) => ForgetPin()));
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
