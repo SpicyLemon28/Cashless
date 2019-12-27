@@ -35,12 +35,17 @@ class _NaviBarState extends State<NaviBar> {
 
   List<NavItem> items = [
     NavItem(
-      Icon(Icons.home), 
-      Text('Home',style: TextStyle(fontSize: 11)), 
-      Colors.blue
+      Icon(Icons.menu), 
+      Text('Menu',style: TextStyle(fontSize: 11)), 
+      Colors.greenAccent
     ),
     NavItem(
-      Icon(Icons.account_balance_wallet), 
+      Icon(Icons.home), 
+      Text('Home',style: TextStyle(fontSize: 11)), 
+      Colors.lightGreen
+    ),
+    NavItem(
+      Icon(Icons.add), 
       Text('Load Wallet',style: TextStyle(fontSize: 11)), 
       Colors.green[700]
     ),

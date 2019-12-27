@@ -11,34 +11,40 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+
+  var _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: Stack(
-         fit: StackFit.expand,
-         children: <Widget>[
-           ListView(
-             children: <Widget>[
-               SafeArea(
-                 child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
-                 child: Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: <Widget>[
-                     appName('AppName & Logo'),
-                     text('Create a New Profile'),
-                     nameEmail('Name','Enter Full Name', Icons.person,),
-                     nameEmail('Email', 'Enter email address', Icons.email),
-                     phoneIdNum('Phone Number', 'Enter phone number', Icons. phone_android),
-                     phoneIdNum('ID Number', 'Enter School ID Number', Icons.perm_identity),
-                     pass('Password', 'At least 6-8 characters', Icons.lock),
-                     signUp('Register'),
-                   ],
+       body: Form(
+         key: _formKey,
+         child: Stack(
+           fit: StackFit.expand,
+           children: <Widget>[
+             ListView(
+               children: <Widget>[
+                 SafeArea(
+                   child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
+                   child: Column(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: <Widget>[
+                       appName('SmartPay'),
+                       text('Create a New Profile'),
+                       nameEmail('Name','Enter Full Name', Icons.person,),
+                       nameEmail('Email', 'Enter email address', Icons.email),
+                       phoneIdNum('Phone Number', 'Enter phone number', Icons. phone_android),
+                       phoneIdNum('ID Number', 'Enter School ID Number', Icons.perm_identity),
+                       pass('Password', 'At least 6-8 characters', Icons.lock),
+                       signUp('Register'),
+                     ],
+                   ),
+                   ),
                  ),
-                 ),
-               ),
-             ],
-           ),
-         ],
+               ],
+             ),
+           ],
+         ),
        ),
     );
   }
@@ -54,11 +60,16 @@ class _RegisterState extends State<Register> {
   );
 
 //Name and Email
-  Widget nameEmail(lbltxt,hntTxt, iconTxt) => Padding(
+  Widget nameEmail(lblTxt,hntTxt, iconTxt) => Padding(
     padding: const EdgeInsets.only(top: 10, bottom: 10),
-    child: TextField(
+    child: TextFormField(
+      validator: (String value) {
+        if (value.isEmpty) {
+          return textValidate(lblTxt, value);
+        }
+      },
       decoration: InputDecoration(
-        labelText: lbltxt,
+        labelText: lblTxt,
         hintText: hntTxt,
         prefixIcon: Icon(iconTxt, color: Colors.grey,),
         enabledBorder: OutlineInputBorder(
@@ -71,8 +82,13 @@ class _RegisterState extends State<Register> {
 //Phone num and ID num
   Widget phoneIdNum(lblTxt, hntTxt, iconTxt) => Padding(
     padding: const EdgeInsets.only(top: 10, bottom: 10),
-    child:TextField(
+    child:TextFormField(
       keyboardType: TextInputType.number,
+      validator: (String value) {
+        if (value.isEmpty) {
+          return textValidate(lblTxt, value);
+        }
+      },
       decoration: InputDecoration(
         labelText: lblTxt,
         hintText: hntTxt,
@@ -84,10 +100,16 @@ class _RegisterState extends State<Register> {
       ),
   );
 
+
 //Password
   Widget pass(lblTxt,hntTxt,iconTxt) => Padding(
     padding: const EdgeInsets.only(top: 10, bottom: 10),
-    child: TextField(
+    child: TextFormField(
+      validator: (String value) {
+        if (value.isEmpty) {
+          return textValidate(lblTxt, value);
+        }
+      },
       decoration: InputDecoration(
         labelText: lblTxt,
         hintText: hntTxt,
@@ -104,9 +126,32 @@ class _RegisterState extends State<Register> {
     padding: const EdgeInsets.only(top: 10),
     child: RaisedButton(
       child: Text(txt),
-      onPressed: () => dialog(),
+      onPressed: (){
+        setState(() {
+          if(_formKey.currentState.validate()){
+            dialog();
+          }
+        });
+      },
     ),
   );
+//Functions
+  textValidate(lblTxt, value){
+  switch (lblTxt){
+    case 'Email':
+      if(value != 1){
+        return 'Invalid Email';
+      }
+    break;
+
+    case 'Password':
+       return 'Password should not be empty!';
+    break;
+
+    default: 
+      return 'Field should not be empty!';
+  }
+}
 
   dialog() => showDialog(
     context: context,

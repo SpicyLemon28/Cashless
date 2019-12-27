@@ -16,47 +16,59 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  var _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          ListView(
-            children: <Widget>[
-              SafeArea(
-                child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      appName('AppName'),
-                      phoneNumber('Phone Number', Icons.phone_android),
-                      pass('Password', Icons.lock),
-                      forgotPass('Forgot Password?'),
-                      register('Sign Up'),
-                      login('Sign In'),
-                    ],
+      body: Form(
+        key: _formKey,
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            ListView(
+              children: <Widget>[
+                SafeArea(
+                  child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        appName('SmartPay'),
+                        passNreg('Sign Up', () => registerPage()),
+                        phoneNpass('Phone Number', Icons.phone_android),
+                        phoneNpass('Password', Icons.lock),
+                        passNreg('Forgot Password?', () => forgotPassDialog()),
+                        login('Sign In'),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
+//Name of the App
   Widget appName(txt) => Padding(
     padding: const EdgeInsets.only(top: 200, bottom: 50),
-    child: Text('AppName', style: TextStyle(fontSize: 30),),
+    child: Text(txt, style: TextStyle(fontSize: 30),),
+    
   );
-
-  Widget phoneNumber(hntTxt, iconTxt) => Padding(
+//Phone Number and Password
+  Widget phoneNpass(hntTxt, icnTxt) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10,),
-    child: TextField(
+    child: TextFormField(
+      validator: (String value,) {
+        if (value.isEmpty) {
+          return 'Field should not be empty!';
+        }
+      },
       decoration: InputDecoration(
         hintText: hntTxt,
-        prefixIcon: Icon(iconTxt, color: Colors.grey),
+        prefixIcon: Icon(icnTxt, color: Colors.grey),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -64,27 +76,15 @@ class _LoginPageState extends State<LoginPage> {
     ),
   );
 
-  Widget pass(hntTxt,preIconTxt,) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 10,),
-    child: TextField(
-      decoration: InputDecoration(
-        hintText: hntTxt,
-        prefixIcon: Icon(preIconTxt, color: Colors.grey),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      ),
-  );
-
-  Widget forgotPass(txt) => Padding(
-    padding: const EdgeInsets.only(left: 200),
+  //Forgot Password and Sign Up
+  Widget passNreg(txt, onClick) => Padding(
+    padding: const EdgeInsets.only(left: 150),
     child: FlatButton(
-     child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue),),
-      onPressed:() => forgotPinDialog(),
+      child: Text(txt, style: TextStyle(fontSize: 12, color: Colors.blue)),
+      onPressed: onClick
     ),
   );
-
+//Registration
   Widget register(txt) => Padding(
     padding: const EdgeInsets.only(top:10, left:200),
     child: FlatButton(
@@ -96,20 +96,31 @@ class _LoginPageState extends State<LoginPage> {
       },
     ),
   );
-  
+ //Login Button 
   Widget login(txt) => Padding(
     padding: const EdgeInsets.only(top: 15),
     child: RaisedButton(
       child: Text(txt),
       onPressed: () {
-        Navigator.of(context).push(
-          CupertinoPageRoute<Null>(builder: (
+        setState(() {
+          if(_formKey.currentState.validate()){
+            Navigator.of(context).push(
+            CupertinoPageRoute<Null>(builder: (
             BuildContext context) => NavBar()));
+          }
+        });
       },
     ),
   );
 
-  forgotPinDialog() => showDialog(
+  registerPage() => Navigator.of(context).push(
+    CupertinoPageRoute<Null>(
+      builder: (BuildContext context) => Register()  
+      )
+    );
+
+  forgotPassDialog() { 
+   return showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(
@@ -153,4 +164,5 @@ class _LoginPageState extends State<LoginPage> {
     ),
 
   );
+  }
 }
