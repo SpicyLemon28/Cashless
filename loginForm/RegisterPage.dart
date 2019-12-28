@@ -36,6 +36,7 @@ class _RegisterState extends State<Register> {
                        txtFormField(Icons. phone_android, 'Phone Number', 'Enter phone number', TextInputType.number),
                        txtFormField(Icons.perm_identity, 'School ID', 'Enter School ID Number', TextInputType.number),
                        txtFormField(Icons.lock, 'Password', 'Enter a Password', TextInputType.text),
+                       txtFormField(Icons.vpn_key, 'Pin', 'Enter a pin for payment', TextInputType.number),
                        signUp('Sign Up'),
                      ],
                    ),
@@ -101,7 +102,7 @@ class _RegisterState extends State<Register> {
         return 'Phone Number should not be empty';
       }
 
-      if(value.length < 11){
+      if(value.length <= 11){
         return 'Phone Number must be 11 digits';
       }
     break;
@@ -121,8 +122,18 @@ class _RegisterState extends State<Register> {
           return 'Password should not be empty';
         }
 
-       if(value.length > 6){
-         return 'Password must be 6 to 8 characters long';
+       if(value.length < 6){
+         return 'Password must be 6 characters or longer';
+       }
+    break;
+
+    case 'Pin':
+        if(value.isEmpty){
+          return 'Pin should not be empty';
+        }
+
+       if(value.length < 6){
+         return 'Pin must be 6 digits or longer';
        }
     break;
   }
