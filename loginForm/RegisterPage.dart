@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../menuForm/NavBar.dart';
 
 class Register extends StatefulWidget {
   Register({Key key}) : super(key: key);
-
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -26,21 +24,21 @@ class _RegisterState extends State<Register> {
              ListView(
                children: <Widget>[
                  SafeArea(
-                   child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
-                   child: Column(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: <Widget>[
-                       text('Create a New Profile'),
-                       txtFormField(Icons.person, 'Name', 'Enter Full Name', TextInputType.text),
-                       txtFormField(Icons.email, 'Email', 'Enter email address', TextInputType.emailAddress),
-                       txtFormField(Icons. phone_android, 'Phone Number', 'Enter phone number', TextInputType.number),
-                       txtFormField(Icons.perm_identity, 'School ID', 'Enter School ID Number', TextInputType.number),
-                       txtFormField(Icons.lock, 'Password', 'Enter a Password', TextInputType.text),
-                       txtFormField(Icons.vpn_key, 'Pin', 'Enter a pin for payment', TextInputType.number),
-                       signUp('Sign Up'),
-                     ],
-                   ),
-                   ),
+									child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
+										child: Column(
+											mainAxisAlignment: MainAxisAlignment.center,
+											children: <Widget>[
+												textPage('Create a New Profile'),
+												textFormField(Icons.person, 'Name', 'Enter Full Name', TextInputType.text),
+												textFormField(Icons.email, 'Email', 'Enter email address', TextInputType.emailAddress),
+												textFormField(Icons. phone_android, 'Phone Number', 'Enter phone number', TextInputType.number),
+												textFormField(Icons.perm_identity, 'School ID', 'Enter School ID Number', TextInputType.number),
+												textFormField(Icons.lock, 'Password', 'Enter a Password', TextInputType.text),
+												textFormField(Icons.vpn_key, 'Pin', 'Enter a pin for payment', TextInputType.number),
+												signupButton('Sign Up'),
+											],
+										),
+									),
                  ),
                ],
              ),
@@ -50,119 +48,87 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget text(txt) => Padding(
+  Widget textPage(lblText) => Padding(
     padding: const EdgeInsets.only(top: 20),
-    child: Text(txt, style: TextStyle(fontSize: 18),)
+    child: Text(lblText, style: TextStyle(fontSize: 18),)
   );
 
-  Widget txtFormField(icnTxt, lblTxt, hntTxt, keyType) => Padding(
+  Widget textFormField(icnText, lblText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(top: 10, bottom: 8),
     child: TextFormField(
       keyboardType: keyType,
-      validator: (String value) => textValidate(lblTxt, value),
+      validator: (String value) => textValidate(lblText, value),
       decoration: InputDecoration(
-        labelText: lblTxt,
-        hintText: hntTxt,
-        prefixIcon: Icon(icnTxt, color: Colors.grey),
+				labelText: lblText,
+				hintText: hntText,
+				prefixIcon: Icon(icnText, color: Colors.grey),
       ),
     ),
   );
 
-//SignUp Button
-  Widget signUp(txt) => Padding(
+  // Signup Button
+  Widget signupButton(txtSignup) => Padding(
     padding: const EdgeInsets.only(top: 2, left: 220),
     child: RaisedButton(
       color: Colors.greenAccent,
-      child: Text(txt),
+      child: Text(txtSignup),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      onPressed: () => textValidated()
+      onPressed: () {
+				if (_formKey.currentState.validate()) dialog();
+			}
     ),
   );
-  
-//Functions
-  textValidate(lblTxt, value){
-  switch (lblTxt){
-    case 'Name':
-      if(value.isEmpty){
-        return 'Name should not be empty';
-      }
-    break;
 
-    case 'Email':
-      Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-      RegExp regex = RegExp(pattern);
+  // Functions
+  textValidate(lblText, value) {
+		var errorMessages;
 
-      if(!regex.hasMatch(value)){
-        return ('Invalid Email');
-      }
-    break;
+		if (value.isEmpty) {
+			errorMessages = '$lblText should not be empty';
+		} else {
+			switch (lblText){
+				case 'Email':
+					Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+					RegExp regex = RegExp(pattern);
 
-    case 'Phone Number':
-      if(value.isEmpty){
-        return 'Phone Number should not be empty';
-      }
-
-      if(value.length <= 11){
-        return 'Phone Number must be 11 digits';
-      }
-    break;
-
-    case 'School ID':
-      if(value.isEmpty){
-        return 'School ID should not be empty';
-      }
-
-      if(value.length < 6){
-        return 'School ID must be 6 digits';
-      }
-    break;
-
-    case 'Password':
-        if(value.isEmpty){
-          return 'Password should not be empty';
-        }
-
-       if(value.length < 6){
-         return 'Password must be 6 characters or longer';
-       }
-    break;
-
-    case 'Pin':
-        if(value.isEmpty){
-          return 'Pin should not be empty';
-        }
-
-       if(value.length < 6){
-         return 'Pin must be 6 digits or longer';
-       }
-    break;
-  }
-}
-
-  textValidated() {
-    if(_formKey.currentState.validate()){
-      dialog();
-    }
-  }
+					if (!regex.hasMatch(value)) errorMessages = 'Invalid Email';
+					break;
+				case 'Phone Number':
+					if (value.length < 12) errorMessages = 'Phone Number must be 11 digits';
+					break;
+				case 'School ID':
+					if (value.length < 6) errorMessages = 'School ID must be 6 digits';
+					break;
+				case 'Password':
+					if (value.length < 6) errorMessages = 'Password must be 6 characters or longer';
+					break;
+				case 'Pin':
+					if (value.length < 6) errorMessages = 'Pin must be 6 digits or longer';
+					break;
+			}
+		}
+		return errorMessages;
+	}
 
   dialog() => showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+				borderRadius: BorderRadius.circular(20),
       ),
       backgroundColor: Colors.grey[100],
       title: Column(
         children: <Widget>[
           Text('We sent you a Confirmation Code',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+						textAlign: TextAlign.center,
+						style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text('Please Check your Inbox',
-            textAlign: TextAlign.center, 
-            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),),
+							textAlign: TextAlign.center,
+							style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)
+						),
           )
         ],
       ),
@@ -179,14 +145,14 @@ class _RegisterState extends State<Register> {
       actions: <Widget>[
         FlatButton(
           child: Text('Login'),
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).push(
-          CupertinoPageRoute<Null>(builder: (
-            BuildContext context) => NavBar()));
+							CupertinoPageRoute<Null>(builder: (
+							BuildContext context) => NavBar())
+						);
           },
         ),
       ],
     ),
-
   );
 }
