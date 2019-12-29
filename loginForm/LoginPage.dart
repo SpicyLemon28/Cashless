@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
 		} else {
 			switch (hntText){
 				case 'Phone Number':
-					if (value.length < 11) errorMessages = 'Phone Number should be 11 digits';
+					if (value.length <= 11) errorMessages = 'Phone Number should be 11 digits';
 					break;
 				case 'Password':
 					if (value != userInput) errorMessages = 'Incorrect Password';
