@@ -34,15 +34,20 @@ class _LoginPageState extends State<LoginPage> {
             ListView(
               children: <Widget>[
                 SafeArea(
-                  child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         appName('SmartPay'),
-                        linkButton('Sign Up', () => navigatePage(Register())),
                         textFormField(Icons.person, 'Phone Number', TextInputType.number),
                         textFormField(Icons.lock, 'Password', TextInputType.text),
-                        linkButton('Forgot Password?', () => forgotPassDialog()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            linkButton('Sign Up', () => navigatePage(Register())),
+                            linkButton('Forgot Password?', () => forgotPassDialog()),
+                          ],
+                        ),
                         loginButton('Sign In'),
                       ],
                     ),
@@ -63,16 +68,25 @@ class _LoginPageState extends State<LoginPage> {
   );
 
   // Forgot Password and Sign Up Button
-  Widget linkButton(txtLink, onClick) => Padding(
-    padding: const EdgeInsets.only(left: 150),
+  /*Widget linkButton(txtLink, onClick) => Padding(
+    padding: const EdgeInsets.only(),
     child: FlatButton(
       child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.blue)),
-      onPressed: onClick
+      onPressed: onClick,
     ),
+  );*/
+
+  Widget linkButton(txtLink, onClick) => Padding(
+    padding: const EdgeInsets.only(left: 10, right: 10),
+    child: FlatButton(
+      onPressed: onClick,
+      child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.blue,)),
+    )
   );
+  
 
   Widget textFormField(icnText, hntText, keyType) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 10,),
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 15,),
     child: TextFormField(
       keyboardType: keyType,
       obscureText: hntText == 'Password' ? !passwordVisible : false,
@@ -119,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
 		} else {
 			switch (hntText){
 				case 'Phone Number':
-					if (value.length <= 11) errorMessages = 'Phone Number should be 11 digits';
+					if (value.length < 11) errorMessages = 'Phone Number should be 11 digits';
 					break;
 				case 'Password':
 					if (value != userInput) errorMessages = 'Incorrect Password';
@@ -129,9 +143,9 @@ class _LoginPageState extends State<LoginPage> {
 		return errorMessages;
   }
 
-	void navigatePage(navTo) => Navigator.push(
-		context, CupertinoPageRoute(
-			builder: (context) => navTo
+	void navigatePage(navTo) => Navigator.of(context).push(
+        CupertinoPageRoute<Null>(
+          builder: (BuildContext context) => navTo
 		)
 	);
 
