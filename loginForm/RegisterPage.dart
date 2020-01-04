@@ -8,22 +8,21 @@ import '../database/userDatabase.dart';
 import '../models/User.dart';
 
 class Register extends StatefulWidget {
+  final User user;
 
-  //final User user;
+  Register(this.user);
 
-  //Register(this.user);
   @override
- // _RegisterState createState() => _RegisterState(this.user);
-  _RegisterState createState() => _RegisterState();
+  _RegisterState createState() => _RegisterState(this.user);
+  //_RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-
   var _formKey = GlobalKey<FormState>();
 
   User user;
 
-  //_RegisterState(this.user);
+  _RegisterState(this.user);
 
   UserDatabase helper = UserDatabase();
 
@@ -32,20 +31,19 @@ class _RegisterState extends State<Register> {
                         phoneController = TextEditingController(),
                         studIdController = TextEditingController(),
                         passwordController = TextEditingController(),
-                        pinController = TextEditingController(),
-                        tokenController = TextEditingController();
+                        pinController = TextEditingController();
+                        
     
   @override
   Widget build(BuildContext context) {
 
     nameController.text = user.name;
     emailController.text = user.email;
-    phoneController.text = user.phone as String;
+    phoneController.text = user.phone as String ;
     studIdController.text = user.studId as String;
     passwordController.text = user.password;
     pinController.text = user.pin as String;
-    tokenController.text = user.token as String;
-
+    
     return Scaffold(
       appBar: AppBar(title: Text('SmartPay'), backgroundColor: Colors.green[900],),
        body: Form(
@@ -217,9 +215,6 @@ class _RegisterState extends State<Register> {
         user.pin = pinController.text as int;
       break;
 
-      case 'Token': 
-        user.token = tokenController.text as int;
-      break;
     }
   }
 

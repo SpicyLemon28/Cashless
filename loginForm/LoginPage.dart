@@ -5,8 +5,13 @@ import './ForgetPin.dart';
 import '../menuForm/NavBar.dart';
 import './RegisterPage.dart';
 
+import '../models/user.dart';
+
+
 class LoginPage extends StatefulWidget {
+  
   LoginPage({Key key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -44,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            linkButton('Sign Up', () => navigatePage(Register())),
+                            linkButton('Sign Up', () => registerPage(User('','', 0, 0, '', 0, ''))),
                             linkButton('Forgot Password?', () => forgotPassDialog()),
                           ],
                         ),
@@ -66,15 +71,6 @@ class _LoginPageState extends State<LoginPage> {
     padding: const EdgeInsets.only(top: 200, bottom: 50),
     child: Text(txtApp, style: TextStyle(fontSize: 30),),
   );
-
-  // Forgot Password and Sign Up Button
-  /*Widget linkButton(txtLink, onClick) => Padding(
-    padding: const EdgeInsets.only(),
-    child: FlatButton(
-      child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.blue)),
-      onPressed: onClick,
-    ),
-  );*/
 
   Widget linkButton(txtLink, onClick) => Padding(
     padding: const EdgeInsets.only(left: 10, right: 10),
@@ -146,6 +142,14 @@ class _LoginPageState extends State<LoginPage> {
 	void navigatePage(navTo) => Navigator.of(context).push(
         CupertinoPageRoute<Null>(
           builder: (BuildContext context) => navTo
+		)
+	);
+
+  void registerPage(User user) => Navigator.of(context).push(
+        CupertinoPageRoute<Null>(
+          builder: (BuildContext context) {
+            return Register(user);
+          }
 		)
 	);
 
