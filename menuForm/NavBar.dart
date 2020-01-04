@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import './NavPage/Home.dart';
+import './NavPage/LoadWallet.dart';
+import './NavPage/Transaction.dart';
 
 class NavBar extends StatefulWidget {
   NavBar({Key key}) : super(key: key);
@@ -13,6 +14,48 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
 
   int selectedPage = 0;
+  final pageOptions = [
+    Home(),
+    LoadWallet(),
+    Transaction()
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: pageOptions[selectedPage],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedPage,
+        onTap: (int index) => setState((){
+          selectedPage = index;
+        }),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Load Wallet')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt),
+            title: Text('Transaction')
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/*class NavBar extends StatefulWidget {
+  NavBar({Key key}) : super(key: key);
+
+  @override
+  _NavBarState createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +73,8 @@ class NaviBar extends StatefulWidget {
 }
 
 class _NaviBarState extends State<NaviBar> {
+
+  int selectedIndex = 0;
 
   Color bkgColor = Colors.white;
 
@@ -119,19 +164,17 @@ class _NaviBarState extends State<NaviBar> {
             var itemIndex = items.indexOf(item);
 
             return GestureDetector(
-              onTap: () => selectedPage(Home()),
-              child: _buildItem(item, selectedPage == itemIndex),
+              onTap: () => setState((){
+                selectedIndex = itemIndex;
+              }),
+              child: _buildItem(item, selectedIndex == itemIndex),
             );
           }).toList(),
         ),
     );
   }
 
-  void selectedPage(navTo) => Navigator.of(context).push(
-        CupertinoPageRoute<Null>(
-          builder: (BuildContext context) => navTo
-    )
-  );
+  
 
 }
 
@@ -141,5 +184,5 @@ class NavItem {
   final Color color;
 
   NavItem(this.icon, this.title, this.color);
-}
+} */
 
