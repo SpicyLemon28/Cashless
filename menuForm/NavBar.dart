@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
+import './NavPage/Home.dart';
 
 class NavBar extends StatefulWidget {
   NavBar({Key key}) : super(key: key);
@@ -27,9 +30,6 @@ class NaviBar extends StatefulWidget {
 }
 
 class _NaviBarState extends State<NaviBar> {
-
-  int selectedPage = 0;
-
 
   Color bkgColor = Colors.white;
 
@@ -119,17 +119,20 @@ class _NaviBarState extends State<NaviBar> {
             var itemIndex = items.indexOf(item);
 
             return GestureDetector(
-              onTap: (){
-                setState(() {
-                  selectedPage = itemIndex;
-                });
-              },
+              onTap: () => selectedPage(Home()),
               child: _buildItem(item, selectedPage == itemIndex),
             );
           }).toList(),
         ),
     );
   }
+
+  void selectedPage(navTo) => Navigator.of(context).push(
+        CupertinoPageRoute<Null>(
+          builder: (BuildContext context) => navTo
+    )
+  );
+
 }
 
 class NavItem {
