@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'LoginPage.dart';
@@ -13,66 +12,42 @@ class ForgetPin extends StatefulWidget {
 
 class _ForgetPinState extends State<ForgetPin> {
 
-  var _formKey = GlobalKey<FormState>();
-
-  TextEditingController _newPass = TextEditingController(),
-                        _confirmPass = TextEditingController();
-
-  bool passwordVisible;
-
-  @override
-  void initState() {
-		super.initState();
-    passwordVisible = false;
-  }  
+	var _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
         key: _formKey,
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                text('Create a New Pin'),
-                pass('New Password', 'Enter new password', _newPass),
-                pass('Re-confirm Password', 'Re-type new password', _confirmPass),
-                confirm('Confirm')
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              textPage('Create a New Pin'),
+              textFormField('New Password', 'Enter new password'),
+              textFormField('Re-confirm Password', 'Re-type new password'),
+              confirmButton('Confirm')
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget text(txt) => Padding(
+  Widget textPage(lblText) => Padding(
     padding: const EdgeInsets.only(bottom: 50,),
-    child: Text(txt, style: TextStyle(fontSize: 25)),
+    child: Text(lblText, style: TextStyle(fontSize: 25)),
   );
 
-  Widget pass(lblTxt, hntTxt, txtController) => Padding(
+  Widget textFormField(lblText, hntText) => Padding(
     padding: const EdgeInsets.only(top: 10, bottom: 10),
     child: TextFormField(
-      controller: txtController,
-      obscureText: !passwordVisible,
-      validator: (String value,) => textValidation(lblTxt, value),
+			obscureText: true,
+			validator: (String value,) => textValidation(lblText, value),
       decoration: InputDecoration(
-        labelText: lblTxt,
-        hintText: hntTxt,
-        suffixIcon: IconButton(
-            icon: Icon(
-               passwordVisible
-               ? Icons.visibility
-               : Icons.visibility_off,
-              ),
-            onPressed: () => setState(() {
-              passwordVisible = !passwordVisible;
-              })
-            ),
+        labelText: lblText,
+        hintText: hntText,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -80,15 +55,18 @@ class _ForgetPinState extends State<ForgetPin> {
     ),
   );
 
-  Widget confirm(txt) => Padding(
+  Widget confirmButton(lblText) => Padding(
     padding: const EdgeInsets.only(top: 10),
     child: RaisedButton(
-      color: Colors.greenAccent,
-      child: Text(txt),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      onPressed: (){
-        if (_formKey.currentState.validate()) navigatePage(LoginPage());
-      }
+      child: Text(lblText),
+      onPressed: () {
+				if (_formKey.currentState.validate()) {
+					Navigator.of(context).push(
+						CupertinoPageRoute<Null>(builder: (
+						BuildContext context) => LoginPage())
+					);
+				}
+			}
     ),
   );
 
@@ -98,21 +76,10 @@ class _ForgetPinState extends State<ForgetPin> {
 		if (value.isEmpty) {
 			errorMessages = '$lblText should not be empty';
 		} else {
-			switch (lblText){
-				case 'New Password':
-					if (value.length < 6) errorMessages = 'Password should be 6 characters or longer';
-					break;
-				case 'Re-confirm Password':
-					if (value != _newPass.text) errorMessages = 'Password do not match';
-					break;
-			}
+			if (value.length < 16) errorMessages = '$lblText should be 16 digits';
 		}
+
 		return errorMessages;
   }
 
-  void navigatePage(navTo) => Navigator.of(context).push(
-        CupertinoPageRoute<Null>(
-          builder: (BuildContext context) => navTo
-		)
-	);
 }

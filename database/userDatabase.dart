@@ -2,99 +2,76 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import '../models/User.dart';
 
-class UserDatabase {
+import '../models/user.dart';
 
-  static UserDatabase _userDatabase;
-  static Database _database;
+class DatabaseHelper {
 
-  String userTable = 'userTable',
-         userId = 'userId',
-         studId = 'studentId',
-         pin    = 'pin', 
-         token  = 'token', 
-         phone  = 'phone',
-         name = 'name',
-         email = 'email',
-         password = 'password',
-         date = 'date';
-  
-  UserDatabase._createInstance();
+	static DatabaseHelper _databaseHelper;    // Singleton DatabaseHelper
+	static Database _database;                // Singleton Database
 
-  factory UserDatabase() {
+	String tblUsers = 'users';
 
-    if (_userDatabase == null) {
-      _userDatabase = UserDatabase._createInstance();
-    }
-    return _userDatabase;
-  }
+	DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
 
-  Future<Database> get database async {
+	factory DatabaseHelper() {
+		if (_databaseHelper == null) {
+			_databaseHelper = DatabaseHelper._createInstance(); // This is executed only once, singleton object
+		}
+		return _databaseHelper;
+	}
 
-    if(_database == null) {
-      _database = await initializeDatabase();
-    }
-    return _database;
-  }
+	Future<Database> get database async {
+		if (_database == null) {
+			_database = await initializeDatabase();
+		}
+		return _database;
+	}
 
-  Future<Database> initializeDatabase() async {
+	Future<Database> initializeDatabase() async {
+		// Get the directory path for both Android and iOS to store database.
+		Directory directory = await getApplicationDocumentsDirectory();
+		String path = directory.path + 'cashless.db';
+		// Open/create the database at a given path
+		var dbCashless = await openDatabase(path, version: 1, onCreate: _createDb);
+		return dbCashless;
+	}
 
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'user.db';
+	void _createDb(Database db, int newVersion) async {
+		await db.execute(
+			'CREATE TABLE $tblUsers ('
+			'  id INTEGER PRIMARY KEY AUTOINCREMENT,'
+			'  name 			TEXT,'
+			'  email 			TEXT,'
+			'  phone 			TEXT,'
+			'  studentId	TEXT,'
+			'  password 	TEXT,'
+			'  pin 				TEXT,'
+			'  date 			TEXT'
+			')'
+		);
+	}
 
-    var usersDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
-    return usersDatabase;
-  }
-
-  void _createDb(Database db, int newVersion) async {
-
-    await db.execute('CREATE TABLE $userTable($userId INTEGER PRIMARY KEY AUTOINCREMENT, $studId INTEGER, '
-				'$pin INTEGER, $token INTEGER, $phone INTEGER, $name TEXT, $email TEXT, $password TEXT)');
-  }
-  
-  Future<List<Map<String, dynamic>>> getUserMapList() async {
+	// Insert Operation: Insert a User object to database
+	Future<int> insertUser(User user) async {
 		Database db = await this.database;
-
-    var result = await db.query(userTable, orderBy: '$userId DESC');
-		return result;
-  }
-
-  Future<int> insertUser(User user) async {
-		Database db = await this.database;
-		var result = await db.insert(userTable, user.toMap());
-		return result;
-  }
-
-  Future<int> updateUser(User user) async {
-		var db = await this.database;
-		var result = await db.update(userTable, user.toMap(), where: '$userId = ?', whereArgs: [user.userId]);
+		var result = await db.insert(tblUsers, user.toMap());
 		return result;
 	}
 
-  Future<int> deleteUser(int userId) async {
+	// Update Operation: Update a User object and save it to database
+	Future<int> updateUser(User user) async {
 		var db = await this.database;
-		int result = await db.rawDelete('DELETE FROM $userTable WHERE $userId = $userId');
+		var result = await db.update(tblUsers, user.toMap(), where: 'id = ?', whereArgs: [user.id]);
 		return result;
 	}
 
-  Future<int> getCount() async {
+	// Get number of User objects in database
+	Future<int> getCount() async {
 		Database db = await this.database;
-		List<Map<String, dynamic>> x = await db.rawQuery('SELECT * FROM $userTable WHERE $phone = $phone');
+		List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $tblUsers');
 		int result = Sqflite.firstIntValue(x);
 		return result;
 	}
 
-  Future<List<User>> getUser() async {
-
-		var userMapList = await getUserMapList(); 
-		int count = userMapList.length;         
-
-		List<User> user = List<User>();
-		
-		for (int i = 0; i < count; i++) {
-			user.add(User.fromDb(userMapList[i]));
-		}
-    return user;
-  } 
 }
