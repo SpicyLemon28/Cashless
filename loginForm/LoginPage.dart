@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import './ForgetPin.dart';
+import './ForgetPassword.dart';
 import '../menuForm/NavBar.dart';
 import './RegisterPage.dart';
 
@@ -9,7 +9,7 @@ import '../models/user.dart';
 
 
 class LoginPage extends StatefulWidget {
-  
+
   LoginPage({Key key}) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
 		super.initState();
     passwordVisible = false;
-  }     
+}
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            linkButton('Sign Up', () => registerPage(User('','', 0, 0, '', 0, ''))),
+                            linkButton('Sign Up', () => navigatePage(Register(User('', '', '', '', '', '', '')))),
                             linkButton('Forgot Password?', () => forgotPassDialog()),
                           ],
                         ),
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.blue,)),
     )
   );
-  
+
 
   Widget textFormField(icnText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 15,),
@@ -142,14 +142,6 @@ class _LoginPageState extends State<LoginPage> {
 	void navigatePage(navTo) => Navigator.of(context).push(
         CupertinoPageRoute<Null>(
           builder: (BuildContext context) => navTo
-		)
-	);
-
-  void registerPage(User user) => Navigator.of(context).push(
-        CupertinoPageRoute<Null>(
-          builder: (BuildContext context) {
-            return Register(user);
-          }
 		)
 	);
 
