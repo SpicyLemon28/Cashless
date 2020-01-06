@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../menuForm/NavBar.dart';
-import '../database/database_helper.dart';
+import '../database/userDatabase.dart';
 
 import '../models/user.dart';
 
