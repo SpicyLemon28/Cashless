@@ -4,46 +4,45 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../menuForm/NavBar.dart';
-import '../database/userDatabase.dart';
-import '../models/User.dart';
+import '../database/database_helper.dart';
+
+import '../models/user.dart';
 
 class Register extends StatefulWidget {
-  final User user;
+	final User user;
 
-  Register(this.user);
+	Register(this.user);
 
   @override
   _RegisterState createState() => _RegisterState(this.user);
-  //_RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
   var _formKey = GlobalKey<FormState>();
+	User user;
 
-  User user;
+	_RegisterState(this.user);
 
-  _RegisterState(this.user);
+  DatabaseHelper helper = DatabaseHelper();
 
-  UserDatabase helper = UserDatabase();
+	TextEditingController
+		nameController      = TextEditingController(),
+		emailController     = TextEditingController(),
+		phoneController     = TextEditingController(),
+		studentIdController = TextEditingController(),
+		passwordController  = TextEditingController(),
+		pinController       = TextEditingController();
 
-   TextEditingController nameController = TextEditingController(),
-                        emailController = TextEditingController(),
-                        phoneController = TextEditingController(),
-                        studIdController = TextEditingController(),
-                        passwordController = TextEditingController(),
-                        pinController = TextEditingController();
-                        
-    
   @override
   Widget build(BuildContext context) {
 
-    nameController.text = user.name;
-    emailController.text = user.email;
-    phoneController.text = user.phone as String ;
-    studIdController.text = user.studId as String;
-    passwordController.text = user.password;
-    pinController.text = user.pin as String;
-    
+    nameController.text      = user.name;
+    emailController.text     = user.email;
+    phoneController.text     = user.phone;
+    studentIdController.text = user.studentId;
+    passwordController.text  = user.password;
+    pinController.text       = user.pin;
+
     return Scaffold(
       appBar: AppBar(title: Text('SmartPay'), backgroundColor: Colors.green[900],),
        body: Form(
@@ -62,7 +61,7 @@ class _RegisterState extends State<Register> {
 												textFormField(Icons.person, 'Name', 'Enter Full Name', nameController, TextInputType.text),
 												textFormField(Icons.email, 'Email', 'Enter email address', emailController, TextInputType.emailAddress),
 												textFormField(Icons. phone_android, 'Phone Number', 'Enter phone number', phoneController, TextInputType.number),
-												textFormField(Icons.perm_identity, 'School ID', 'Enter School ID Number', studIdController, TextInputType.number),
+												textFormField(Icons.perm_identity, 'School ID', 'Enter School ID Number', studentIdController, TextInputType.number),
 												textFormField(Icons.lock, 'Password', 'Enter a Password', passwordController, TextInputType.text),
 												textFormField(Icons.vpn_key, 'Pin', 'Enter a pin for payment', pinController, TextInputType.number),
 												signupButton('Sign Up'),
@@ -89,7 +88,7 @@ class _RegisterState extends State<Register> {
       controller: txtController,
       keyboardType: keyType,
       onSaved: (value) => updateTextFormField(lblText, txtController),
-      validator: (String value) => textValidate(lblText, value),
+      validator: (String value) => textValidation(lblText, value),
       decoration: InputDecoration(
 				labelText: lblText,
 				hintText: hntText,
@@ -106,14 +105,14 @@ class _RegisterState extends State<Register> {
       child: Text(txtSignup),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       onPressed: () {
-				//if (_formKey.currentState.validate()) dialog();
         if (_formKey.currentState.validate()) _save();
+				// if (_formKey.currentState.validate()) dialog();
 			}
     ),
   );
 
   // Functions
-  textValidate(lblText, value) {
+  textValidation(lblText, value) {
 		var errorMessages;
 
 		if (value.isEmpty) {
@@ -142,6 +141,46 @@ class _RegisterState extends State<Register> {
 		}
 		return errorMessages;
 	}
+
+  void updateTextFormField(lblText, txtController) {
+    switch (lblText) {
+      case 'Name':
+        user.name = nameController.text;
+				break;
+
+      case 'Email':
+        user.email = emailController.text;
+				break;
+
+      case 'Phone Number':
+				user.phone = phoneController.text;
+				break;
+
+      case 'School ID':
+				user.studentId = studentIdController.text;
+				break;
+
+      case 'Password':
+        user.password = passwordController.text;
+				break;
+
+      case 'Pin':
+				user.pin = pinController.text;
+				break;
+    }
+  }
+
+  void _save() async {
+		user.date = DateFormat.yMMMd().format(DateTime.now());
+		int result;
+		result = (user.id != null) ? await helper.updateUser(user):  await helper.insertUser(user);
+		_showAlertDialog('Status', (result != 0)  ? 'Saved Succefully' : 'Problem Saving');
+  }
+
+  void _showAlertDialog(title, message) {
+    AlertDialog alertDialog = AlertDialog(title: Text(title), content: Text(message));
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
 
   dialog() => showDialog(
     context: context,
@@ -189,45 +228,4 @@ class _RegisterState extends State<Register> {
     ),
   );
 
-  void updateTextFormField(lblText, txtController) {
-    switch (lblText) {
-      case 'Name': 
-        user.name = nameController.text;
-      break;
-
-      case 'Email': 
-        user.email = emailController.text;
-      break;
-
-      case 'Phone Number': 
-        user.phone = phoneController.text as int;
-      break;
-
-      case 'School ID': 
-        user.studId = studIdController.text as int;
-      break;
-
-      case 'Password': 
-        user.password = passwordController.text;
-      break;
-
-      case 'Pin': 
-        user.pin = pinController.text as int;
-      break;
-
-    }
-  }
-
-  void _save() async {
-    user.date = DateFormat.yMMMd().format(DateTime.now());
-    int result;
-
-    result = (user.userId != null) ? await helper.updateUser(user):  await helper.insertUser(user);
-			_showAlertDialog('Status', (result != 0)  ? 'Registered Successfully' : 'Register Issue');
-  }
-
-  void _showAlertDialog(title, message) {
-    AlertDialog  alertDialog = AlertDialog(title: Text(title), content: Text(message));
-    showDialog(context: context, builder: (_) => alertDialog);
-  }
 }
