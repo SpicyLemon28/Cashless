@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'LoadWallet.dart';
-import './HomePage/ScantoPay.dart';
-import './HomePage/TransferMoney.dart';
-import './HomePage/ReceiveMoney.dart';
+import '../LoadWalletPage/LoadWallet.dart';
+import './ScantoPay.dart';
+import './TransferMoney.dart';
+import './ReceiveMoney.dart';
 
 
 class Home extends StatefulWidget {
