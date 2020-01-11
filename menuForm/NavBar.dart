@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './NavPage/Home.dart';
-import './NavPage/LoadWallet.dart';
-import './NavPage/Transaction.dart';
+import './NavPage/HomePage/Home.dart';
+import './NavPage/LoadWalletPage/LoadWallet.dart';
+import './NavPage/TransactionPage/Transaction.dart';
 
 class NavBar extends StatefulWidget {
   NavBar({Key key}) : super(key: key);
