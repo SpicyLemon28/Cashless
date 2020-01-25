@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'LoginPage.dart';
+import '../login/LoginPage.dart';
 
-class ForgetPin extends StatefulWidget {
-  ForgetPin({Key key}) : super(key: key);
+class ForgetPassword extends StatefulWidget {
+  ForgetPassword({Key key}) : super(key: key);
 
   @override
-  _ForgetPinState createState() => _ForgetPinState();
+  _ForgetPasswordState createState() => _ForgetPasswordState();
 }
 
-class _ForgetPinState extends State<ForgetPin> {
+class _ForgetPasswordState extends State<ForgetPassword> {
 
 	var _formKey = GlobalKey<FormState>();
 

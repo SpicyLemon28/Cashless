@@ -83,8 +83,8 @@ FormatException: FormatException: No ':' on line (at offset 12)
     • VS Code at /Applications/Visual Studio Code.app/Contents
     • Flutter extension version 3.7.1
 
-[✓] Connected device (1 available)
-    • Redmi Note 7 • 74ccc4a1 • android-arm64 • Android 9 (API 28)
+[!] Connected device
+    ! No devices available
 
-• No issues found!
+! Doctor found issues in 1 category.
 ```
