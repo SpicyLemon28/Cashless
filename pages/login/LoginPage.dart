@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/user.dart';
 import '../../services/response/login_response.dart';
 
-import '../../pages/dashboard/dashboard.dart';
+import '../dashboard/dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   @override

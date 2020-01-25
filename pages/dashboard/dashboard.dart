@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:flutter/cupertino.dart';
 
 import './NavPage/Home.dart';
+import './NavPage/LoadWalletPage/LoadWallet.dart';
+import './NavPage/TransactionPage/Transaction.dart';
 
 class Dashboard extends StatefulWidget {
   final VoidCallback signOut;
@@ -17,26 +18,68 @@ class _DashboardState extends State<Dashboard> {
 		setState(() { widget.signOut(); });
 	}
 
-  int selectedPage = 0;
-
 	var signIn;
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() => signIn = preferences.getInt("signIn") );
-  }
+  } 
 
   @override
 	void initState() {
 		super.initState();
 		getPref();
-	}
+	} 
+
+  int selectedPage = 0;
+  final pageOptions = [
+    Home(),
+    LoadWallet(),
+    Transaction()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home Page"),
+        backgroundColor: Colors.green[900],
+        centerTitle: true,
+        title: Text('SmartPay', style: TextStyle(color: Colors.white),),
+        actions: <Widget>[
+          IconButton(
+            color: Colors.white,
+            icon: Icon(Icons.lock_open),
+            onPressed: () => signOut(),
+          )
+        ],
+      ),
+      body: pageOptions[selectedPage],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedPage,
+        onTap: (int index) => setState((){
+          selectedPage = index;
+        }),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Load Wallet')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt),
+            title: Text('Transaction')
+          )
+        ],
+      ),
+    );
+  }
+  /*Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Test"),
         actions: <Widget>[
            IconButton(
 						 icon: Icon(Icons.lock_open),
@@ -48,10 +91,10 @@ class _DashboardState extends State<Dashboard> {
         child:  Text("Home Page")
       )
     );
-  }
+  } */
 }
 
-class NaviBar extends StatefulWidget {
+/*class NaviBar extends StatefulWidget {
   NaviBar({Key key}) : super(key: key);
 
   @override
@@ -170,5 +213,5 @@ class NavItem {
   final Color color;
 
   NavItem(this.icon, this.title, this.color);
-}
+} */
 
