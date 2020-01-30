@@ -1,7 +1,7 @@
+import 'dart:ui' as prefix0;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../login/LoginPage.dart';
 
 class ForgetPassword extends StatefulWidget {
   ForgetPassword({Key key}) : super(key: key);
@@ -11,23 +11,50 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-
-	var _formKey = GlobalKey<FormState>();
+  
+  var _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return WillPopScope(
+      onWillPop: () {navigatePreviousPage();},
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('SmartPay'),
+          centerTitle: true,
+          backgroundColor: Colors.green[900],
+          leading: IconButton(icon: Icon(Icons.arrow_back),
+          onPressed: () {navigatePreviousPage();},)
+        ),
+        body: Form(
+          key: _formKey,
+          child: Stack(
+            fit: StackFit.expand,
             children: <Widget>[
-              textPage('Create a New Pin'),
-              textFormField('New Password', 'Enter new password'),
-              textFormField('Re-confirm Password', 'Re-type new password'),
-              confirmButton('Confirm')
+              ListView(
+                children: <Widget>[
+                 Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 200),
+                      ),
+                      text('Which one did you forgot?', TextStyle(fontWeight: FontWeight.bold)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          radioSelection('Pin'),
+                          radioSelection('Password'),
+                        ],
+                      ),
+                      textFormField('Enter the phone number you used to sign in', TextInputType.phone, TextStyle(fontSize: 12)),
+                      continueButton('Continue', TextStyle(fontSize: 30, fontWeight: FontWeight.w300)),
+                    ],
+                  ),
+                ),
+                ]
+                ),
             ],
           ),
         ),
@@ -35,51 +62,106 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     );
   }
 
-  Widget textPage(lblText) => Padding(
-    padding: const EdgeInsets.only(bottom: 50,),
-    child: Text(lblText, style: TextStyle(fontSize: 25)),
+  Widget text(txt, styleText) => Padding(
+    padding: const EdgeInsets.only(),
+    child: Text(txt, style: styleText,),
   );
 
-  Widget textFormField(lblText, hntText) => Padding(
-    padding: const EdgeInsets.only(top: 10, bottom: 10),
+  Widget radioSelection(radioButton) => Padding(
+    padding: const EdgeInsets.only(),
+    child: Row(
+      children: <Widget>[
+        Radio(
+          value: null,
+          groupValue: null,
+          onChanged: null,
+        ),
+        Text(radioButton)
+      ],
+    ),
+  );
+
+  Widget textFormField(lblText, keyType, styleText) => Padding(
+    padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
     child: TextFormField(
-			obscureText: true,
-			validator: (String value,) => textValidation(lblText, value),
+      keyboardType: keyType,
       decoration: InputDecoration(
-        labelText: lblText,
-        hintText: hntText,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+        labelText: lblText, 
+        labelStyle: styleText
+      ),
+    ),
+  );
+
+  Widget continueButton(buttonText, styleText) => Padding(
+    padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+    child: Material(
+      color: Colors.green,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        onTap: () => dialog(),
+        child: Center(
+          child: Text(buttonText, style: styleText),
         ),
       ),
     ),
   );
 
-  Widget confirmButton(lblText) => Padding(
-    padding: const EdgeInsets.only(top: 10),
-    child: RaisedButton(
-      child: Text(lblText),
-      onPressed: () {
-				if (_formKey.currentState.validate()) {
-					Navigator.of(context).push(
-						CupertinoPageRoute<Null>(builder: (
-						BuildContext context) => LoginPage())
-					);
-				}
-			}
-    ),
+  dialog() => showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
+      title: Column(
+        children: <Widget>[
+          Text(
+            'THANK YOU!',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+          ),
+          Text(
+            'We sent you a temporary pin/password to your registered email address. Kindly check your email and follow the instructions.',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+          ),
+          Text(
+            'To proceed please enter the temporary pin/password',
+            style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
+          )
+        ],
+      ),
+      content: TextField(
+        decoration: InputDecoration(
+          hintText: 'Enter temporary pin/password',
+          hintStyle: TextStyle(fontSize: 12),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18)
+          )
+        ),
+      ),
+      actions: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FlatButton(
+              child: Text('Resend Email'),
+              onPressed: (){setState(() => print('RESEND!'));},
+            ),
+            FlatButton(
+              child: Text('Submit'),
+              onPressed: () {setState(() => print('SUBMIT!'));},
+            )
+          ],
+        ),
+      ],
+    )
   );
 
-  textValidation(lblText, value) {
-		var errorMessages;
+  
 
-		if (value.isEmpty) {
-			errorMessages = '$lblText should not be empty';
-		} else {
-			if (value.length < 16) errorMessages = '$lblText should be 16 digits';
-		}
-
-		return errorMessages;
-  }
-
+  void navigatePreviousPage() => Navigator.pushReplacementNamed(context, '/login');
 }
+
+

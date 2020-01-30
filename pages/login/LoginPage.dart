@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user.dart';
 import '../../services/response/login_response.dart';
-
 import '../dashboard/dashboard.dart';
 
 class LoginPage extends StatefulWidget {
@@ -85,13 +84,13 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 													mainAxisAlignment: MainAxisAlignment.center,
 													children: <Widget>[
 														appName('SmartPay'),
-														textFormField(Icons.person, 'Phone Number', TextInputType.number),
+														textFormField(Icons.person, 'Phone Number', TextInputType.phone),
 														textFormField(Icons.lock, 'Password', TextInputType.text),
 														Row(
 															mainAxisAlignment: MainAxisAlignment.spaceBetween,
 															children: <Widget>[
 																linkButton('Sign Up', () => navigatePage('/register')),
-																linkButton('Forgot Password?', () => forgotPassDialog()),
+																linkButton('Forgot Pin / Password?', () => navigatePage('/forgetpassword')),
 															],
 														),
 														loginButton('Sign In'),
@@ -138,7 +137,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         prefixIcon: Icon(icnText, color: Colors.grey),
         suffixIcon: hntText == 'Password'
 					? IconButton(
-							icon: Icon(passwordVisible ? Icons.visibility : Icons.visibility_off),
+							icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility),
 							onPressed: () => setState(() => passwordVisible = !passwordVisible)
 						)
 					: Icon(Icons.phone_android),
@@ -232,7 +231,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     ));
   }
 
-  forgotPassDialog() => showDialog(
+  /*forgotPassDialog() => showDialog(
 		context: context,
 		builder: (BuildContext context) => AlertDialog(
 			shape: RoundedRectangleBorder(
@@ -271,5 +270,5 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 				),
 			],
 		),
-	);
+	); */
 }
