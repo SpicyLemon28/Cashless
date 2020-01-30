@@ -161,24 +161,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
       : Padding(
-<<<<<<< HEAD
-					padding: const EdgeInsets.only(top: 15),
-					child: RaisedButton(
-						shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-						color: Colors.greenAccent,
-						child: Text(txtLogin),
-						onPressed: () {
-							var form = _formKey.currentState;
-							if (form.validate()) {
-								setState(() => _isLoading = true);
-								form.save();
-								_signIn();
-							} else {
-								setState(() => _autoValidate = true);
-							}
-						}
-					)
-=======
 					padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
           child: Material(
             color: Colors.green,
@@ -190,14 +172,11 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
               ),
             ),
           ),
->>>>>>> 13_ForgetPassword
 				);
 	}
   
 
 	// Functions
-<<<<<<< HEAD
-=======
   void _submit() {
     var form = _formKey.currentState;
     if (form.validate()) {
@@ -209,7 +188,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 		}
   }
 
->>>>>>> 13_ForgetPassword
 	void _signIn() async {
     var data = {
 			"phone"    : _phone,
