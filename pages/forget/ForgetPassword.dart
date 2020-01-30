@@ -14,6 +14,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   
   var _formKey = GlobalKey<FormState>();
 
+  bool _autoValidate = false;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -28,6 +30,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         ),
         body: Form(
           key: _formKey,
+          autovalidate: _autoValidate,
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
@@ -48,8 +51,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           radioSelection('Password'),
                         ],
                       ),
-                      textFormField('Enter the phone number you used to sign in', TextInputType.phone, TextStyle(fontSize: 12)),
-                      continueButton('Continue', TextStyle(fontSize: 30, fontWeight: FontWeight.w300)),
+                      textFormField('Enter the phone number you used to sign in', TextInputType.phone, TextStyle(fontSize: 12.5)),
+                      continueButton('Continue', TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
                     ],
                   ),
                 ),
@@ -85,6 +88,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
     child: TextFormField(
       keyboardType: keyType,
+      validator: (String value) => textValidation(lblText, value),
       decoration: InputDecoration(
         labelText: lblText, 
         labelStyle: styleText
@@ -93,12 +97,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   );
 
   Widget continueButton(buttonText, styleText) => Padding(
-    padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+    padding: const EdgeInsets.only(top: 30, left: 8, right: 8),
     child: Material(
       color: Colors.green,
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
-        onTap: () => dialog(),
+        onTap: _submit,
         child: Center(
           child: Text(buttonText, style: styleText),
         ),
@@ -132,7 +136,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           )
         ],
       ),
-      content: TextField(
+      content: TextFormField(
         decoration: InputDecoration(
           hintText: 'Enter temporary pin/password',
           hintStyle: TextStyle(fontSize: 12),
@@ -151,7 +155,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
             FlatButton(
               child: Text('Submit'),
-              onPressed: () {setState(() => print('SUBMIT!'));},
+              onPressed: () => navigatePage('/resetPinPass'),
             )
           ],
         ),
@@ -159,9 +163,36 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     )
   );
 
-  
+  textValidation(lblText, value) {
+    if(value.isEmpty) {
+      return 'Field should not be empty';
+    } else {
+      switch (lblText) {
+        case 'Enter the phone number you used to sign in':
+          return value.length < 11 ? 'Phone Number must be 11 digits' : null;
+          break;
+      }
+    }
+	}
+
+  void _submit() {
+		final form = _formKey.currentState;
+		if (form.validate()) {
+			form.save();
+			_save();
+		} else {
+			setState(() => _autoValidate = true);
+		}
+	}
+
+  void _save() async {
+    setState(() => dialog());
+  }
 
   void navigatePreviousPage() => Navigator.pushReplacementNamed(context, '/login');
+
+  void navigatePage(navTo) =>
+		Navigator.pushReplacementNamed(context, navTo);
 }
 
 

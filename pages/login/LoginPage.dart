@@ -90,16 +90,16 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 													mainAxisAlignment: MainAxisAlignment.center,
 													children: <Widget>[
 														appName('SmartPay'),
-														textFormField(Icons.person, 'Phone Number', TextInputType.phone),
+														textFormField(Icons.person, 'Phone Number', TextInputType.number),
 														textFormField(Icons.lock, 'Password', TextInputType.text),
 														Row(
 															mainAxisAlignment: MainAxisAlignment.spaceBetween,
 															children: <Widget>[
 																linkButton('Sign Up', () => navigatePage('/register')),
-																linkButton('Forgot Pin/Password?', () => navigatePage('/forgetpassword')),
+																linkButton('Forgot Password?', () => navigatePage('/forgetPassword')),
 															],
 														),
-														loginButton('Sign In'),
+														loginButton('Sign In', TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
 													],
 												),
 											),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
 
   Widget textFormField(icnText, hntText, keyType) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 15,),
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 20,),
     child: TextFormField(
       keyboardType: keyType,
 			inputFormatters: keyType == TextInputType.number
@@ -155,12 +155,13 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   );
 
   // Login Button
-  Widget loginButton(txtLogin) {
+  Widget loginButton(buttonText, styleText) {
 		return _isLoading
       ? CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
       : Padding(
+<<<<<<< HEAD
 					padding: const EdgeInsets.only(top: 15),
 					child: RaisedButton(
 						shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -177,10 +178,38 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 							}
 						}
 					)
+=======
+					padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+          child: Material(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(10),
+            child: InkWell(
+              onTap: _submit,
+              child: Center(
+                child: Text(buttonText, style: styleText),
+              ),
+            ),
+          ),
+>>>>>>> 13_ForgetPassword
 				);
 	}
+  
 
 	// Functions
+<<<<<<< HEAD
+=======
+  void _submit() {
+    var form = _formKey.currentState;
+    if (form.validate()) {
+      setState(() => _isLoading = true);
+      form.save();
+      _signIn();
+    } else {
+      setState(() => _autoValidate = true);
+		}
+  }
+
+>>>>>>> 13_ForgetPassword
 	void _signIn() async {
     var data = {
 			"phone"    : _phone,

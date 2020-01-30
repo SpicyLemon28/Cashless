@@ -62,7 +62,7 @@ class _RegisterState extends State<Register> {
 
 		prgrsDlg = ProgressDialog(context);
     prgrsDlg.style(
-			message: 'Please Waiting...',
+			message: 'Please Wait...',
 			borderRadius: 10.0,
 			backgroundColor: Colors.white,
 			progressWidget: CircularProgressIndicator(),
@@ -104,7 +104,7 @@ class _RegisterState extends State<Register> {
 													textFormField(_email, Icons.email, 'Email', 'Enter Email Address', TextInputType.emailAddress, false),
 													textFormField(_password, Icons.lock, 'Password', 'Enter a Password', TextInputType.text, passwordVisible),
 													textFormField(_pin, Icons.vpn_key, 'Pin', 'Enter a Pin for payment', TextInputType.number, pinVisible),
-													signupButton('Sign Up'),
+													signupButton('Sign Up', TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
 												],
 											),
 										),
@@ -143,17 +143,21 @@ class _RegisterState extends State<Register> {
     ),
   );
 
-  Widget signupButton(txtSignup) {
+  Widget signupButton(buttonText, styleText) {
 		return _isSubmitting
 		? Container()
 		: Padding(
-			padding: const EdgeInsets.only(top: 2, left: 220),
-			child: RaisedButton(
-				color: Colors.greenAccent,
-				child: Text(txtSignup),
-				shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-				onPressed: () { setState(() { _submit(); }); }
-			)
+			padding: const EdgeInsets.only(top: 30),
+      child: Material(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(10),
+            child: InkWell(
+              onTap: _submit,
+              child: Center(
+                child: Text(buttonText, style: styleText,),
+              ),
+            ),
+          ),
 		);
   }
 
