@@ -1,3 +1,5 @@
+import 'package:password/password.dart';
+
 class User {
 
   int id, confirm;
@@ -25,8 +27,8 @@ class User {
 		map['studentId'] = studentId;
     map['name']      = name;
     map['email']     = email;
-    map['password']  = password;
-		map['pin']       = pin;
+    map['password']  = Password.hash(password, PBKDF2());
+		map['pin']       = Password.hash(pin, PBKDF2());
     map['date']      = date;
 		map['confirm']   = confirm;
 		return map;
