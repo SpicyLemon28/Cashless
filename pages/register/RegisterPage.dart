@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui' as prefix0;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -79,6 +80,7 @@ class _RegisterState extends State<Register> {
 			child: Scaffold(
 				appBar: AppBar(
 					title: Text('SmartPay'),
+          centerTitle: true,
 					backgroundColor: Colors.green[900],
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () { register.navigatePreviousPage(context); }
@@ -97,8 +99,8 @@ class _RegisterState extends State<Register> {
 											child: Column(
 												mainAxisAlignment: MainAxisAlignment.center,
 												children: <Widget>[
-													textPage('Registration'),
-													textFormField(_phone, Icons. phone_android, 'Phone Number', 'Enter Phone Number', TextInputType.number, false),
+													textPage('Registration', TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+													textFormField(_phone, Icons. phone_android, 'Phone Number', 'Enter Phone Number', TextInputType.phone, false),
 													textFormField(_studentId, Icons.perm_identity, 'School ID', 'Enter School ID Number', TextInputType.number, false),
 													textFormField(_name, Icons.person, 'Name', 'Enter Full Name', TextInputType.text, false),
 													textFormField(_email, Icons.email, 'Email', 'Enter Email Address', TextInputType.emailAddress, false),
@@ -118,9 +120,9 @@ class _RegisterState extends State<Register> {
 		);
   }
 
-  Widget textPage(lblText) => Padding(
+  Widget textPage(lblText, styleText) => Padding(
     padding: const EdgeInsets.only(top: 20),
-    child: Text(lblText, style: TextStyle(fontSize: 18),)
+    child: Text(lblText, style: styleText)
   );
 
   Widget textFormField(txtController, icnText, lblText, hntText, keyType, blnObscure) => Padding(
