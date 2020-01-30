@@ -74,6 +74,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 				break;
     	default:
 				return Scaffold(
+          //backgroundColor: Colors.green[900],
 					key: scaffoldKey,
 					body: Form(
 						key: _formKey,
@@ -89,13 +90,13 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 													mainAxisAlignment: MainAxisAlignment.center,
 													children: <Widget>[
 														appName('SmartPay'),
-														textFormField(Icons.person, 'Phone Number', TextInputType.number),
+														textFormField(Icons.person, 'Phone Number', TextInputType.phone),
 														textFormField(Icons.lock, 'Password', TextInputType.text),
 														Row(
 															mainAxisAlignment: MainAxisAlignment.spaceBetween,
 															children: <Widget>[
 																linkButton('Sign Up', () => navigatePage('/register')),
-																linkButton('Forgot Password?', () => forgotPassDialog()),
+																linkButton('Forgot Pin/Password?', () => navigatePage('/forgetpassword')),
 															],
 														),
 														loginButton('Sign In'),
@@ -142,7 +143,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         prefixIcon: Icon(icnText, color: Colors.grey),
         suffixIcon: hntText == 'Password'
 					? IconButton(
-							icon: Icon(passwordVisible ? Icons.visibility : Icons.visibility_off),
+							icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility),
 							onPressed: () => setState(() => passwordVisible = !passwordVisible)
 						)
 					: Icon(Icons.phone_android),
@@ -244,44 +245,4 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     });
   }
 
-  forgotPassDialog() => showDialog(
-		context: context,
-		builder: (BuildContext context) => AlertDialog(
-			shape: RoundedRectangleBorder(
-				borderRadius: BorderRadius.circular(20),
-			),
-			backgroundColor: Colors.grey[100],
-			title: Column(
-				children: <Widget>[
-					Text('We sent you a Confirmation Code',
-						textAlign: TextAlign.center,
-						style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
-					),
-					Padding(
-						padding: const EdgeInsets.only(top: 8.0),
-						child: Text('Please Check your Inbox',
-							textAlign: TextAlign.center,
-							style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)
-						)
-					)
-				]
-			),
-			content: TextField(
-				decoration: InputDecoration(
-					hintText: 'Enter Confirmation Code',
-					hintStyle: TextStyle(fontSize: 12),
-					prefixIcon: Icon(Icons.code),
-					enabledBorder: OutlineInputBorder(
-						borderRadius: BorderRadius.circular(12)
-					),
-				),
-			),
-			actions: <Widget>[
-				FlatButton(
-					child: Text('OKAY'),
-					onPressed: () => navigatePage('/forgetpassword')
-				),
-			],
-		),
-	);
 }
