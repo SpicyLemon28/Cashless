@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import './NavPage/Home.dart';
 import './NavPage/LoadWalletPage/LoadWallet.dart';
 import './NavPage/TransactionPage/Transaction.dart';
+import './NavPage/SideMenuDrawerPage/SideMenuDrawer.dart';
+
 
 class Dashboard extends StatefulWidget {
   final VoidCallback signOut;
@@ -41,6 +43,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideMenuDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.green[900],
         centerTitle: true,
@@ -76,22 +79,7 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
-  /*Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Test"),
-        actions: <Widget>[
-           IconButton(
-						 icon: Icon(Icons.lock_open),
-						 onPressed: () => signOut()
-           )
-         ],
-      ),
-      body:  Center(
-        child:  Text("Home Page")
-      )
-    );
-  } */
+
 }
 
 /*class NaviBar extends StatefulWidget {
