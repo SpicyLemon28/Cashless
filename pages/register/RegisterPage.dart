@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui' as prefix0;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -193,19 +192,19 @@ class _RegisterState extends State<Register> {
 		} else {
 			switch (lblText) {
 				case 'Phone Number':
-					return value.length < 11 ? 'Phone Number must be 11 digits' : null;
+					return value.length < 11 ? '$lblText must be 11 digits' : null;
 				case 'School ID':
-					return value.length < 6 ? 'School ID must be 6 digits' : null;
+					return value.length < 6 ? '$lblText must be 6 digits' : null;
 				case 'Name':
-					return !value.contains(' ') ? 'Invalid Full Name' : null;
+					return !value.contains(' ') ? 'Invalid Full $lblText' : null;
 				case 'Email':
 					Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 					RegExp regex = RegExp(pattern);
-					return !regex.hasMatch(value) ? 'Invalid Email' : null;
+					return !regex.hasMatch(value) ? 'Invalid $lblText' : null;
 				case 'Password':
-					return value.length < 6 ? 'Password must be 6 characters or longer' : null;
+					return value.length < 6 ? '$lblText must be 6 characters or longer' : null;
 				case 'Pin':
-					return value.length < 6 ? 'Pin must be 6 digits or longer' : null;
+					return value.length < 6 ? '$lblText must be 6 digits or longer' : null;
 			}
 		}
 	}
@@ -258,7 +257,7 @@ class _RegisterState extends State<Register> {
 			prgrsDlg.hide().whenComplete(() {
 				setState(() => _isSubmitting = false);
 				(result > 1)
-				? register.dialog(context, 'Thank you for signing up', _phone.text,  _password.text, setState)
+				? register.dialog(context, 'Thank you for signing up', setState, _phone.text,  _password.text)
 				: register.showAlertDialog(context, (result > 0) ? 'Warning' : 'Error',  message);
 			});
 		});

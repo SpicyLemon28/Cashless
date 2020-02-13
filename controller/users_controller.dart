@@ -46,6 +46,12 @@ class UsersController {
 		return await db.update(tblUsers, user.toMap(), where: 'phone = ?', whereArgs: [user.phone]);
 	}
 
+	Future<int> resetPassword(String phone, String newPassword) async {
+		Database db = await connect.database;
+		newPassword = Password.hash(newPassword, PBKDF2());
+		return await db.rawUpdate("Update $tblUsers Set password='$newPassword' Where phone = ?", [phone]);
+	}
+
 	Future<int> deleteAccount(int id) async {
 		var db = await connect.database;
 		return await db.rawDelete('Delete From $tblUsers Where id = $id');

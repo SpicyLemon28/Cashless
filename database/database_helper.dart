@@ -35,14 +35,14 @@ class DatabaseHelper {
 		await db.execute(
 			'CREATE TABLE $tblUsers ('
 			'  id INTEGER PRIMARY KEY AUTOINCREMENT,'
-			'  phone 			TEXT,'
-			'  studentId	TEXT,'
-			'  name 			TEXT,'
-			'  email 			TEXT,'
-			'  password 	TEXT,'
-			'  pin 				TEXT,'
-			'  date 			TEXT,'
-			'  confirm  INTEGER'
+			'  phone 		 TEXT,'
+			'  studentId TEXT,'
+			'  name 		 TEXT,'
+			'  email 		 TEXT,'
+			'  password 		 TEXT,'
+			'  pin 			 TEXT,'
+			'  date 		 TEXT,'
+			'  confirm 	       INTEGER'
 			');'
 		);
 	}

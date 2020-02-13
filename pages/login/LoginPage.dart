@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   void onLoginSuccess(User user) async {
 
     if (user != null) {
-      register.savePref(1, user.phone, setState);
+      register.savePref(setState, 1, user.phone);
       _loginStatus = LoginStatus.signIn;
     } else {
       setState(() => _isLoading = false);
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
           ),
 				);
 	}
-  
+
 
 	// Functions
   void _submit() {
@@ -203,7 +203,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 				_response.doLogin(_phone, _password);
 			} else if (result == 3) {
 				setState(() => _isLoading = false);
-				register.dialog(context, 'Account not yet confirmed', _phone,  _password, setState);
+				register.dialog(context, 'Account not yet confirmed', setState, _phone,  _password);
 			}
 		} else {
 			setState(() => _isLoading = false);
@@ -217,11 +217,9 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 		} else {
 			switch (hntText) {
 				case 'Phone Number':
-					if (value.length < 11) return '$hntText should be 11 digits';
-					break;
+					return (value.length < 11) ? '$hntText should be 11 digits' : null;
 				case 'Password':
-					if (value.length < 6) return '$hntText must be 6 characters or longer';
-					break;
+					return (value.length < 6) ? '$hntText must be 6 characters or longer' : null;
 			}
 		}
   }

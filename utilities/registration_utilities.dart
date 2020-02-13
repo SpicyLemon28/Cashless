@@ -31,7 +31,7 @@ class RegistrationUtilities {
 		return confirmationCode.substring(confirmationCode.length-8);
 	}
 
- dialog(context, textCaption, phone,  password, setState) {
+ dialog(context, textCaption, setState, phone,  password) {
 		String genCode = generateConfirmationCode(phone, password);
 		return showDialog(
 			context: context,
@@ -68,7 +68,7 @@ class RegistrationUtilities {
 						child: Text('Submit'),
 						onPressed: () =>
 							(_confirmationCode == genCode)
-							? confirmAccount(context, phone, setState)
+							? confirmAccount(context, setState, phone)
 							: showAlertDialog(context, 'Warning', 'Invalid Confirmation Code'),
 					),
 				],
@@ -76,7 +76,7 @@ class RegistrationUtilities {
 		);
 	}
 
-	void confirmAccount(context, phone, setState) async {
+	void confirmAccount(context, setState, phone) async {
     var data = { "phone" : phone };
 
     http.Response response = await http.post(SIGNUP_CONFIRMED, body: data);
@@ -85,7 +85,7 @@ class RegistrationUtilities {
     if (response.statusCode == 200) {
 			int result = await users.confirmAccount(phone);
 			if (result > 0) {
-				savePref(1, phone, setState);
+				savePref(setState, 1, phone);
 				redirectLogin(context);
 			} else {
 				showAlertDialog(context, 'Warning', 'Problem confirming account');
@@ -106,7 +106,7 @@ class RegistrationUtilities {
     ));
   }
 
-  savePref(int signIn,String phone, setState) async {
+  savePref(setState, int signIn,String phone) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setInt("signIn", signIn);
