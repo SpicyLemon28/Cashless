@@ -61,30 +61,24 @@ class _HomeState extends State<Home> {
                          children: <Widget>[
                            Padding(
                              padding: const EdgeInsets.only(),
-                             child: RaisedButton(
-                               onPressed: () => setState((){
-                                Navigator.of(context).push(
+                             child: IconButton(
+                               iconSize: 75,
+                               icon: Image.asset('assets/FunctionIcons/LoadWallet.png'),
+                               onPressed: () => setState(() => Navigator.of(context).push(
                                   CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => LoadWallet()));
-                              }),
-                               padding: const EdgeInsets.all(15),
-                                color: Colors.white70,
-                                child: Icon(Icons.account_balance_wallet),
+                                    builder: (BuildContext context) => LoadWallet()))),
                              ),
                            ),
 
                            Padding(
                             padding: const EdgeInsets.only(),
-                            child: RaisedButton(
-                              padding: const EdgeInsets.all(15),
-                              color: Colors.white70,
-                              child: Icon(Icons.monetization_on),
-                              onPressed: () => setState((){
-                                Navigator.of(context).push(
+                            child: IconButton(
+                              iconSize: 75,
+                              icon: Image.asset('assets/FunctionIcons/ScantoPay.png'),
+                              onPressed: () => setState(() => Navigator.of(context).push(
                                   CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => ScantoPay()));
-                              }),
-                            ),
+                                    builder: (BuildContext context) => ScantoPay()))),
+                            )
                           ),
                          ],
                        ),
@@ -107,37 +101,31 @@ class _HomeState extends State<Home> {
                            children: <Widget>[
                              Padding(
                                padding: const EdgeInsets.only(),
-                               child: RaisedButton(
-                                 padding: const EdgeInsets.all(15),
-                                 color: Colors.white70,
-                                 child: Icon(Icons.attach_money),
-                                 onPressed: () => setState((){
-                                Navigator.of(context).push(
+                               child: IconButton(
+                                 iconSize: 90,
+                                 icon: Image.asset('assets/FunctionIcons/TransferMoney.png'),
+                                 onPressed: () => setState(() => Navigator.of(context).push(
                                   CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => TransferMoney()));
-                                  }),
-                               ),
+                                    builder: (BuildContext context) => TransferMoney()))),
+                               )
                              ),
 
                              Padding(
                                padding: const EdgeInsets.only(),
-                               child: RaisedButton(
-                                 padding: const EdgeInsets.all(15),
-                                 color: Colors.white70,
-                                 child: Icon(Icons.money_off),
-                                 onPressed: () => setState((){
-                                Navigator.of(context).push(
+                               child: IconButton(
+                                 iconSize: 90,
+                                 icon: Image.asset('assets/FunctionIcons/ReceiveMoney.png'),
+                                 onPressed: () => setState(() => Navigator.of(context).push(
                                   CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => ReceiveMoney()));
-                                  }),
-                               ),
+                                    builder: (BuildContext context) => ReceiveMoney()))),
+                               )
                              ),
                            ],
                          ),
                        ),
 
                        Padding(
-                        padding: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -148,7 +136,7 @@ class _HomeState extends State<Home> {
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.only(top: 20, right: 240),
+                        padding: const EdgeInsets.only(top: 40, right: 240),
                         child: Text('Promos for You', 
                         style: TextStyle(
                           fontSize: 15,
