@@ -139,7 +139,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   Widget textFormField(icnText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 20,),
     child: TextFormField(
-      autofocus: true,
       keyboardType: keyType,
 			inputFormatters: keyType == TextInputType.number
 				? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]
