@@ -74,39 +74,47 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 				break;
     	default:
 				return Scaffold(
-          //backgroundColor: Colors.green[900],
 					key: scaffoldKey,
 					body: Form(
 						key: _formKey,
 						autovalidate: _autoValidate,
-						child: Stack(
-							fit: StackFit.expand,
-							children: <Widget>[
-								ListView(
-									children: <Widget>[
-										SafeArea(
-											child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
-												child: Column(
-													mainAxisAlignment: MainAxisAlignment.center,
-													children: <Widget>[
-														appName('SmartPay'),
-														textFormField(Icons.person, 'Phone Number', TextInputType.number),
-														textFormField(Icons.lock, 'Password', TextInputType.text),
-														Row(
-															mainAxisAlignment: MainAxisAlignment.spaceBetween,
-															children: <Widget>[
-																linkButton('Sign Up', () => navigatePage('/register')),
-																linkButton('Forgot Password?', () => navigatePage('/forgetPassword')),
-															],
-														),
-														loginButton('Sign In', TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
-													],
-												),
-											),
-										),
-									],
-								),
-							],
+						child: Container(
+						  decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.white, Colors.green]
+                )
+              ),
+						  child: Stack(
+						  	fit: StackFit.expand,
+						  	children: <Widget>[
+						  		ListView(
+						  			children: <Widget>[
+						  				SafeArea(
+						  					child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
+						  						child: Column(
+						  							mainAxisAlignment: MainAxisAlignment.center,
+						  							children: <Widget>[
+						  								appName('SmartPay'),
+						  								textFormField(Icons.person, 'Phone Number', TextInputType.number),
+						  								textFormField(Icons.lock, 'Password', TextInputType.text),
+						  								Row(
+						  									mainAxisAlignment: MainAxisAlignment.spaceBetween,
+						  									children: <Widget>[
+						  										linkButton('Sign Up', () => navigatePage('/register')),
+						  										linkButton('Forgot Password?', () => navigatePage('/forgetPassword')),
+						  									],
+						  								),
+						  								loginButton('Sign In', TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
+						  							],
+						  						),
+						  					),
+						  				),
+						  			],
+						  		),
+						  	],
+						  ),
 						),
 					),
 				);
@@ -123,7 +131,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     padding: const EdgeInsets.only(left: 10, right: 10),
     child: FlatButton(
       onPressed: onClick,
-      child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.blue,)),
+      child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.teal [900])),
     )
   );
 
@@ -131,6 +139,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   Widget textFormField(icnText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 20,),
     child: TextFormField(
+      autofocus: true,
       keyboardType: keyType,
 			inputFormatters: keyType == TextInputType.number
 				? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]
@@ -140,15 +149,17 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
       validator: (String value,) => textValidation(hntText, value),
       decoration: InputDecoration(
         hintText: hntText,
-        prefixIcon: Icon(icnText, color: Colors.grey),
+        hintStyle: TextStyle(color: Colors.grey [800]),
+        prefixIcon: Icon(icnText, color: Colors.grey [800]),
         suffixIcon: hntText == 'Password'
 					? IconButton(
-							icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility),
+							icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility, color: Colors.grey [800]),
 							onPressed: () => setState(() => passwordVisible = !passwordVisible)
 						)
-					: Icon(Icons.phone_android),
+					: Icon(Icons.phone_android, color: Colors.grey [800]),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
+          
         ),
       ),
     ),
@@ -161,18 +172,17 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
       : Padding(
-					padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-          child: Material(
-            color: Colors.green,
-            borderRadius: BorderRadius.circular(10),
-            child: InkWell(
-              onTap: _submit,
-              child: Center(
-                child: Text(buttonText, style: styleText),
-              ),
+					padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
+          child: ButtonTheme(
+            minWidth: 300,
+            height: 50,
+            child: RaisedButton(
+              color: Colors.green [900],
+              child: Text(buttonText, style: TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w400),),
+              onPressed: () => _submit(),
             ),
           ),
-				);
+        );  
 	}
 
 

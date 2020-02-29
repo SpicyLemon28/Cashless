@@ -32,8 +32,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       onWillPop: () { register.navigatePreviousPage(context); },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('SmartPay'),
-          centerTitle: true,
+          title: Text('Forget Password'),
           backgroundColor: Colors.green[900],
           leading: IconButton(icon: Icon(Icons.arrow_back),
           onPressed: () { register.navigatePreviousPage(context); },)
@@ -42,24 +41,30 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         body: Form(
           key: _formKey,
           autovalidate: _autoValidate,
-          child: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              ListView(
-                children: <Widget>[
-									Padding(
-										padding: const EdgeInsets.symmetric(horizontal: 10),
-										child: Column(
-											children: <Widget>[
-												Padding(padding: const EdgeInsets.only(top: 200)),
-												textFormField('Enter the phone number you used to sign in', TextInputType.number, TextStyle(fontSize: 12.5)),
-												continueButton('Continue', TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
-											],
-										),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Colors.white, Colors.green] 
+              )
+            ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                ListView(
+                  children: <Widget>[
+									Column(
+										children: <Widget>[
+											Padding(padding: const EdgeInsets.only(top: 200)),
+											textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number, TextStyle(color: Colors.grey [900], fontWeight: FontWeight.w500)),
+											continueButton('Continue', TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w400)),
+										],
 									),
-              	]
-              ),
-            ],
+                	]
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -71,15 +76,16 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     child: Text(lblText, style: styleText,),
   );
 
-  Widget textFormField(lblText, keyType, styleText) => Padding(
-    padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
+  Widget textFormField(lblText, hntText, keyType, styleText) => Padding(
+    padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
     child: TextFormField(
       keyboardType: keyType,
 			autofocus: true,
 			onSaved: (value) => _phone = value,
       validator: (String value) => textValidation(value),
       decoration: InputDecoration(
-        labelText: lblText, labelStyle: styleText
+        labelText: lblText, labelStyle: styleText,
+        hintText: hntText, hintStyle: TextStyle(fontSize: 12)
       ),
     ),
   );
@@ -90,15 +96,16 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
     	: Padding(
-					padding: const EdgeInsets.only(top: 30, left: 8, right: 8),
-					child: Material(
-						color: Colors.green,
-						borderRadius: BorderRadius.circular(10),
-						child: InkWell(
-							onTap: _submit,
-							child: Center(child: Text(buttonText, style: styleText)),
-						),
-					),
+					padding: const EdgeInsets.only(top: 355),
+					child: ButtonTheme(
+            minWidth: 400,
+            height: 50,
+            child: RaisedButton(
+              color: Colors.green [900],
+              child: Text(buttonText, style: styleText),
+              onPressed: () => _submit(),
+            ),
+          ),
 				);
 	}
 
@@ -111,6 +118,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 	void updateTextFormField(lblText, txtValue) {
 		if (lblText == 'Phone')  _phone = txtValue;
 	}
+
+  void navigatePage(navTo){
+    Navigator.pushReplacementNamed(context, navTo);
+  }
 
   void _submit() {
 		final form = _formKey.currentState;

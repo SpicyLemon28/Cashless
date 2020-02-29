@@ -49,7 +49,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SmartPay'),
+        title: Text('Reset Password'),
         centerTitle: true,
         backgroundColor: Colors.green[900],
       ),
@@ -57,49 +57,48 @@ class _ResetPasswordState extends State<ResetPassword> {
       body: Form(
         key: _formKey,
         autovalidate: _autoValidate,
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            ListView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(padding: const EdgeInsets.only(top: 60)),
-                      text('Reset Password', TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
-                      textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
-                      submitButton('Submit', TextStyle(fontSize: 25, fontWeight: FontWeight.w300))
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.white, Colors.green]
+            )
+          ),
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Padding(padding: const EdgeInsets.only(top: 200)),
+                        textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
+                        textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
+                        submitButton('Submit', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
+                      ],
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget text(txt, styleText) => Padding(
-    padding: const EdgeInsets.only(top: 10),
-    child: Text(txt, style: styleText),
-  );
-
   Widget textFormField(txtController, lblText, hntText, blnObscure) => Padding(
-    padding: const EdgeInsets.only(top: 30),
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
     child: TextFormField(
 			controller: txtController,
       validator: (value) => textValidation(lblText, value),
       obscureText: blnObscure,
       decoration: InputDecoration(
         labelText: lblText,
+        labelStyle: TextStyle(fontWeight: FontWeight.w500),
         hintText: hntText,
+        hintStyle: TextStyle(fontSize: 15),
         suffixIcon: _suffixIcon(lblText, blnObscure),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
       ),
     ),
   );
@@ -110,18 +109,21 @@ class _ResetPasswordState extends State<ResetPassword> {
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
     	: Padding(
-					padding: const EdgeInsets.only(top: 40),
+					padding: const EdgeInsets.only(top: 275),
 					child: Material(
 						color: Colors.green,
 						borderRadius: BorderRadius.circular(10),
-						child: InkWell(
-							onTap: () => _submit(),
-							child: Center(
-								child: Text(buttonText, style: styleText),
-							),
-						),
-					),
-				);
+            child: ButtonTheme(
+              minWidth: 400,
+              height: 50,
+              child: RaisedButton(
+                color: Colors.green [900],
+                child: Text(buttonText, style: styleText,),
+                onPressed: () => _submit()
+              ),
+            ),
+				),
+      );
 	}
 
   _suffixIcon(lblText, blnObscure) {
@@ -145,7 +147,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         case 'New Password':
           return value.length < 6 ? 'Password must be 6 characters or longer' : null;
 				case 'Confirm Password':
-					return _newPassword.text != value ? 'match with Password' : null;
+					return _newPassword.text != value ? 'Password does not match' : null;
       }
     }
   }

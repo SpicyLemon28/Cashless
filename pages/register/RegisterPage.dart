@@ -78,8 +78,7 @@ class _RegisterState extends State<Register> {
 			onWillPop: () { register.navigatePreviousPage(context); },
 			child: Scaffold(
 				appBar: AppBar(
-					title: Text('SmartPay'),
-          centerTitle: true,
+					title: Text('Registration'),
 					backgroundColor: Colors.green[900],
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () { register.navigatePreviousPage(context); }
@@ -88,44 +87,43 @@ class _RegisterState extends State<Register> {
 				body: Form(
 					key: _formKey,
 					autovalidate: _autoValidate,
-					child: Stack(
-						fit: StackFit.expand,
-						children: <Widget>[
-							ListView(
-								children: <Widget>[
-									SafeArea(
-										child: Padding(padding: const EdgeInsets.symmetric(horizontal: 30),
-											child: Column(
-												mainAxisAlignment: MainAxisAlignment.center,
-												children: <Widget>[
-													textPage('Registration', TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-													textFormField(_phone, Icons. phone_android, 'Phone Number', 'Enter Phone Number', TextInputType.phone, false),
-													textFormField(_studentId, Icons.perm_identity, 'School ID', 'Enter School ID Number', TextInputType.number, false),
-													textFormField(_name, Icons.person, 'Name', 'Enter Full Name', TextInputType.text, false),
-													textFormField(_email, Icons.email, 'Email', 'Enter Email Address', TextInputType.emailAddress, false),
-													textFormField(_password, Icons.lock, 'Password', 'Enter a Password', TextInputType.text, passwordVisible),
-													textFormField(_pin, Icons.vpn_key, 'Pin', 'Enter a Pin for payment', TextInputType.number, pinVisible),
-													signupButton('Sign Up', TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
-												],
-											),
-										),
-									),
-								],
-							),
-						],
+					child: Container(
+					  decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Colors.white, Colors.green]
+              )
+            ),
+					  child: Stack(
+					  	fit: StackFit.expand,
+					  	children: <Widget>[
+					  		ListView(
+					  			children: <Widget>[
+					  				 Column(
+					  							mainAxisAlignment: MainAxisAlignment.center,
+					  							children: <Widget>[		
+					  								textFormField(_phone, Icons. phone_android, 'Phone Number', 'Enter Phone Number', TextInputType.phone, false),
+					  								textFormField(_studentId, Icons.perm_identity, 'School ID', 'Enter School ID Number', TextInputType.number, false),
+					  								textFormField(_name, Icons.person, 'Name', 'Enter Full Name', TextInputType.text, false),
+					  								textFormField(_email, Icons.email, 'Email', 'Enter Email Address', TextInputType.emailAddress, false),
+					  								textFormField(_password, Icons.lock, 'Password', 'Enter a Password', TextInputType.text, passwordVisible),
+					  								textFormField(_pin, Icons.vpn_key, 'Pin', 'Enter a Pin for payment', TextInputType.number, pinVisible),
+					  								signupButton('Sign Up', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400)),
+					  							],
+					  						),
+					  			],
+					  		),
+					  	],
+					  ),
 					),
 				),
 			)
 		);
   }
 
-  Widget textPage(lblText, styleText) => Padding(
-    padding: const EdgeInsets.only(top: 20),
-    child: Text(lblText, style: styleText)
-  );
-
   Widget textFormField(txtController, icnText, lblText, hntText, keyType, blnObscure) => Padding(
-    padding: const EdgeInsets.only(top: 10, bottom: 8),
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 8),
     child: TextFormField(
 			autofocus: lblText == 'Phone Number' ? true : false,
 			controller: txtController,
@@ -137,8 +135,10 @@ class _RegisterState extends State<Register> {
       validator: (value) => textValidation(lblText, value),
       decoration: InputDecoration(
 				labelText: lblText,
+        labelStyle: TextStyle(color: Colors.grey [800], fontWeight: FontWeight.w500),
 				hintText: hntText,
-				prefixIcon: Icon(icnText, color: Colors.grey),
+        hintStyle: TextStyle(color: Colors.grey [800], fontSize: 14, fontWeight: FontWeight.w400),
+				prefixIcon: Icon(icnText, color: Colors.grey [800]),
 				suffixIcon: _suffixIcon(lblText, blnObscure),
       ),
     ),
@@ -148,17 +148,16 @@ class _RegisterState extends State<Register> {
 		return _isSubmitting
 		? Container()
 		: Padding(
-			padding: const EdgeInsets.only(top: 30),
-      child: Material(
-            color: Colors.green,
-            borderRadius: BorderRadius.circular(10),
-            child: InkWell(
-              onTap: _submit,
-              child: Center(
-                child: Text(buttonText, style: styleText,),
-              ),
-            ),
-          ),
+			padding: const EdgeInsets.only(top: 100),
+      child: ButtonTheme(
+        minWidth: 400,
+        height: 50,
+        child: RaisedButton(
+          color: Colors.green [900],
+          child: Text(buttonText, style: styleText,),
+          onPressed: () => _submit(),
+        ),
+      ),
 		);
   }
 
@@ -183,7 +182,7 @@ class _RegisterState extends State<Register> {
 				}
 			);
 		}
-		return Icon(Icons.visibility_off, color: Colors.white);
+		return null;
 	}
 
   textValidation(lblText, value) {
