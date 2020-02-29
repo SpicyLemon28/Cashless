@@ -64,9 +64,7 @@ class _HomeState extends State<Home> {
                              child: IconButton(
                                iconSize: 75,
                                icon: Image.asset('assets/FunctionIcons/LoadWallet.png'),
-                               onPressed: () => setState(() => Navigator.of(context).push(
-                                  CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => LoadWallet()))),
+                               onPressed: () => navigatePage(LoadWallet())
                              ),
                            ),
 
@@ -75,9 +73,7 @@ class _HomeState extends State<Home> {
                             child: IconButton(
                               iconSize: 75,
                               icon: Image.asset('assets/FunctionIcons/ScantoPay.png'),
-                              onPressed: () => setState(() => Navigator.of(context).push(
-                                  CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => ScantoPay()))),
+                              onPressed: () => navigatePage(ScantoPay())
                             )
                           ),
                          ],
@@ -104,9 +100,7 @@ class _HomeState extends State<Home> {
                                child: IconButton(
                                  iconSize: 90,
                                  icon: Image.asset('assets/FunctionIcons/TransferMoney.png'),
-                                 onPressed: () => setState(() => Navigator.of(context).push(
-                                  CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => TransferMoney()))),
+                                 onPressed: () => navigatePage(TransferMoney()),
                                )
                              ),
 
@@ -115,9 +109,7 @@ class _HomeState extends State<Home> {
                                child: IconButton(
                                  iconSize: 90,
                                  icon: Image.asset('assets/FunctionIcons/ReceiveMoney.png'),
-                                 onPressed: () => setState(() => Navigator.of(context).push(
-                                  CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) => ReceiveMoney()))),
+                                 onPressed: () => navigatePage(ReceiveMoney()),
                                )
                              ),
                            ],
@@ -140,7 +132,7 @@ class _HomeState extends State<Home> {
                         child: Text('Promos for You', 
                         style: TextStyle(
                           fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w700,
                           color: Colors.green[900]
                           ),
                         ),
@@ -162,5 +154,11 @@ class _HomeState extends State<Home> {
     child: Text(txt, style: txtStyle)
   );
 
-   Widget iconTxt(txtIcon) => Text(txtIcon);
+   Widget iconTxt(txtIcon) => Text(txtIcon, style: TextStyle(color: Colors.green [900], fontWeight: FontWeight.w500),);
+
+   void navigatePage(navTo) {
+     Navigator.of(context).push(
+       CupertinoPageRoute<Null>(
+         builder: (BuildContext context) => navTo));
+   }
 }

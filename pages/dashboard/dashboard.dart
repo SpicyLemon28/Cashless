@@ -36,7 +36,6 @@ class _DashboardState extends State<Dashboard> {
   int selectedPage = 0;
   final pageOptions = [
     Home(),
-    LoadWallet(),
     Transaction()
   ];
 
@@ -67,10 +66,7 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(Icons.home),
             title: Text('Home')
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            title: Text('Load Wallet')
-          ),
+          
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt),
             title: Text('Transaction')
