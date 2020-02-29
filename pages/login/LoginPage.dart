@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
       validator: (String value,) => textValidation(hntText, value),
       decoration: InputDecoration(
         hintText: hntText,
-        hintStyle: TextStyle(color: Colors.grey [800]),
+        hintStyle: TextStyle(color: Colors.grey [800], fontWeight: FontWeight.w500),
         prefixIcon: Icon(icnText, color: Colors.grey [800]),
         suffixIcon: hntText == 'Password'
 					? IconButton(

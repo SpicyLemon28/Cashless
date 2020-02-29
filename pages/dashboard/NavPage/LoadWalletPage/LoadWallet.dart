@@ -1,10 +1,7 @@
-import 'dart:ui' as prefix0;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 
-import './LoadWalletQR.dart';
 
 class LoadWallet extends StatefulWidget {
   LoadWallet({Key key}) : super(key: key);
@@ -70,11 +67,12 @@ class _LoadWalletState extends State<LoadWallet> {
   }
 
   Widget textFormField(lblText, hntText) => Padding(
-    padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 250),
     child: TextFormField(
       validator: (value) => textValidation(lblText, value),
       decoration: InputDecoration(
         labelText: lblText, hintText: hntText,
+        labelStyle: TextStyle(fontWeight: FontWeight.w500),
         hintStyle: TextStyle(fontSize: 12)
       ),
     ),
@@ -97,9 +95,9 @@ class _LoadWalletState extends State<LoadWallet> {
   );
 
   Widget continueButton(buttonText) => Padding(
-    padding: const EdgeInsets.only(top: 434),
+    padding: const EdgeInsets.only(top: 80),
     child: ButtonTheme(
-      minWidth: 400,
+      minWidth: 300,
       height: 50,
       child: RaisedButton(
         color: Colors.green[900],

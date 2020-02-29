@@ -109,12 +109,12 @@ class _ResetPasswordState extends State<ResetPassword> {
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
     	: Padding(
-					padding: const EdgeInsets.only(top: 275),
+					padding: const EdgeInsets.only(top: 80),
 					child: Material(
 						color: Colors.green,
 						borderRadius: BorderRadius.circular(10),
             child: ButtonTheme(
-              minWidth: 400,
+              minWidth: 300,
               height: 50,
               child: RaisedButton(
                 color: Colors.green [900],

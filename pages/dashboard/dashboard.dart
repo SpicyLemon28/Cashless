@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
 import './NavPage/Home.dart';
-import './NavPage/LoadWalletPage/LoadWallet.dart';
 import './NavPage/TransactionPage/Transaction.dart';
 import './NavPage/SideMenuDrawerPage/SideMenuDrawer.dart';
 

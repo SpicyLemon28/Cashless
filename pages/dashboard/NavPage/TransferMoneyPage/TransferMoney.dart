@@ -68,9 +68,9 @@ class _TransferMoneyState extends State<TransferMoney> {
   );
 
   Widget continueButton(buttonText) => Padding(
-    padding: const EdgeInsets.only(top: 92),
+    padding: const EdgeInsets.only(top: 30),
     child: ButtonTheme(
-      minWidth: 400,
+      minWidth: 300,
       height: 50,
       child: RaisedButton(
         color: Colors.green[900],

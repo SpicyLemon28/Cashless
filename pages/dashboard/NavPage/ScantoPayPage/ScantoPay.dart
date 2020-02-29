@@ -11,7 +11,10 @@ class _ScantoPayState extends State<ScantoPay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Scan to Pay'),),
+      appBar: AppBar(
+        backgroundColor: Colors.green [900],
+        title: Text('Scan To Pay'),
+      ),
     );
   }
 }

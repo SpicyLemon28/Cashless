@@ -52,8 +52,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                ListView(
-                  children: <Widget>[
 									Column(
 										children: <Widget>[
 											Padding(padding: const EdgeInsets.only(top: 200)),
@@ -62,8 +60,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 										],
 									),
                 	]
-                ),
-              ],
             ),
           ),
         ),
@@ -96,9 +92,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
     	: Padding(
-					padding: const EdgeInsets.only(top: 355),
+					padding: const EdgeInsets.only(top: 50),
 					child: ButtonTheme(
-            minWidth: 400,
+            minWidth: 300,
             height: 50,
             child: RaisedButton(
               color: Colors.green [900],

@@ -11,8 +11,9 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Receive Money'),
+      appBar: AppBar(
+        backgroundColor: Colors.green [900], 
+        title: Text('Receive Money'),
       ),
     );
   }
