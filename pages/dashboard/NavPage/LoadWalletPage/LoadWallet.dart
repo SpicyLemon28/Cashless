@@ -1,3 +1,5 @@
+import 'dart:ui' as prefix0;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,101 +15,120 @@ class LoadWallet extends StatefulWidget {
 
 class _LoadWalletState extends State<LoadWallet> {
 
+  bool _autoValidate = false;
+
   var _formKey = GlobalKey<FormState>();
 
-  Item selectedUser;
+  int _selectedLoadType = 0;
 
-  List<Item>loadType = <Item> [
-    Item('School Fees'),
-    Item('Allowance')
-  ];
+  List<DropdownMenuItem<int>> loadTypeList = [];
+
+  void loadWalletList() {
+    loadTypeList = [];
+
+    loadTypeList.add(DropdownMenuItem(
+      child: Text('School Fees'),
+      value: 0,
+    ));
+
+    loadTypeList.add(DropdownMenuItem(
+      child: Text('Allowance'),
+      value: 1,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
+    loadWalletList();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Load Wallet'),
         backgroundColor: Colors.green[900],
+        title: Text('Load Wallet')
       ),
       body: Form(
         key: _formKey,
-        child: ListView(
+        autovalidate: _autoValidate,
+        child: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 250),
-                    child: DropdownButtonFormField<Item>(
-                      validator: (value){
-                        if (value == null) {
-                          return 'Select Load Type';
-                        }
-                      },
-                      hint: Text('Select Type of Load'),
-                      onChanged: (Item value) => setState((){
-                        selectedUser = value;
-                      }),
-                      items: loadType.map((Item loadType) {
-                        return DropdownMenuItem<Item>(
-                          value: loadType,
-                          child: Row(
-                            children: <Widget>[
-                              SizedBox(width: 10),
-                              Text(loadType.name)
-                            ],
-                          ),
-                        );
-                      }).toList()
-                    ),
-                  ),
-                  txtFormField('Enter Amount', 'Enter amount to load your wallet', TextStyle(fontSize: 14)),
-                  continueButton('Continue')
-                ],
-              ),
+            ListView(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    textFormField('Amount', 'Enter amount to load to your account'),
+                    loadTypeButton('School Fees'),
+                    continueButton('Continue')
+                  ],
+                )
+              ],
             )
           ],
         ),
       ),
     );
   }
-  Widget txtFormField(txtLabel, txtHint, styleHint) => Padding(
-    padding: const EdgeInsets.only(top: 30),
+
+  Widget textFormField(lblText, hntText) => Padding(
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
     child: TextFormField(
-      validator: (String value) {
-        if(value.isEmpty) {
-          return '$txtLabel should not be empty';
-        }
+      validator: (value) => textValidation(lblText, value),
+      decoration: InputDecoration(
+        labelText: lblText, hintText: hntText,
+        hintStyle: TextStyle(fontSize: 12)
+      ),
+    ),
+  );
+
+  Widget loadTypeButton(lblText) => Padding(
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
+    child: DropdownButtonFormField(
+      items: loadTypeList,
+      value: _selectedLoadType,
+      validator: (value) => textValidation(lblText, value),
+      onChanged: (value) {
+        setState(()=> _selectedLoadType = value);
       },
       decoration: InputDecoration(
-        labelText: txtLabel,
-        hintText: txtHint,
-        hintStyle: styleHint
+        labelText: 'Load Wallet For',
+        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)
       ),
     )
   );
 
-  Widget continueButton(buttonLabel) => Padding(
-    padding: const EdgeInsets.only(top: 40),
-    child: RaisedButton(
-      color: Colors.greenAccent,
-      child: Text(buttonLabel),
-      onPressed: (){
-        if (_formKey.currentState.validate()) navigatePage(LoadWalletQR());
-      },
-    )
+  Widget continueButton(buttonText) => Padding(
+    padding: const EdgeInsets.only(top: 434),
+    child: ButtonTheme(
+      minWidth: 400,
+      height: 50,
+      child: RaisedButton(
+        color: Colors.green[900],
+        child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
+        onPressed: _submit,
+      ),
+    ),
   );
 
-  void navigatePage(navTo) => Navigator.of(context).push(
-        CupertinoPageRoute<Null>(
-          builder: (BuildContext context) => navTo
-		)
-	);
-}
+  void _submit() {
+    final form = _formKey.currentState;
+    if(form.validate()) {
+      navigatePage('/loadWalletQR');
+    } else {
+      setState(() => _autoValidate = true);
+    }
+  }
 
-class Item {
-  final String name;
+  void navigatePage(navTo){
+    Navigator.pushReplacementNamed(context, navTo);
+  }
   
-  const Item(this.name);
+  textValidation(lblText, value) {
+    if (lblText == 'Amount') {
+      return value.isEmpty ? '$lblText should not be empty' : null;
+    }
+
+    if (lblText == 'Load Wallet For'){
+      return value == null ? '$lblText should not be empty' : null;
+    }
+  }
 }
