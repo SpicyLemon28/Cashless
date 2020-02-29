@@ -4,6 +4,8 @@ import './pages/login/LoginPage.dart';
 import './pages/register/RegisterPage.dart';
 import './pages/forget/ForgetPassword.dart';
 import './pages/forget/ResetPassword.dart';
+import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoney.dart';
+import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoneyDetails.dart';
 
 import './pages/list/user_list.dart';
 
@@ -20,7 +22,9 @@ class MyApp extends StatelessWidget {
 				'/login':          (BuildContext context) => LoginPage(),
 				'/register':       (BuildContext context) => Register(),
 				'/forgetPassword': (BuildContext context) => ForgetPassword(),
-				'/resetPassword':  (BuildContext context) => ResetPassword()
+				'/resetPassword':  (BuildContext context) => ResetPassword(),
+        '/transferMoney':  (BuildContext context) => TransferMoney(),
+        '/transferMoneyDetails':  (BuildContext context) => TransferMoneyDetails()
 			},
 			// home: UserList()
 		);
