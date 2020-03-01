@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import './pages/login/LoginPage.dart';
@@ -10,8 +9,10 @@ import './pages/dashboard/NavPage/LoadWalletPage/LoadWallet.dart';
 import './pages/dashboard/NavPage/LoadWalletPage/LoadWalletQR.dart';
 import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoney.dart';
 import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoneyDetails.dart';
+import './pages/dashboard/NavPage/SideMenuDrawerPage/SettingsPage/Settings.dart';
+import './pages/dashboard/NavPage/SideMenuDrawerPage/SettingsPage/EditProfile.dart';
 
-import './pages/list/user_list.dart';
+//import './pages/list/user_list.dart';
 
 void main () => runApp(MyApp());
 
@@ -29,9 +30,11 @@ class MyApp extends StatelessWidget {
 				'/resetPassword':         (BuildContext context) => ResetPassword(),
         '/dashboard':             (BuildContext context) => Dashboard(null),
         '/loadWallet':            (BuildContext context) => LoadWallet(),
-        '/loadWalletQR':            (BuildContext context) => LoadWalletQR(),
+        '/loadWalletQR':          (BuildContext context) => LoadWalletQR(),
         '/transferMoney':         (BuildContext context) => TransferMoney(),
-        '/transferMoneyDetails':  (BuildContext context) => TransferMoneyDetails()
+        '/transferMoneyDetails':  (BuildContext context) => TransferMoneyDetails(),
+        '/settings':              (BuildContext context) => Settings(),
+        '/editProfile':           (BuildContext context) => EditProfile()
 			},
 			// home: UserList()
 		);

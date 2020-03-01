@@ -11,18 +11,22 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 120),
+      padding: const EdgeInsets.only(right: 100),
       child: Container(
          decoration: BoxDecoration(
-           color: Colors.white
+           gradient: LinearGradient(
+             begin: Alignment.topRight,
+             end: Alignment.bottomLeft,
+             colors: [Colors.white, Colors.green]
+           )
          ),
          child: ListView(
            children: <Widget>[
              UserAccountsDrawerHeader(
-               accountName: Text('Myco Perez'),
-               accountEmail: Text('mycoperez@email.com'),
+               accountName: Text('Myco Perez', style: TextStyle(color: Colors.black)),
+               accountEmail: Text('mycoperez@email.com', style: TextStyle(color: Colors.black)),
                decoration: BoxDecoration(
-                 color: Colors.green[900]
+                 color: Colors.green [100]
                ),
                currentAccountPicture: CircleAvatar(
                  backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
@@ -31,19 +35,24 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
                  child: Text("M", style: TextStyle(fontSize: 40))
                ),
              ),
-             listTile(Icons.settings, 'Settings'),
-             listTile(Icons.help, 'Help'),
+             listTile(Icons.settings, 'Settings', () => navigatePage('/settings')),
+             listTile(Icons.help, 'Help', null),
            ],
          ),
-      ),
-    );
+      )
+      );
   }
 
-  Widget listTile(iconText, txt) => ListTile(
-    title: Text(txt),
-    leading: Icon(iconText),
-    onTap: () {setState(() => print('RUNNING!!'));},
+  Widget listTile(iconText, txt, goTo) => Padding(
+    padding: const EdgeInsets.only(top: 10),
+    child: ListTile(
+      leading: Icon(iconText),
+      title: Text(txt),
+      onTap: goTo
+    )
   );
+
+ 
 
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
