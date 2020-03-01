@@ -52,12 +52,16 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[
-									Column(
-										children: <Widget>[
-											Padding(padding: const EdgeInsets.only(top: 200)),
-											textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number, TextStyle(color: Colors.grey [900], fontWeight: FontWeight.w500)),
-											continueButton('Continue', TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w400)),
-										],
+									ListView(
+									  children: <Widget>[
+                      Column(
+									  	  children: <Widget>[
+									  		  Padding(padding: const EdgeInsets.only(top: 200)),
+									  		  textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number, TextStyle(color: Colors.grey [900], fontWeight: FontWeight.w500)),
+									  		  continueButton('Continue', TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w400)),
+									  	  ],
+									    ),
+                    ]
 									),
                 	]
             ),
