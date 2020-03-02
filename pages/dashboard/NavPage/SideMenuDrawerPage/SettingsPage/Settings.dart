@@ -18,7 +18,7 @@ class _SettingsState extends State<Settings> {
           backgroundColor: Colors.green [900],
           title: Text('Settings'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
-            onPressed: () => navigatePreviousPage('/dashboard'),
+            onPressed: () => navigatePreviousPage(context),
           )
         ),
         body: ListView.builder(
@@ -48,7 +48,5 @@ class _SettingsState extends State<Settings> {
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
 
-  void navigatePreviousPage(navTo){
-    Navigator.popAndPushNamed(context, navTo);
-  }
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
 }

@@ -17,7 +17,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
           backgroundColor: Colors.green[900],
           title: Text('Confirmation'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
-            onPressed: () => navigatePreviousPage('/transferMoney'),
+            onPressed: () => navigatePreviousPage(context),
           ),
         ),
       body: Column(
@@ -56,7 +56,5 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
     ),
   );
 
-  void navigatePreviousPage(navTo){
-    Navigator.popAndPushNamed(context, navTo);
-  }
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/transferMoney');
 }

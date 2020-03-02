@@ -10,11 +10,19 @@ class ReceiveMoney extends StatefulWidget {
 class _ReceiveMoneyState extends State<ReceiveMoney> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green [900], 
-        title: Text('Receive Money'),
+    return WillPopScope(
+      onWillPop: (){ navigatePreviousPage(context);},
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green [900], 
+          title: Text('Receive Money'),
+          leading: IconButton(icon: Icon(Icons.arrow_back),
+            onPressed: () => navigatePreviousPage(context),
+          ),
+        ),
       ),
     );
   }
+
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
 }

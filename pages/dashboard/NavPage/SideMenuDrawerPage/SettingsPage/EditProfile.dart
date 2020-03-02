@@ -20,7 +20,7 @@ class _EditProfileState extends State<EditProfile> {
           backgroundColor: Colors.green [900],
           title: Text('Profile'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
-            onPressed: () => navigatePreviousPage('/settings'),
+            onPressed: () => navigatePreviousPage(context),
           ),
         ),
         body: Form(
@@ -155,7 +155,5 @@ class _EditProfileState extends State<EditProfile> {
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
 
-  void navigatePreviousPage(navTo){
-    Navigator.popAndPushNamed(context, navTo);
-  }
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/settings');
 }

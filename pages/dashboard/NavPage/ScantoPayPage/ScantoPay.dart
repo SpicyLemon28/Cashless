@@ -10,11 +10,18 @@ class ScantoPay extends StatefulWidget {
 class _ScantoPayState extends State<ScantoPay> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green [900],
-        title: Text('Scan To Pay'),
+    return WillPopScope(
+      onWillPop: () { navigatePreviousPage(context);},
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green [900],
+          title: Text('Scan To Pay'),
+          leading: IconButton(icon: Icon(Icons.arrow_back),
+            onPressed: () => navigatePreviousPage(context),
+          ),
+        ),
       ),
     );
   }
+   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
 }

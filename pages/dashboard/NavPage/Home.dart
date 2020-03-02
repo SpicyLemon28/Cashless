@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-
-import './LoadWalletPage/LoadWallet.dart';
-import './ScantoPayPage/ScantoPay.dart';
-import './ReceiveMoneyPage/ReceiveMoney.dart';
-import './TransferMoneyPage/TransferMoney.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -64,7 +58,7 @@ class _HomeState extends State<Home> {
                              child: IconButton(
                                iconSize: 75,
                                icon: Image.asset('assets/FunctionIcons/LoadWallet.png'),
-                               onPressed: () => navigatePage(LoadWallet())
+                               onPressed: () => navigatePage('/loadWallet')
                              ),
                            ),
 
@@ -73,7 +67,7 @@ class _HomeState extends State<Home> {
                             child: IconButton(
                               iconSize: 75,
                               icon: Image.asset('assets/FunctionIcons/ScantoPay.png'),
-                              onPressed: () => navigatePage(ScantoPay())
+                              onPressed: () => navigatePage('/scantoPay')
                             )
                           ),
                          ],
@@ -100,7 +94,7 @@ class _HomeState extends State<Home> {
                                child: IconButton(
                                  iconSize: 90,
                                  icon: Image.asset('assets/FunctionIcons/TransferMoney.png'),
-                                 onPressed: () => navigatePage(TransferMoney()),
+                                 onPressed: () => navigatePage('/transferMoney'),
                                )
                              ),
 
@@ -109,7 +103,7 @@ class _HomeState extends State<Home> {
                                child: IconButton(
                                  iconSize: 90,
                                  icon: Image.asset('assets/FunctionIcons/ReceiveMoney.png'),
-                                 onPressed: () => navigatePage(ReceiveMoney()),
+                                 onPressed: () => navigatePage('/receiveMoney'),
                                )
                              ),
                            ],
@@ -156,9 +150,6 @@ class _HomeState extends State<Home> {
 
    Widget iconTxt(txtIcon) => Text(txtIcon, style: TextStyle(color: Colors.green [900], fontWeight: FontWeight.w500),);
 
-   void navigatePage(navTo) {
-     Navigator.of(context).push(
-       CupertinoPageRoute<Null>(
-         builder: (BuildContext context) => navTo));
-   }
+   void navigatePage(navTo) =>
+		Navigator.pushReplacementNamed(context, navTo);
 }

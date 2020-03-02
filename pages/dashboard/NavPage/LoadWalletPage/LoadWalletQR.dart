@@ -77,9 +77,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
     child: Text(txt, style: txtStyle),
   );
 
-  void navigatePreviousPage(navTo){
-    Navigator.popAndPushNamed(context, navTo);
-  } 
+  void navigatePreviousPage(navTo) => Navigator.pushReplacementNamed(context, navTo);
 
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(

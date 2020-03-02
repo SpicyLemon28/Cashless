@@ -37,30 +37,34 @@ class _LoadWalletState extends State<LoadWallet> {
   @override
   Widget build(BuildContext context) {
     loadWalletList();
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green[900],
-        title: Text('Load Wallet')
-      ),
-      body: Form(
-        key: _formKey,
-        autovalidate: _autoValidate,
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            ListView(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    textFormField('Amount', 'Enter amount to load to your account'),
-                    loadTypeButton('School Fees'),
-                    continueButton('Continue')
-                  ],
-                )
-              ],
-            )
-          ],
+    return WillPopScope(
+      onWillPop: () {navigatePreviousPage(context);},
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green[900],
+          title: Text('Load Wallet'),
+          leading: IconButton(icon: Icon(Icons.arrow_back),
+            onPressed: () {navigatePreviousPage(context);}),
+        ),
+        body: Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      textFormField('Amount', 'Enter amount to load to your account'),
+                      loadTypeButton('School Fees'),
+                      continueButton('Continue')
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -119,6 +123,8 @@ class _LoadWalletState extends State<LoadWallet> {
   void navigatePage(navTo){
     Navigator.pushReplacementNamed(context, navTo);
   }
+
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
   
   textValidation(lblText, value) {
     if (lblText == 'Amount') {

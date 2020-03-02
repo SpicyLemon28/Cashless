@@ -23,32 +23,38 @@ class _TransferMoneyState extends State<TransferMoney> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Transfer Money'),
-        backgroundColor: Colors.green[900],
-      ),
-      body: Form(
-        key: _formKey,
-        autovalidate: _autoValidate,
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            ListView(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Padding(padding: const EdgeInsets.only(top: 200)),
-                      textFormField('Enter Phone Number', TextInputType.phone, false),
-                      textFormField('Amount', TextInputType.number, false),
-                      textFormField('Pin', TextInputType.number, pinVisible),
-                      textFormField('Message (optional)', TextInputType.text, false),
-                      continueButton('Continue')
-                  ],
-                ),
-              ],
-            ), 
-          ],
+    return WillPopScope(
+      onWillPop: () { navigatePreviousPage(context);},
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Transfer Money'),
+          backgroundColor: Colors.green[900],
+          leading: IconButton(icon: Icon(Icons.arrow_back),
+            onPressed: () => navigatePreviousPage(context),
+          ),
+        ),
+        body: Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(padding: const EdgeInsets.only(top: 200)),
+                        textFormField('Enter Phone Number', TextInputType.phone, false),
+                        textFormField('Amount', TextInputType.number, false),
+                        textFormField('Pin', TextInputType.number, pinVisible),
+                        textFormField('Message (optional)', TextInputType.text, false),
+                        continueButton('Continue')
+                    ],
+                  ),
+                ],
+              ), 
+            ],
+          ),
         ),
       ),
     );
@@ -83,6 +89,8 @@ class _TransferMoneyState extends State<TransferMoney> {
   void navigatePage(navTo){
     Navigator.pushReplacementNamed(context, navTo);
   }
+
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
 
   void _submit() {
     final form = _formKey.currentState;
