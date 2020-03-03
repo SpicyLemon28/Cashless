@@ -61,6 +61,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
               ),
+              //QR Icon
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 90, 260, 520),
                 child: Container(
@@ -96,7 +97,7 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
                           child: Card(
                             elevation: 3,
-                            child: listTile('example@email.com'),
+                            child: listTile('example@email.com', null),
                           ),
                         ),
 
@@ -105,7 +106,7 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
                           child: Card(
                             elevation: 3,
-                            child: listTile('12345678'),
+                            child: listTile('12345678', () => navigatePage('/changePass')),
                           ),
                         ),
 
@@ -117,7 +118,7 @@ class _EditProfileState extends State<EditProfile> {
                           padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Card(
                             elevation: 3,
-                            child: listTile('123456'),
+                            child: listTile('123456', null),
                           ),
                         ),
                       ],
@@ -141,9 +142,9 @@ class _EditProfileState extends State<EditProfile> {
     child: Text(txt, style: styleText,),
   );
 
-  Widget listTile(txt) => ListTile(
+  Widget listTile(txt, goTo) => ListTile(
     title: Text(txt, style: TextStyle(color: Colors.grey, fontSize: 14)),
-    onTap: (){},
+    onTap: goTo,
     trailing: Icon(Icons.edit),
   );
 
