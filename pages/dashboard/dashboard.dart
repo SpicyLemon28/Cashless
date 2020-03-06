@@ -24,13 +24,13 @@ class _DashboardState extends State<Dashboard> {
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() => signIn = preferences.getInt("signIn") );
-  } 
+  }
 
   @override
 	void initState() {
 		super.initState();
 		getPref();
-	} 
+	}
 
   int selectedPage = 0;
   final pageOptions = [
@@ -40,40 +40,46 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: SideMenuDrawer(),
-      appBar: AppBar(
-        backgroundColor: Colors.green[900],
-        centerTitle: true,
-        title: Text('SmartPay', style: TextStyle(color: Colors.white),),
-        actions: <Widget>[
-          IconButton(
-            color: Colors.white,
-            icon: Icon(Icons.lock_open),
-            onPressed: () => signOut(),
-          )
-        ],
-      ),
-      body: pageOptions[selectedPage],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedPage,
-        onTap: (int index) => setState((){
-          selectedPage = index;
-        }),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home')
-          ),
-          
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt),
-            title: Text('Transaction')
-          )
-        ],
-      ),
+    return WillPopScope(
+			onWillPop: () async {
+				return Future.value(false);
+			},
+			child: Scaffold(
+				drawer: SideMenuDrawer(),
+				appBar: AppBar(
+					backgroundColor: Colors.green[900],
+					centerTitle: true,
+					title: Text('SmartPay', style: TextStyle(color: Colors.white),),
+					actions: <Widget>[
+						IconButton(
+							color: Colors.white,
+							icon: Icon(Icons.lock_open),
+							onPressed: () => signOut(),
+						)
+					],
+				),
+				body: pageOptions[selectedPage],
+				bottomNavigationBar: BottomNavigationBar(
+					currentIndex: selectedPage,
+					onTap: (int index) => setState((){
+						selectedPage = index;
+					}),
+					items: [
+						BottomNavigationBarItem(
+							icon: Icon(Icons.home),
+							title: Text('Home')
+						),
+
+						BottomNavigationBarItem(
+							icon: Icon(Icons.receipt),
+							title: Text('Transaction')
+						)
+					],
+				),
+			)
     );
   }
+
 }
 
 /*class NaviBar extends StatefulWidget {
