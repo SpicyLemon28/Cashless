@@ -25,13 +25,13 @@ class _SettingsState extends State<Settings> {
           itemCount: 1,
           itemBuilder: (context, index) => Column(
             children: <Widget>[
-              listTile('Edit Profile', () => navigatePage('/editProfile')),
+              listTile('Account Profile', () => navigatePage('/editProfile'), Icons.arrow_forward_ios),
               Divider(),
 
-              listTile('Terms and Conditions', null),
+              listTile('Terms and Conditions', null, Icons.arrow_forward_ios),
               Divider(),
 
-              listTile('About SmartPay', null),
+              listTile('About SmartPay', null , Icons.arrow_forward_ios),
               Divider(),
             ],
           )
@@ -40,9 +40,10 @@ class _SettingsState extends State<Settings> {
     );
   }
   
-  Widget listTile(txt, goTo) => ListTile(
+  Widget listTile(txt, goTo, suffixIcon) => ListTile(
     title: Text(txt),
     onTap: goTo,
+    trailing: Icon(suffixIcon),
   );
 
   void navigatePage(navTo) =>
