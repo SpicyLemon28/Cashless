@@ -10,6 +10,7 @@ class ChangeName extends StatefulWidget {
 class _ChangeNameState extends State<ChangeName> {
 
   final _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class _ChangeNameState extends State<ChangeName> {
         ),
         body: Form(
           key: _formKey,
+          autovalidate: _autoValidate,
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
@@ -32,7 +34,7 @@ class _ChangeNameState extends State<ChangeName> {
                   Padding(padding: const EdgeInsets.only(top: 200, left: 10, right: 10),
                     child: text('Current Name: Myco Paul John Perez')),
                   
-                  textFormField('New Name:'),
+                  textFormField('New Name'),
                   saveBtn('Save Changes')
                 ],
               )
@@ -52,6 +54,7 @@ class _ChangeNameState extends State<ChangeName> {
   Widget textFormField(hntText) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
     child: TextFormField(
+      validator: (value) => textValidation(hntText, value),
       decoration: InputDecoration(
         hintText: hntText, hintStyle: TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500)
       ),
@@ -67,7 +70,7 @@ class _ChangeNameState extends State<ChangeName> {
         elevation: 3,
         color: Colors.green [900],
         child: Text(btnText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),),
-        onPressed: () => dialog(),
+        onPressed: _submit,
       ),
     ),
   );
@@ -76,6 +79,15 @@ class _ChangeNameState extends State<ChangeName> {
 		Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
+
+  void _submit() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      dialog();
+    } else {
+      setState(() => _autoValidate = true);
+    }
+  }
 
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(
@@ -93,4 +105,10 @@ class _ChangeNameState extends State<ChangeName> {
       ],
     )
   );
+
+  textValidation(hntText, value){
+    if (value.isEmpty){
+      return '$hntText should not be empty';
+    }
+  }
 }

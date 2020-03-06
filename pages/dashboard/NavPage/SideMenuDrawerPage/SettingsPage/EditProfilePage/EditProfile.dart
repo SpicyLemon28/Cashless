@@ -57,9 +57,9 @@ class _EditProfileState extends State<EditProfile> {
     ),
   );
   
-
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/settings');
+
 }
