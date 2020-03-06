@@ -28,14 +28,14 @@ class _HomeState extends State<Home> {
                children: <Widget>[
                  Padding(
                    padding: const EdgeInsets.only(top: 20),
-                   child: text('BALANCE', TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal)),
+                   child: text('BALANCE', TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500)),
                  ),
                  text('₱ 0.00', TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600)),
                ],
              ),
 
              Padding(
-               padding: const EdgeInsets.only(top: 100),
+               padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
                child: Container(
                  decoration: BoxDecoration(
                    color: Colors.white,
@@ -122,14 +122,8 @@ class _HomeState extends State<Home> {
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.only(top: 40, right: 240),
-                        child: Text('Promos for You', 
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.green[900]
-                          ),
-                        ),
+                        padding: const EdgeInsets.only(top: 40, right: 190),
+                        child: text('Promos for You', TextStyle(color: Colors.green[900], fontSize: 15, fontWeight: FontWeight.w700)),
                       )
                       
                      ],
@@ -143,9 +137,9 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget text(txt, txtStyle) => Padding(
+  Widget text(txt, styleText) => Padding(
     padding: const EdgeInsets.only(),
-    child: Text(txt, style: txtStyle)
+    child: Text(txt, style: styleText)
   );
 
    Widget iconTxt(txtIcon) => Text(txtIcon, style: TextStyle(color: Colors.green [900], fontWeight: FontWeight.w500),);
