@@ -18,12 +18,8 @@ class _EditProfileState extends State<EditProfile> {
           backgroundColor: Colors.green [900],
           title: Text('Profile'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
-<<<<<<< HEAD
             onPressed: () => navigatePreviousPage(context),
           ),
-=======
-            onPressed: () {navigatePreviousPage(context);},),
->>>>>>> 15_EditProfile
         ),
         body: Stack(
           fit:StackFit.expand,
