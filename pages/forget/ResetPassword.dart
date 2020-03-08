@@ -48,23 +48,10 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Reset Password'),
-        centerTitle: true,
-        backgroundColor: Colors.green[900],
-      ),
 			key: scaffoldKey,
       body: Form(
         key: _formKey,
         autovalidate: _autoValidate,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Colors.white, Colors.green]
-            )
-          ),
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
@@ -73,6 +60,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                     Column(
                       children: <Widget>[
                         Padding(padding: const EdgeInsets.only(top: 200)),
+                        text('Reset your Password', TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500)),
+                        text('A password should contain 6 characters or longer', TextStyle(color: Colors.white, fontSize: 12, fontStyle: FontStyle.italic)),
                         textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
                         textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
                         submitButton('Submit', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
@@ -83,53 +72,72 @@ class _ResetPasswordState extends State<ResetPassword> {
             ],
           ),
         ),
-      ),
     );
   }
+
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
+
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );  
+
+  Widget text(txt, styleText) => Padding(
+    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
+    child: Text(txt, style: styleText),
+  ); 
 
   Widget textFormField(txtController, lblText, hntText, blnObscure) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
     child: TextFormField(
+      style: TextStyle(color: Colors.white),
 			controller: txtController,
       validator: (value) => textValidation(lblText, value),
       obscureText: blnObscure,
       decoration: InputDecoration(
         labelText: lblText,
-        labelStyle: TextStyle(fontWeight: FontWeight.w500),
+        labelStyle: TextStyle(color: Colors.grey[300], fontWeight: FontWeight.w500),
         hintText: hntText,
-        hintStyle: TextStyle(fontSize: 15),
+        hintStyle: TextStyle(color: Colors.grey[300], fontSize: 15),
         suffixIcon: _suffixIcon(lblText, blnObscure),
+        focusedBorder: greenBorder,
+        enabledBorder: greenBorder,
+        errorBorder: redBorder,
+        focusedErrorBorder: redBorder
       ),
     ),
   );
 
   Widget submitButton(buttonText, styleText) {
-		return _isLoading
+		return Padding(
+		  padding: const EdgeInsets.only(top: 20),
+		  child: _isLoading
       ? CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
     	: Padding(
-					padding: const EdgeInsets.only(top: 80),
-					child: Material(
-						color: Colors.green,
-						borderRadius: BorderRadius.circular(10),
-            child: ButtonTheme(
+		  			padding: const EdgeInsets.only(top: 30),
+		  		child: ButtonTheme(
               minWidth: 300,
               height: 50,
               child: RaisedButton(
-                color: Colors.green [900],
+                color: Colors.green,
                 child: Text(buttonText, style: styleText,),
-                onPressed: () => _submit()
+                onPressed: () => _submit(),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
               ),
-            ),
-				),
+            ),	
+		  		),
       );
 	}
 
   _suffixIcon(lblText, blnObscure) {
     if (lblText == 'New Password' || lblText == 'Confirm Password') {
       return IconButton(
-        icon: Icon(blnObscure ? Icons.visibility_off : Icons.visibility),
+        icon: Icon(blnObscure ? Icons.visibility_off : Icons.visibility, color: Colors.grey[300],),
         onPressed: () {
           lblText == 'New Password'
             ? setState(() => newPasswordVisible = !newPasswordVisible)

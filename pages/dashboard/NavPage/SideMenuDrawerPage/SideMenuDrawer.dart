@@ -12,45 +12,46 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 100),
-      child: Container(
-         decoration: BoxDecoration(
-           gradient: LinearGradient(
-             begin: Alignment.topRight,
-             end: Alignment.bottomLeft,
-             colors: [Colors.white, Colors.green]
-           )
-         ),
          child: ListView(
            children: <Widget>[
-             UserAccountsDrawerHeader(
-               accountName: Text('Myco Perez', style: TextStyle(color: Colors.black)),
-               accountEmail: Text('mycoperez@email.com', style: TextStyle(color: Colors.black)),
+             Container(
+               constraints: BoxConstraints(maxHeight: 800),
                decoration: BoxDecoration(
-                 color: Colors.green [100]
-               ),
-               currentAccountPicture: CircleAvatar(
-                 backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
-                 ? Colors.blue
-                 : Colors.white,
-                 child: Text("M", style: TextStyle(fontSize: 40))
-               ),
-             ),
-             listTile(Icons.settings, 'Settings', () => navigatePage('/settings')),
-             listTile(Icons.help, 'Help', null),
+                 gradient: LinearGradient(
+                   begin: Alignment.topLeft,
+                   end: Alignment.bottomRight,
+                   colors: [Colors.greenAccent, Colors.green[900] ]
+                 ) 
+                 ),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Icon(Icons.account_circle, size: 80,color: Colors.white,),
+                  ),
+                  text('Myco Paul John Perez'),
+                  text('09191234567'),
+                  Padding(padding: const EdgeInsets.only(top: 30)),
+                  listTile(Icons.settings, 'Settings', () => navigatePage('/settings')),
+                  listTile(Icons.help, 'Help', null),
+                ],
+              ),
+             )
            ],
          ),
-      )
       );
   }
 
-  Widget listTile(iconText, txt, goTo) => Padding(
-    padding: const EdgeInsets.only(top: 10),
-    child: ListTile(
-      leading: Icon(iconText),
-      title: Text(txt),
-      onTap: goTo
-    )
+  Widget text(txt) => Padding(
+    padding: const EdgeInsets.only(top: 8),
+    child: Text(txt, style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
   );
+
+ Widget listTile(iconText, txt, goTo) => ListTile(
+      leading: Icon(iconText, color: Colors.white),
+      title: Text(txt, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+      onTap: goTo
+    );
 
  
 

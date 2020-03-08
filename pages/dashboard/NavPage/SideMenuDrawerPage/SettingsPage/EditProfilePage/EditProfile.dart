@@ -14,8 +14,9 @@ class _EditProfileState extends State<EditProfile> {
     return WillPopScope(
       onWillPop: () {navigatePreviousPage(context);},
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.green [900],
+          backgroundColor: Colors.black,
           title: Text('Profile'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage(context),
@@ -27,15 +28,15 @@ class _EditProfileState extends State<EditProfile> {
             ListView(
               children: <Widget>[
                 title('Name'),
-                card('Myco Paul John Perez', Icon(Icons.edit), () => navigatePage('/changeName')),
+                card('Myco Paul John Perez', Icon(Icons.edit, color: Colors.grey[800]), () => navigatePage('/changeName')),
                 title('Phone Number'),
-                card('09123456789', Icon(Icons.phone_android), null),
+                card('09123456789', Icon(Icons.phone_android, color: Colors.grey[800]), null),
                 title('Email'),
-                card('example@email.com', Icon(Icons.email), null),
+                card('example@email.com', Icon(Icons.email, color: Colors.grey[800]), null),
                 title('Password'),
-                card('123456', Icon(Icons.lock), null),
+                card('123456', Icon(Icons.lock, color: Colors.grey[800]), null),
                 title('Pin'),
-                card('123456', Icon(Icons.vpn_key), null),
+                card('123456', Icon(Icons.vpn_key, color: Colors.grey[800]), null),
               ],
             )
           ],
@@ -46,14 +47,15 @@ class _EditProfileState extends State<EditProfile> {
 
   Widget title(txt) => Padding(
     padding:const EdgeInsets.only(top: 20, left: 10),
-    child: Text(txt, style: TextStyle(color: Colors.grey [600], fontSize: 20, fontWeight: FontWeight.w500),),
+    child: Text(txt, style: TextStyle(color: Colors.grey[300], fontSize: 20, fontWeight: FontWeight.w500),),
   );
 
   Widget card(listTxt, suffixIcon, goTo) => Card(
+    color: Colors.greenAccent,
     child: ListTile(
       trailing: suffixIcon,
       onTap: goTo,
-      title: Text(listTxt, style: TextStyle(color: Colors.grey),),
+      title: Text(listTxt, style: TextStyle(color: Colors.grey[800]),),
     ),
   );
   

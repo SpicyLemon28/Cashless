@@ -17,8 +17,9 @@ class _ChangeNameState extends State<ChangeName> {
     return WillPopScope(
       onWillPop: () {navigatePreviousPage(context);},
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.green[900],
+          backgroundColor: Colors.black,
           title: Text('Edit Name'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () {navigatePreviousPage(context);}),
@@ -31,10 +32,9 @@ class _ChangeNameState extends State<ChangeName> {
             children: <Widget>[
               ListView(
                 children: <Widget>[
-                  Padding(padding: const EdgeInsets.only(top: 200, left: 10, right: 10),
+                  Padding(padding: const EdgeInsets.only(top: 200, left: 30),
                     child: text('Current Name: Myco Paul John Perez')),
-                  
-                  textFormField('New Name'),
+                  textFormField('New Name', 'Enter Full Name'),
                   saveBtn('Save Changes')
                 ],
               )
@@ -45,18 +45,30 @@ class _ChangeNameState extends State<ChangeName> {
     );
   }
 
-  Widget text(listTxt) => Card(
-    child: ListTile(
-      title: Text(listTxt, style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.w500),),
-    ),
-  );
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
 
-  Widget textFormField(hntText) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );      
+
+  Widget text(listTxt) => Text(listTxt, style: TextStyle(color: Colors.grey[300], fontSize: 13, fontWeight: FontWeight.w500));
+
+  Widget textFormField(lblText,hntText) => Padding(
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
     child: TextFormField(
+      style: TextStyle(color: Colors.white),
       validator: (value) => textValidation(hntText, value),
       decoration: InputDecoration(
-        hintText: hntText, hintStyle: TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500)
+        labelText: lblText, labelStyle: TextStyle(color: Colors.grey[300], fontSize: 15, fontWeight: FontWeight.w500),
+        hintText: hntText, hintStyle: TextStyle(color: Colors.grey[300], fontSize: 15),
+        enabledBorder: greenBorder,
+        focusedBorder: greenBorder,
+        errorBorder: redBorder,
+        focusedErrorBorder: redBorder
       ),
     ),
   );
@@ -67,10 +79,10 @@ class _ChangeNameState extends State<ChangeName> {
       minWidth: 300,
       height: 50,
       child: RaisedButton(
-        elevation: 3,
-        color: Colors.green [900],
-        child: Text(btnText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),),
+        color: Colors.green,
+        child: Text(btnText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
         onPressed: _submit,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       ),
     ),
   );
@@ -91,12 +103,13 @@ class _ChangeNameState extends State<ChangeName> {
 
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: IconButton(icon: Icon(Icons.check_circle_outline),
         disabledColor: Colors.green,
         iconSize: 60,
         onPressed: null
       ),
-      content: Text('Name has been changed successfully!' ,style: TextStyle(fontSize: 16)),
+      content: Text('Name has been changed successfully!',style: TextStyle(fontSize: 16)),
       actions: <Widget>[
         FlatButton(
           child: Text('OKAY'),
@@ -109,6 +122,9 @@ class _ChangeNameState extends State<ChangeName> {
   textValidation(hntText, value){
     if (value.isEmpty){
       return '$hntText should not be empty';
+    }
+    if(!value.contains(' ')) {
+      return 'Invalid Full Name';
     }
   }
 }

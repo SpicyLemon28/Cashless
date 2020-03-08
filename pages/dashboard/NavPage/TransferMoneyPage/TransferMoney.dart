@@ -26,9 +26,10 @@ class _TransferMoneyState extends State<TransferMoney> {
     return WillPopScope(
       onWillPop: () { navigatePreviousPage(context);},
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
           title: Text('Transfer Money'),
-          backgroundColor: Colors.green[900],
+          backgroundColor: Colors.black,
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage(context),
           ),
@@ -46,7 +47,6 @@ class _TransferMoneyState extends State<TransferMoney> {
                       Padding(padding: const EdgeInsets.only(top: 200)),
                         textFormField('Enter Phone Number', TextInputType.phone, false),
                         textFormField('Amount', TextInputType.number, false),
-                        textFormField('Pin', TextInputType.number, pinVisible),
                         textFormField('Message (optional)', TextInputType.text, false),
                         continueButton('Continue')
                     ],
@@ -60,15 +60,31 @@ class _TransferMoneyState extends State<TransferMoney> {
     );
   }
 
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
+
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );
+
   Widget textFormField(lblText, keyType, blnObscure) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
     child: TextFormField(
+      style: TextStyle(color: Colors.white),
       keyboardType: keyType,
       validator: (value) => textValidation(lblText, value),
       obscureText: blnObscure,
       decoration: InputDecoration(
         labelText: lblText,
-        suffixIcon: _suffixIcon(lblText, blnObscure)
+        labelStyle: TextStyle(color: Colors.grey [300]),
+        suffixIcon: _suffixIcon(lblText, blnObscure),
+        enabledBorder: greenBorder,
+        focusedBorder: greenBorder,
+        errorBorder: redBorder,
+        focusedErrorBorder: redBorder
       ),
     ),
   );
@@ -79,9 +95,10 @@ class _TransferMoneyState extends State<TransferMoney> {
       minWidth: 300,
       height: 50,
       child: RaisedButton(
-        color: Colors.green[900],
+        color: Colors.green,
         child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
         onPressed: _submit,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       ),
     ),
   );
@@ -104,18 +121,10 @@ class _TransferMoneyState extends State<TransferMoney> {
     switch (lblText) {
 
       case 'Enter Phone Number':
-        return Icon(Icons.phone_android);
-
-      case 'Pin':
-        return IconButton(
-          icon:  Icon(blnObscure ? Icons.visibility_off : Icons.visibility),
-          onPressed: () {
-            setState(() => pinVisible = !pinVisible);
-          },
-        );
+        return Icon(Icons.phone_android, color: Colors.grey[300],);
 
       case 'Message (optional)':
-        return Icon(Icons.message);
+        return Icon(Icons.message, color: Colors.grey[300],);
       }
     }
   }

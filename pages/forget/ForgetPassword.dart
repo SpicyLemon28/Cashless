@@ -31,9 +31,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     return WillPopScope(
       onWillPop: () { register.navigatePreviousPage(context); },
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
-          title: Text('Forget Password'),
-          backgroundColor: Colors.green[900],
+          title: Text('Forgot Password'),
+          backgroundColor: Colors.black,
           leading: IconButton(icon: Icon(Icons.arrow_back),
           onPressed: () { register.navigatePreviousPage(context); },)
         ),
@@ -41,14 +42,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         body: Form(
           key: _formKey,
           autovalidate: _autoValidate,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Colors.white, Colors.green] 
-              )
-            ),
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[
@@ -57,7 +50,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       Column(
 									  	  children: <Widget>[
 									  		  Padding(padding: const EdgeInsets.only(top: 200)),
-									  		  textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number, TextStyle(color: Colors.grey [900], fontWeight: FontWeight.w500)),
+									  		  textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number),
 									  		  continueButton('Continue', TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w400)),
 									  	  ],
 									    ),
@@ -67,46 +60,59 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
           ),
         ),
-      ),
     );
   }
 
-  Widget text(lblText, styleText) => Padding(
-    padding: const EdgeInsets.only(),
-    child: Text(lblText, style: styleText,),
-  );
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
 
-  Widget textFormField(lblText, hntText, keyType, styleText) => Padding(
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );      
+
+  Widget textFormField(lblText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
     child: TextFormField(
+      style: TextStyle(color: Colors.white),
       keyboardType: keyType,
 			autofocus: true,
 			onSaved: (value) => _phone = value,
       validator: (String value) => textValidation(value),
       decoration: InputDecoration(
-        labelText: lblText, labelStyle: styleText,
-        hintText: hntText, hintStyle: TextStyle(fontSize: 12)
+        labelText: lblText, labelStyle: TextStyle(color: Colors.grey [300], fontWeight: FontWeight.w500),
+        hintText: hntText, hintStyle: TextStyle(color: Colors.grey[300], fontSize: 12),
+        focusedBorder: greenBorder,
+        errorBorder: redBorder,
+        focusedErrorBorder:redBorder 
       ),
     ),
   );
 
   Widget continueButton(buttonText, styleText) {
-		return _isLoading
+		return Padding(
+		  padding: const EdgeInsets.only(top: 20),
+		  child: _isLoading
       ? CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
+          
         )
     	: Padding(
-					padding: const EdgeInsets.only(top: 50),
-					child: ButtonTheme(
+		  			padding: const EdgeInsets.only(top: 30),
+		  			child: ButtonTheme(
             minWidth: 300,
             height: 50,
             child: RaisedButton(
-              color: Colors.green [900],
+              color: Colors.green,
               child: Text(buttonText, style: styleText),
               onPressed: () => _submit(),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             ),
           ),
-				);
+		  		),
+		);
 	}
 
   textValidation(value) {

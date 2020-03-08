@@ -13,8 +13,9 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
     return WillPopScope(
       onWillPop: (){ navigatePreviousPage(context);},
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.green [900], 
+          backgroundColor: Colors.black, 
           title: Text('Receive Money'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage(context),

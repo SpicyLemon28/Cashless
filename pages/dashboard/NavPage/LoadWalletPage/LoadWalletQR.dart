@@ -15,7 +15,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Scan QR"),
-          backgroundColor: Colors.green[900],
+          backgroundColor: Colors.black,
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage('/loadWallet')),
           actions: <Widget>[
@@ -30,7 +30,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: Colors.green
+                color: Colors.black
               ),
             ),
 
@@ -38,7 +38,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
               padding: const EdgeInsets.fromLTRB(20, 40, 20, 30),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.greenAccent,
                   borderRadius: BorderRadius.circular(15)
                 ),
               ),

@@ -24,12 +24,13 @@ class _LoadWalletState extends State<LoadWallet> {
     loadTypeList = [];
 
     loadTypeList.add(DropdownMenuItem(
-      child: Text('School Fees'),
+      child: Text('School Fees', style: TextStyle(color: Colors.grey[600])),
       value: 0,
+
     ));
 
     loadTypeList.add(DropdownMenuItem(
-      child: Text('Allowance'),
+      child: Text('Allowance', style: TextStyle(color: Colors.grey[600])),
       value: 1,
     ));
   }
@@ -40,44 +41,60 @@ class _LoadWalletState extends State<LoadWallet> {
     return WillPopScope(
       onWillPop: () {navigatePreviousPage(context);},
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.green[900],
+          backgroundColor: Colors.black,
           title: Text('Load Wallet'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () {navigatePreviousPage(context);}),
         ),
         body: Form(
-          key: _formKey,
-          autovalidate: _autoValidate,
-          child: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              ListView(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      textFormField('Amount', 'Enter amount to load to your account'),
-                      loadTypeButton('School Fees'),
-                      continueButton('Continue')
-                    ],
-                  )
-                ],
-              )
-            ],
+            key: _formKey,
+            autovalidate: _autoValidate,
+            child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                ListView(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        textFormField('Amount', 'Enter amount to load to your account'),
+                        loadTypeButton('School Fees'),
+                        continueButton('Continue')
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
+
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
+
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );
 
   Widget textFormField(lblText, hntText) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, top: 250),
     child: TextFormField(
+      style: TextStyle(color: Colors.white),
       validator: (value) => textValidation(lblText, value),
       decoration: InputDecoration(
         labelText: lblText, hintText: hntText,
-        labelStyle: TextStyle(fontWeight: FontWeight.w500),
-        hintStyle: TextStyle(fontSize: 12)
+        labelStyle: TextStyle(color: Colors.grey [300], fontWeight: FontWeight.w500),
+        hintStyle: TextStyle(color: Colors.grey [300], fontSize: 12),
+        enabledBorder: greenBorder,
+        focusedBorder: greenBorder,
+        errorBorder: redBorder,
+        focusedErrorBorder: redBorder
       ),
     ),
   );
@@ -85,16 +102,19 @@ class _LoadWalletState extends State<LoadWallet> {
   Widget loadTypeButton(lblText) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
     child: DropdownButtonFormField(
+      decoration: InputDecoration(
+        labelText: 'Load Wallet For',
+        labelStyle: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+        enabledBorder: greenBorder,
+        focusedBorder: greenBorder
+      ),
       items: loadTypeList,
       value: _selectedLoadType,
       validator: (value) => textValidation(lblText, value),
       onChanged: (value) {
         setState(()=> _selectedLoadType = value);
       },
-      decoration: InputDecoration(
-        labelText: 'Load Wallet For',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)
-      ),
+      
     )
   );
 
@@ -104,9 +124,10 @@ class _LoadWalletState extends State<LoadWallet> {
       minWidth: 300,
       height: 50,
       child: RaisedButton(
-        color: Colors.green[900],
+        color: Colors.green,
         child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
         onPressed: _submit,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       ),
     ),
   );

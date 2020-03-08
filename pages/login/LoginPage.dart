@@ -74,18 +74,11 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 				break;
     	default:
 				return Scaffold(
+          backgroundColor: Colors.black,
 					key: scaffoldKey,
 					body: Form(
 						key: _formKey,
 						autovalidate: _autoValidate,
-						child: Container(
-						  decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.white, Colors.green]
-                )
-              ),
 						  child: Stack(
 						  	fit: StackFit.expand,
 						  	children: <Widget>[
@@ -116,22 +109,31 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 						  	],
 						  ),
 						),
-					),
 				);
 		}
 	}
 
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
+
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );      
+
 	// Name of the App
   Widget appName(txtApp) => Padding(
     padding: const EdgeInsets.only(top: 200, bottom: 50),
-    child: Text(txtApp, style: TextStyle(fontSize: 30),),
+    child: Text(txtApp, style: TextStyle(color: Colors.white, fontSize: 30),),
   );
 
   Widget linkButton(txtLink, onClick) => Padding(
     padding: const EdgeInsets.only(left: 10, right: 10),
     child: FlatButton(
       onPressed: onClick,
-      child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.teal [900])),
+      child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.greenAccent [400])),
     )
   );
 
@@ -139,6 +141,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   Widget textFormField(icnText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 20,),
     child: TextFormField(
+      style: TextStyle(color: Colors.white),
       keyboardType: keyType,
 			inputFormatters: keyType == TextInputType.number
 				? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]
@@ -148,18 +151,18 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
       validator: (String value,) => textValidation(hntText, value),
       decoration: InputDecoration(
         hintText: hntText,
-        hintStyle: TextStyle(color: Colors.grey [800], fontWeight: FontWeight.w500),
-        prefixIcon: Icon(icnText, color: Colors.grey [800]),
+        hintStyle: TextStyle(color: Colors.grey[300], fontWeight: FontWeight.w500),
+        prefixIcon: Icon(icnText, color: Colors.grey[300]),
         suffixIcon: hntText == 'Password'
 					? IconButton(
-							icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility, color: Colors.grey [800]),
+							icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility, color: Colors.grey[300]),
 							onPressed: () => setState(() => passwordVisible = !passwordVisible)
 						)
-					: Icon(Icons.phone_android, color: Colors.grey [800]),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          
-        ),
+					: Icon(Icons.phone_android, color: Colors.grey[300]),
+        errorBorder: redBorder,
+        focusedErrorBorder: redBorder,
+        enabledBorder: greenBorder,
+        focusedBorder: greenBorder
       ),
     ),
   );
@@ -176,11 +179,13 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             minWidth: 300,
             height: 50,
             child: RaisedButton(
-              color: Colors.green [900],
-              child: Text(buttonText, style: TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w400),),
+              color: Colors.green,
+              child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),),
               onPressed: () => _submit(),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)
             ),
           ),
+          )
         );  
 	}
 

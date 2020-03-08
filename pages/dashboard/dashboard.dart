@@ -36,12 +36,6 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
     _tabController = TabController(length: 2, vsync: this);
 	}
 
-  //int selectedPage = 0;
-  /*final pageOptions = [
-    Home(),
-    Transaction()
-  ]; */
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -52,7 +46,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 				drawer: SideMenuDrawer(),
 				appBar: AppBar(
           elevation: 0,
-					backgroundColor: Colors.green[900],
+					backgroundColor: Colors.black,
 					centerTitle: true,
 					title: Text('SmartPay', style: TextStyle(color: Colors.white),),
 					actions: <Widget>[
@@ -64,9 +58,10 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 					],
 				),
         bottomNavigationBar: Material(
-          color: Colors.green [900],
+          color: Colors.black87,
           shadowColor: Colors.white,
           child: TabBar(
+            indicatorColor: Colors.greenAccent,
             controller: _tabController,
             tabs: <Widget>[
               Tab(icon: Icon(Icons.home)),

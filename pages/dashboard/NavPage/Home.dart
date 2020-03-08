@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
            gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.green[900], Colors.white]
+                colors: [Colors.black, Colors.greenAccent]
               )
          ),
          child: Stack(
@@ -38,8 +38,8 @@ class _HomeState extends State<Home> {
                padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
                child: Container(
                  decoration: BoxDecoration(
-                   color: Colors.white,
-                   borderRadius: BorderRadius.circular(14)
+                   color: Colors.greenAccent,
+                   borderRadius: BorderRadius.circular(15)
                  ),
                ),
              ),
@@ -123,9 +123,8 @@ class _HomeState extends State<Home> {
 
                       Padding(
                         padding: const EdgeInsets.only(top: 40, right: 190),
-                        child: text('Promos for You', TextStyle(color: Colors.green[900], fontSize: 15, fontWeight: FontWeight.w700)),
+                        child: text('Promos for You', TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w700)),
                       )
-                      
                      ],
                    )
                  ],
@@ -142,7 +141,7 @@ class _HomeState extends State<Home> {
     child: Text(txt, style: styleText)
   );
 
-   Widget iconTxt(txtIcon) => Text(txtIcon, style: TextStyle(color: Colors.green [900], fontWeight: FontWeight.w500),);
+   Widget iconTxt(txtIcon) => Text(txtIcon, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),);
 
    void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
