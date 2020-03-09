@@ -23,6 +23,9 @@ class _TransferMoneyState extends State<TransferMoney> {
 
   @override
   Widget build(BuildContext context) {
+
+    final transferIcon = Container(child: Image.asset("assets/SmartPayIcons/Transfer.png", width: 400, height: 200));
+
     return WillPopScope(
       onWillPop: () { navigatePreviousPage(context);},
       child: Scaffold(
@@ -44,11 +47,12 @@ class _TransferMoneyState extends State<TransferMoney> {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Padding(padding: const EdgeInsets.only(top: 200)),
-                        textFormField('Enter Phone Number', TextInputType.phone, false),
-                        textFormField('Amount', TextInputType.number, false),
-                        textFormField('Message (optional)', TextInputType.text, false),
-                        continueButton('Continue')
+                      Padding(padding: const EdgeInsets.only(left: 30, top: 60, bottom: 30),
+                      child: transferIcon),
+                      textFormField('Phone Number', 'Enter Phone Number', TextInputType.phone, false),
+                      textFormField('Amount', 'Enter desired amount', TextInputType.number, false),
+                      textFormField('Message (optional)', null, TextInputType.text, false),
+                      continueButton('Continue')
                     ],
                   ),
                 ],
@@ -70,16 +74,17 @@ class _TransferMoneyState extends State<TransferMoney> {
           borderSide: BorderSide(color: Colors.greenAccent, width: 2)
         );
 
-  Widget textFormField(lblText, keyType, blnObscure) => Padding(
+  Widget textFormField(lblText, hntText, keyType, blnObscure) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
     child: TextFormField(
+      autofocus: true,
       style: TextStyle(color: Colors.white),
       keyboardType: keyType,
       validator: (value) => textValidation(lblText, value),
       obscureText: blnObscure,
       decoration: InputDecoration(
-        labelText: lblText,
-        labelStyle: TextStyle(color: Colors.grey [300]),
+        labelText: lblText, labelStyle: TextStyle(color: Colors.grey [300]),
+        hintText: hntText, hintStyle: TextStyle(color: Colors.grey [300], fontSize: 14),
         suffixIcon: _suffixIcon(lblText, blnObscure),
         enabledBorder: greenBorder,
         focusedBorder: greenBorder,
@@ -120,7 +125,7 @@ class _TransferMoneyState extends State<TransferMoney> {
   _suffixIcon(lblText, blnObscure){
     switch (lblText) {
 
-      case 'Enter Phone Number':
+      case 'Phone Number':
         return Icon(Icons.phone_android, color: Colors.grey[300],);
 
       case 'Message (optional)':
@@ -131,7 +136,7 @@ class _TransferMoneyState extends State<TransferMoney> {
 
   textValidation(lblText, value) {
       switch (lblText) {
-        case 'Enter Phone Number':
+        case 'Phone Number':
           return value.length < 11 ? '$lblText must be 11 digits' : null;
 
         case 'Amount':

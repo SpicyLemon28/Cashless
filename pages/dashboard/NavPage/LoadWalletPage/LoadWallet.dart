@@ -37,6 +37,9 @@ class _LoadWalletState extends State<LoadWallet> {
 
   @override
   Widget build(BuildContext context) {
+
+    final loadIcon = Container(child: Image.asset("assets/SmartPayIcons/Load.png", width: 400, height: 200));
+
     loadWalletList();
     return WillPopScope(
       onWillPop: () {navigatePreviousPage(context);},
@@ -58,6 +61,10 @@ class _LoadWalletState extends State<LoadWallet> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20,top: 80),
+                          child: loadIcon,
+                        ),
                         textFormField('Amount', 'Enter amount to load to your account'),
                         loadTypeButton('School Fees'),
                         continueButton('Continue')
@@ -83,8 +90,9 @@ class _LoadWalletState extends State<LoadWallet> {
         );
 
   Widget textFormField(lblText, hntText) => Padding(
-    padding: const EdgeInsets.only(left: 30, right: 30, top: 250),
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
     child: TextFormField(
+      autofocus: true,
       style: TextStyle(color: Colors.white),
       validator: (value) => textValidation(lblText, value),
       decoration: InputDecoration(

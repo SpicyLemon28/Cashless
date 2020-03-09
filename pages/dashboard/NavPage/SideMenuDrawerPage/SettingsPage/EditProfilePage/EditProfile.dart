@@ -14,7 +14,6 @@ class _EditProfileState extends State<EditProfile> {
     return WillPopScope(
       onWillPop: () {navigatePreviousPage(context);},
       child: Scaffold(
-        backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: Text('Profile'),
@@ -22,24 +21,33 @@ class _EditProfileState extends State<EditProfile> {
             onPressed: () => navigatePreviousPage(context),
           ),
         ),
-        body: Stack(
-          fit:StackFit.expand,
-          children: <Widget>[
-            ListView(
-              children: <Widget>[
-                title('Name'),
-                card('Myco Paul John Perez', Icon(Icons.edit, color: Colors.grey[800]), () => navigatePage('/changeName')),
-                title('Phone Number'),
-                card('09123456789', Icon(Icons.phone_android, color: Colors.grey[800]), null),
-                title('Email'),
-                card('example@email.com', Icon(Icons.email, color: Colors.grey[800]), null),
-                title('Password'),
-                card('123456', Icon(Icons.lock, color: Colors.grey[800]), null),
-                title('Pin'),
-                card('123456', Icon(Icons.vpn_key, color: Colors.grey[800]), null),
-              ],
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.black, Colors.greenAccent]
             )
-          ],
+          ),
+          child: Stack(
+            fit:StackFit.expand,
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  title('Name'),
+                  card('Myco Paul John Perez', Icon(Icons.edit, color: Colors.grey[800]), () => navigatePage('/changeName')),
+                  title('Phone Number'),
+                  card('09123456789', Icon(Icons.phone_android, color: Colors.grey[800]), null),
+                  title('Email'),
+                  card('example@email.com', Icon(Icons.email, color: Colors.grey[800]), null),
+                  title('Password'),
+                  card('123456', Icon(Icons.lock, color: Colors.grey[800]), null),
+                  title('Pin'),
+                  card('123456', Icon(Icons.vpn_key, color: Colors.grey[800]), null),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -51,7 +59,7 @@ class _EditProfileState extends State<EditProfile> {
   );
 
   Widget card(listTxt, suffixIcon, goTo) => Card(
-    color: Colors.greenAccent,
+    color: Colors.white,
     child: ListTile(
       trailing: suffixIcon,
       onTap: goTo,
