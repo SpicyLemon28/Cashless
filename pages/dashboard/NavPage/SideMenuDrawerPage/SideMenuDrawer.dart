@@ -32,8 +32,8 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
                   text('Myco Paul John Perez'),
                   text('09191234567'),
                   Padding(padding: const EdgeInsets.only(top: 30)),
-                  listTile(Icons.settings, 'Settings', () => navigatePage('/settings')),
-                  listTile(Icons.help, 'Help', null),
+                  listTile(Image.asset('assets/SmartPayIcons/Settings.png'), 'Settings', () => navigatePage('/settings')),
+                  listTile(Image.asset('assets/SmartPayIcons/Help.png'), 'Help', null),
                 ],
               ),
              )
@@ -48,8 +48,8 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
   );
 
  Widget listTile(iconText, txt, goTo) => ListTile(
-      leading: Icon(iconText, color: Colors.white),
-      title: Text(txt, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+      leading: IconButton(icon: iconText, onPressed: null),
+      title: Text(txt, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400)),
       onTap: goTo
     );
 
