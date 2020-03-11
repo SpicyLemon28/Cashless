@@ -16,13 +16,7 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
            children: <Widget>[
              Container(
                constraints: BoxConstraints(maxHeight: 800),
-               decoration: BoxDecoration(
-                 gradient: LinearGradient(
-                   begin: Alignment.topLeft,
-                   end: Alignment.bottomRight,
-                   colors: [Colors.greenAccent, Colors.green[900] ]
-                 ) 
-                 ),
+               color: Color(0xFF2c3e50),
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -30,10 +24,12 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
                     child: Icon(Icons.account_circle, size: 80,color: Colors.white,),
                   ),
                   text('Myco Paul John Perez'),
-                  text('09191234567'),
+                  text('example@email.com'),
+                  Divider(color: Colors.white, height: 30),
                   Padding(padding: const EdgeInsets.only(top: 30)),
-                  listTile(Image.asset('assets/SmartPayIcons/Settings.png'), 'Settings', () => navigatePage('/settings')),
-                  listTile(Image.asset('assets/SmartPayIcons/Help.png'), 'Help', null),
+                  listTile(Image.asset('assets/SmartPayIcons/Profile.png'), 'Profile', () => navigatePage('/editProfile')),
+                  listTile(Image.asset('assets/SmartPayIcons/Terms-Conditions.png'), 'Terms & Conditions', null),
+                  listTile(Image.asset('assets/SmartPayIcons/About.png'), 'About SmartPay', () => navigatePage('/about'))
                 ],
               ),
              )

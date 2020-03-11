@@ -31,10 +31,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     return WillPopScope(
       onWillPop: () { register.navigatePreviousPage(context); },
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF2c3e50),
         appBar: AppBar(
           title: Text('Forgot Password'),
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF2c3e50),
           leading: IconButton(icon: Icon(Icons.arrow_back),
           onPressed: () { register.navigatePreviousPage(context); },)
         ),
@@ -82,7 +82,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 			onSaved: (value) => _phone = value,
       validator: (String value) => textValidation(value),
       decoration: InputDecoration(
-        labelText: lblText, labelStyle: TextStyle(color: Colors.grey [300], fontWeight: FontWeight.w500),
+        labelText: lblText, labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         hintText: hntText, hintStyle: TextStyle(color: Colors.grey[300], fontSize: 12),
         focusedBorder: greenBorder,
         errorBorder: redBorder,

@@ -17,9 +17,8 @@ class _ChangeNameState extends State<ChangeName> {
     return WillPopScope(
       onWillPop: () {navigatePreviousPage(context);},
       child: Scaffold(
-        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF2c3e50),
           title: Text('Edit Name'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () {navigatePreviousPage(context);}),
@@ -32,10 +31,22 @@ class _ChangeNameState extends State<ChangeName> {
             children: <Widget>[
               ListView(
                 children: <Widget>[
-                  Padding(padding: const EdgeInsets.only(top: 200, left: 30),
-                    child: text('Current Name: Myco Paul John Perez')),
-                  textFormField('New Name', 'Enter Full Name'),
-                  saveBtn('Save Changes')
+                  Container( 
+                    margin: EdgeInsets.only(top: 30, bottom: 30),
+                    child: Image.asset("assets/SmartPayIcons/Name.png", width: 200, height: 200),
+                  ),
+                  Container(
+                    height: 458.5,
+                    child: Column(children: <Widget>[
+                      text('Current Name: Myco Paul John Perez'),
+                      textFormField('New Name', 'Enter Full Name'),
+                      saveBtn('Save Changes')
+                    ],),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF2c3e50),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
+                    ),
+                  )
                 ],
               )
             ],
@@ -55,7 +66,11 @@ class _ChangeNameState extends State<ChangeName> {
           borderSide: BorderSide(color: Colors.greenAccent, width: 2)
         );      
 
-  Widget text(listTxt) => Text(listTxt, style: TextStyle(color: Colors.grey[300], fontSize: 13, fontWeight: FontWeight.w500));
+  Widget text(listTxt) => Padding(
+    padding: const EdgeInsets.only(top: 30),
+    child: Text(listTxt, style: TextStyle(color: Colors.grey[300], fontSize: 13, fontWeight: FontWeight.w500)
+    )
+  );
 
   Widget textFormField(lblText,hntText) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 50),

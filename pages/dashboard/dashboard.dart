@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/cupertino.dart';
 
 import './NavPage/Home.dart';
 import './NavPage/TransactionPage/Transaction.dart';
@@ -46,7 +45,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 				drawer: SideMenuDrawer(),
 				appBar: AppBar(
           elevation: 0,
-					backgroundColor: Colors.black,
+					backgroundColor: Color(0xFF2c3e50),
 					centerTitle: true,
 					title: Text('SmartPay', style: TextStyle(color: Colors.white),),
 					actions: <Widget>[
@@ -58,21 +57,21 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 					],
 				),
         bottomNavigationBar: Material(
-          color: Colors.black87,
+          color: Color(0xFF2c3e50),
           shadowColor: Colors.white,
           child: TabBar(
             indicatorColor: Colors.greenAccent,
             controller: _tabController,
             tabs: <Widget>[
-              Tab(icon: Icon(Icons.home)),
-              Tab(icon: Icon(Icons.receipt))
+              Tab(icon: Icon(Icons.home), text: 'Home',),
+              Tab(icon: Icon(Icons.receipt), text: 'Transaction',)
             ],
           ),
         ),
         body: TabBarView(
           controller: _tabController,
           children: <Widget>[
-            Home(), 
+            Home(),
             Transaction()
           ],
         ),

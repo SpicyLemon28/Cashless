@@ -24,15 +24,12 @@ class _TransferMoneyState extends State<TransferMoney> {
   @override
   Widget build(BuildContext context) {
 
-    final transferIcon = Container(child: Image.asset("assets/SmartPayIcons/Transfer.png", width: 400, height: 200));
-
     return WillPopScope(
       onWillPop: () { navigatePreviousPage(context);},
       child: Scaffold(
-        backgroundColor: Colors.black,
         appBar: AppBar(
           title: Text('Transfer Money'),
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF2c3e50),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage(context),
           ),
@@ -45,15 +42,27 @@ class _TransferMoneyState extends State<TransferMoney> {
             children: <Widget>[
               ListView(
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(padding: const EdgeInsets.only(left: 30, top: 60, bottom: 30),
-                      child: transferIcon),
-                      textFormField('Phone Number', 'Enter Phone Number', TextInputType.phone, false),
-                      textFormField('Amount', 'Enter desired amount', TextInputType.number, false),
-                      textFormField('Message (optional)', null, TextInputType.text, false),
-                      continueButton('Continue')
-                    ],
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 30),
+                    child: Image.asset("assets/SmartPayIcons/Transfer.png", width: 400, height: 200)
+                  ),
+                  Container(
+                    height: 460,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF2c3e50),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30),
+                          child: textFormField('Phone Number', 'Enter Phone Number', TextInputType.phone, false),
+                        ),
+                        textFormField('Amount', 'Enter desired amount', TextInputType.number, false),
+                        textFormField('Message (optional)', null, TextInputType.text, false),
+                        continueButton('Continue') 
+                      ],
+                    ),
                   ),
                 ],
               ), 

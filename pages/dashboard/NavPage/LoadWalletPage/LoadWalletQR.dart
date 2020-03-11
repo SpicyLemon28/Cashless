@@ -13,9 +13,11 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
     return WillPopScope(
       onWillPop: () { navigatePreviousPage(context); },
       child: Scaffold(
+        backgroundColor: Color(0xFF2c3e50),
         appBar: AppBar(
-          title: Text("Scan QR"),
-          backgroundColor: Colors.black,
+          elevation: 0,
+          title: Text("QR Code"),
+          backgroundColor: Color(0xFF2c3e50),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage('/loadWallet')),
           actions: <Widget>[
@@ -28,17 +30,11 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black
-              ),
-            ),
-
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 40, 20, 30),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.greenAccent,
+                  gradient: LinearGradient(colors: [Color(0xFF16a085), Color(0xFF00cc88)]),
                   borderRadius: BorderRadius.circular(15)
                 ),
               ),
@@ -48,10 +44,16 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    instructions('Scan QR to Load Wallet', TextStyle(fontWeight: FontWeight.w500)),
-                    amountNValid('Amount : ', TextStyle(fontWeight: FontWeight.w600,)),
-                    amountNValid('Valid Until : ', TextStyle(fontWeight: FontWeight.w600)),
-                    instructions('• Wait for a SMS confirmation before leaving.', TextStyle(fontStyle: FontStyle.italic, fontSize: 11, fontWeight: FontWeight.w500)),
+                    instructions('Scan QR to Load Wallet', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(left: 50, top: 50),
+                      child: amountNValid('Amount : ', TextStyle(color: Colors.white, fontWeight: FontWeight.w600,))),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(left: 50, top: 30),
+                      child: amountNValid('Valid Until : ', TextStyle(color: Colors.white, fontWeight: FontWeight.w600))),
+                    instructions('• Wait for a SMS confirmation before leaving.', TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontSize: 11, fontWeight: FontWeight.w500)),
                     
                     Padding(
                       padding: const EdgeInsets.only(top: 40, left: 70, right: 70),
@@ -72,10 +74,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
     child: Text(txt, style: txtStyle),
   );
 
-  Widget amountNValid(txt, txtStyle) => Padding(
-    padding: const EdgeInsets.only(top: 50, right: 200),
-    child: Text(txt, style: txtStyle),
-  );
+  Widget amountNValid(txt, txtStyle) => Text(txt, style: txtStyle);
 
   void navigatePreviousPage(navTo) => Navigator.pushReplacementNamed(context, navTo);
 

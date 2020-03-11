@@ -77,10 +77,10 @@ class _RegisterState extends State<Register> {
 		return WillPopScope(
 			onWillPop: () { register.navigatePreviousPage(context); },
 			child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF2c3e50),
 				appBar: AppBar(
 					title: Text('Registration'),
-					backgroundColor: Colors.black,
+					backgroundColor: Color(0xFF2c3e50),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () { register.navigatePreviousPage(context); }
           )
@@ -93,7 +93,9 @@ class _RegisterState extends State<Register> {
 					  	children: <Widget>[
 					  		ListView(
 					  			children: <Widget>[
-					  				 Column(
+					  				 Container(
+                       margin: EdgeInsets.only(top: 20),
+					  				   child: Column(
 					  							mainAxisAlignment: MainAxisAlignment.center,
 					  							children: <Widget>[		
 					  								textFormField(_phone, Icons. phone_android, 'Phone Number', 'Enter Phone Number', TextInputType.phone, false),
@@ -105,6 +107,7 @@ class _RegisterState extends State<Register> {
 					  								signupButton('Sign Up', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400)),
 					  							],
 					  						),
+					  				 ),
 					  			],
 					  		),
 					  	],
@@ -161,6 +164,7 @@ class _RegisterState extends State<Register> {
         minWidth: 300,
         height: 50,
         child: RaisedButton(
+          elevation: 5,
           color: Colors.green,
           child: Text(buttonText, style: styleText,),
           onPressed: () => _submit(),

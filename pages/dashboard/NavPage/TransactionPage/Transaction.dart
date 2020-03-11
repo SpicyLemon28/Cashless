@@ -11,21 +11,13 @@ class _TransactionState extends State<Transaction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: Container(
-         decoration: BoxDecoration(
-           gradient: LinearGradient(
-             begin: Alignment.topCenter,
-             end: Alignment.bottomCenter,
-             colors: [Colors.black, Colors.greenAccent]
-           )
-         ),
-         child: Padding(
+       body: Padding(
            padding: const EdgeInsets.symmetric(horizontal: 10),
            child: ListView(
              children: <Widget>[
                Padding(
                  padding: const EdgeInsets.only(top: 30),
-                 child: Text('Transaction History', style: TextStyle(color: Colors.grey[300], fontSize: 18, fontWeight: FontWeight.w500)),
+                 child: Text('Transaction History', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
                ),
                Padding(padding: const EdgeInsets.only(top: 20)),
                card('Purchased from:', '10 mins ago', '₱ 100.00'),
@@ -40,11 +32,11 @@ class _TransactionState extends State<Transaction> {
              ],
            ),
          )
-       )
-    );
+       );
   }
 
   Widget card(txt, txtTime, txtPrice) => Card(
+    elevation: 5,
     child: Column(
       children: <Widget>[
         Padding(

@@ -74,7 +74,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 				break;
     	default:
 				return Scaffold(
-          backgroundColor: Colors.black,
 					key: scaffoldKey,
 					body: Form(
 						key: _formKey,
@@ -84,12 +83,19 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 						  	children: <Widget>[
 						  		ListView(
 						  			children: <Widget>[
-						  				SafeArea(
-						  					child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
+                      Container(
+                        margin: EdgeInsets.only(top: 200, bottom: 20, left: 40, right: 40),
+                        child: Image.asset('assets/SmartPayIcons/SmartPay.png'),
+                      ),
+						  				Container(
+                          height: 490,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF2c3e50),
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
+                          ),
 						  						child: Column(
 						  							mainAxisAlignment: MainAxisAlignment.center,
 						  							children: <Widget>[
-						  								appName('SmartPay'),
 						  								textFormField(Icons.person, 'Phone Number', TextInputType.number),
 						  								textFormField(Icons.lock, 'Password', TextInputType.text),
 						  								Row(
@@ -103,7 +109,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 						  							],
 						  						),
 						  					),
-						  				),
 						  			],
 						  		),
 						  	],
@@ -123,11 +128,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
           borderSide: BorderSide(color: Colors.greenAccent, width: 2)
         );      
 
-	// Name of the App
-  Widget appName(txtApp) => Padding(
-    padding: const EdgeInsets.only(top: 200, bottom: 50),
-    child: Text(txtApp, style: TextStyle(color: Colors.white, fontSize: 30),),
-  );
 
   Widget linkButton(txtLink, onClick) => Padding(
     padding: const EdgeInsets.only(left: 10, right: 10),
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
 
   Widget textFormField(icnText, hntText, keyType) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 20,),
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
     child: TextFormField(
       style: TextStyle(color: Colors.white),
       keyboardType: keyType,
@@ -179,6 +179,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             minWidth: 300,
             height: 50,
             child: RaisedButton(
+              elevation: 5,
               color: Colors.green,
               child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),),
               onPressed: () => _submit(),

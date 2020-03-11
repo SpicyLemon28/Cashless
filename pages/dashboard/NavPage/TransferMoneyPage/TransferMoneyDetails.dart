@@ -13,35 +13,42 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
     return WillPopScope(
       onWillPop: (){ navigatePreviousPage(context);},
       child: Scaffold(
-        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF2c3e50),
           title: Text('Confirmation'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage(context),
           ),
         ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
-          text('Phone Number of money transfered'),
-          Padding(
-            padding: const EdgeInsets.only(right: 140),
-            child: text('Transfer Amount: '),
+          
+              Container(
+                margin: EdgeInsets.only(top: 170, left: 30, right: 30),
+                alignment: Alignment.topLeft,
+                child: text('Phone Number of money transfered')
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 30),
+                alignment: Alignment.topLeft,
+                child: text('Transfer Amount: '),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 30),
+                alignment: Alignment.topLeft,
+                child: text('Message: '),
+              ),
+              transferButton('Transfer')
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 200),
-            child: text('Message: '),
-          ),
-          transferButton('Transfer')
-        ],
+        
       )
-      ),
     );
   }
 
   Widget text(txt) => Padding(
     padding: const EdgeInsets.only(top: 50),
-    child: Text(txt, style: TextStyle(color: Colors.grey [300], fontWeight: FontWeight.w500))
+    child: Text(txt, style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.w500))
   );
 
   Widget transferButton(buttonText) {
@@ -51,6 +58,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
         minWidth: 400,
         height: 50,
         child: RaisedButton(
+          elevation: 5,
           color: Colors.green,
           child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
           onPressed: () => dialog(),

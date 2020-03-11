@@ -48,6 +48,13 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF2c3e50),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color(0xFF2c3e50),
+          leading: IconButton(icon: Icon(Icons.arrow_back),
+          onPressed: () { register.navigatePreviousPage(context); },)
+        ),
 			key: scaffoldKey,
       body: Form(
         key: _formKey,
@@ -99,7 +106,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       obscureText: blnObscure,
       decoration: InputDecoration(
         labelText: lblText,
-        labelStyle: TextStyle(color: Colors.grey[300], fontWeight: FontWeight.w500),
+        labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         hintText: hntText,
         hintStyle: TextStyle(color: Colors.grey[300], fontSize: 15),
         suffixIcon: _suffixIcon(lblText, blnObscure),
@@ -159,6 +166,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       }
     }
   }
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/login');
 
   void _submit() {
 		final form = _formKey.currentState;

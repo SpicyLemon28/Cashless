@@ -13,9 +13,8 @@ class _ScantoPayState extends State<ScantoPay> {
     return WillPopScope(
       onWillPop: () { navigatePreviousPage(context);},
       child: Scaffold(
-        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF2c3e50),
           title: Text('Scan To Pay'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage(context),

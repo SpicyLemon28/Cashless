@@ -24,13 +24,13 @@ class _LoadWalletState extends State<LoadWallet> {
     loadTypeList = [];
 
     loadTypeList.add(DropdownMenuItem(
-      child: Text('School Fees', style: TextStyle(color: Colors.grey[600])),
+      child: Text('School Fees', style: TextStyle(color: Colors.grey)),
       value: 0,
 
     ));
 
     loadTypeList.add(DropdownMenuItem(
-      child: Text('Allowance', style: TextStyle(color: Colors.grey[600])),
+      child: Text('Allowance', style: TextStyle(color: Colors.grey)),
       value: 1,
     ));
   }
@@ -38,15 +38,12 @@ class _LoadWalletState extends State<LoadWallet> {
   @override
   Widget build(BuildContext context) {
 
-    final loadIcon = Container(child: Image.asset("assets/SmartPayIcons/Load.png", width: 400, height: 200));
-
     loadWalletList();
     return WillPopScope(
       onWillPop: () {navigatePreviousPage(context);},
       child: Scaffold(
-        backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF2c3e50),
           title: Text('Load Wallet'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () {navigatePreviousPage(context);}),
@@ -59,16 +56,23 @@ class _LoadWalletState extends State<LoadWallet> {
               children: <Widget>[
                 ListView(
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20,top: 80),
-                          child: loadIcon,
-                        ),
-                        textFormField('Amount', 'Enter amount to load to your account'),
-                        loadTypeButton('School Fees'),
-                        continueButton('Continue')
-                      ],
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 50),
+                      child: Image.asset("assets/SmartPayIcons/Load.png", width: 400, height: 200)
+                    ),
+                    Container(
+                      height: 420,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF2c3e50),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          textFormField('Amount', 'Enter amount to load to your account'),
+                          loadTypeButton('School Fees'),
+                          continueButton('Continue')
+                        ],
+                      ),
                     )
                   ],
                 )
@@ -97,7 +101,7 @@ class _LoadWalletState extends State<LoadWallet> {
       validator: (value) => textValidation(lblText, value),
       decoration: InputDecoration(
         labelText: lblText, hintText: hntText,
-        labelStyle: TextStyle(color: Colors.grey [300], fontWeight: FontWeight.w500),
+        labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         hintStyle: TextStyle(color: Colors.grey [300], fontSize: 12),
         enabledBorder: greenBorder,
         focusedBorder: greenBorder,
