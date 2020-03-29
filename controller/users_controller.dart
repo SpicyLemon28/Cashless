@@ -52,6 +52,11 @@ class UsersController {
 		return await db.rawUpdate("Update $tblUsers Set password='$newPassword' Where phone = ?", [phone]);
 	}
 
+  Future<int> updateFullname(String phone, String newName) async {
+    Database db = await connect.database;
+    return await db.rawUpdate("Update $tblUsers Set name='$newName' Where phone = ?", [phone]);
+  }
+
 	Future<int> deleteAccount(int id) async {
 		var db = await connect.database;
 		return await db.rawDelete('Delete From $tblUsers Where id = $id');
