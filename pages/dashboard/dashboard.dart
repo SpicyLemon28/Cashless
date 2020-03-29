@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,11 +23,16 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 		setState(() { widget.signOut(); });
 	}
 
-	var signIn;
+	var signIn, _phone, _fullname;
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() => signIn = preferences.getInt("signIn") );
+    var userInfo = json.decode(preferences.getString("user"));
+		setState(() {
+			signIn = userInfo["signIn"];
+      _phone = userInfo["phone"];
+      _fullname =  userInfo["name"];
+		});
   }
 
   @override
@@ -42,7 +49,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 				return Future.value(false);
 			},
 			child: Scaffold(
-				drawer: SideMenuDrawer(),
+				drawer: SideMenuDrawer(_fullname, _phone),
 				appBar: AppBar(
           elevation: 0,
 					backgroundColor: Color(0xFF2c3e50),

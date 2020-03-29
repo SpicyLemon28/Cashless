@@ -1,21 +1,50 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../../../controller/users_controller.dart';
+import '../../../../../../utilities/registration_utilities.dart';
+import '../../../../../../global.dart';
 
 class ChangeName extends StatefulWidget {
-  ChangeName({Key key}) : super(key: key);
-
   @override
   _ChangeNameState createState() => _ChangeNameState();
 }
 
 class _ChangeNameState extends State<ChangeName> {
 
+  UsersController users = UsersController();
+  RegistrationUtilities register = RegistrationUtilities();
+
   final _formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   bool _autoValidate = false;
+  bool _isLoading = false;
+
+  var _phone, _currentname, _newname;
+
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var userInfo = json.decode(preferences.getString("user"));
+		setState(() {
+      _phone = userInfo["phone"];
+      _currentname =  userInfo["phone"];
+		});
+  }
+
+  @override
+	void initState() {
+		super.initState();
+		getPref();
+	}
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {navigatePreviousPage(context);},
+      onWillPop: () { navigatePreviousPage(context); },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF2c3e50),
@@ -23,6 +52,7 @@ class _ChangeNameState extends State<ChangeName> {
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () {navigatePreviousPage(context);}),
         ),
+        key: scaffoldKey,
         body: Form(
           key: _formKey,
           autovalidate: _autoValidate,
@@ -31,14 +61,14 @@ class _ChangeNameState extends State<ChangeName> {
             children: <Widget>[
               ListView(
                 children: <Widget>[
-                  Container( 
+                  Container(
                     margin: EdgeInsets.only(top: 30, bottom: 30),
                     child: Image.asset("assets/SmartPayIcons/Name.png", width: 200, height: 200),
                   ),
                   Container(
                     height: 458.5,
                     child: Column(children: <Widget>[
-                      text('Current Name: Myco Paul John Perez'),
+                      text('Current Name: $_currentname'),
                       textFormField('New Name', 'Enter Full Name'),
                       saveBtn('Save Changes')
                     ],),
@@ -57,25 +87,26 @@ class _ChangeNameState extends State<ChangeName> {
   }
 
   var redBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.redAccent, width: 2)
-        );
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: Colors.redAccent, width: 2)
+      );
 
   var greenBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );      
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+      );
 
   Widget text(listTxt) => Padding(
     padding: const EdgeInsets.only(top: 30),
-    child: Text(listTxt, style: TextStyle(color: Colors.grey[300], fontSize: 13, fontWeight: FontWeight.w500)
-    )
+    child: Text(listTxt, style: TextStyle(color: Colors.grey[300], fontSize: 13, fontWeight: FontWeight.w500))
   );
 
-  Widget textFormField(lblText,hntText) => Padding(
+  Widget textFormField(lblText, hntText) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
     child: TextFormField(
       style: TextStyle(color: Colors.white),
+      autofocus: true,
+      onSaved: (value) => _newname = value,
       validator: (value) => textValidation(hntText, value),
       decoration: InputDecoration(
         labelText: lblText, labelStyle: TextStyle(color: Colors.grey[300], fontSize: 15, fontWeight: FontWeight.w500),
@@ -88,58 +119,91 @@ class _ChangeNameState extends State<ChangeName> {
     ),
   );
 
-  Widget saveBtn(btnText) => Padding(
-    padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
-    child: ButtonTheme(
-      minWidth: 300,
-      height: 50,
-      child: RaisedButton(
-        color: Colors.green,
-        child: Text(btnText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
-        onPressed: _submit,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-      ),
-    ),
-  );
+  Widget saveBtn(btnText) {
+		return _isLoading
+      ? CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
+        )
+    	: Padding(
+          padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
+          child: ButtonTheme(
+            minWidth: 300,
+            height: 50,
+            child: RaisedButton(
+              color: Colors.green,
+              child: Text(btnText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
+              onPressed: _submit,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            ),
+          ),
+        );
+  }
 
-  void navigatePage(navTo) =>
-		Navigator.pushReplacementNamed(context, navTo);
-
-  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
+  textValidation(hntText, value) {
+    if (value.isEmpty) {
+      return '$hntText should not be empty';
+    } else {
+      if(!value.contains(' ')) {
+        return 'Invalid Full Name';
+      }
+    }
+  }
 
   void _submit() {
     final form = _formKey.currentState;
     if (form.validate()) {
-      dialog();
+      form.save();
+      setState(() => _isLoading = true);
+      _updateFullname();
     } else {
       setState(() => _autoValidate = true);
     }
+  }
+
+	void _updateFullname() async {
+  	var data = { "phone" : _phone, "name" : _newname };
+
+    http.Response response = await http.post(UPDATE_FULLNAME, body: data);
+    final responseData = json.decode(response.body);
+
+		setState(() => _isLoading = false);
+    if (response.statusCode == 200) {
+			int result = responseData['result'];
+			if (result == 1) {
+				result = await users.updateFullname(_phone, _newname);
+				if (result == 1) {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          setState(() {
+            preferences.setString("name", _newname);
+            _currentname = _newname;
+          });
+          dialog();
+				} else {
+					register.snackBarShow(scaffoldKey, 'Problem updating fullname');
+				}
+      }
+		} else {
+    	register.snackBarShow(scaffoldKey, responseData['error']);
+		}
   }
 
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: IconButton(icon: Icon(Icons.check_circle_outline),
-        disabledColor: Colors.green,
-        iconSize: 60,
-        onPressed: null
+        disabledColor: Colors.green, iconSize: 60, onPressed: null
       ),
       content: Text('Name has been changed successfully!',style: TextStyle(fontSize: 16)),
       actions: <Widget>[
         FlatButton(
-          child: Text('OKAY'),
-          onPressed: () => navigatePage('/editProfile'),
+          child: Text('OKAY'), onPressed: () => navigatePage('/editProfile'),
         )
       ],
     )
   );
 
-  textValidation(hntText, value){
-    if (value.isEmpty){
-      return '$hntText should not be empty';
-    }
-    if(!value.contains(' ')) {
-      return 'Invalid Full Name';
-    }
-  }
+  void navigatePage(navTo) => Navigator.pushReplacementNamed(context, navTo);
+
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
+
 }
