@@ -54,7 +54,7 @@ class _EditProfileState extends State<EditProfile> {
                   title('Email'),
                   card(_email, Icon(Icons.email, color: Colors.grey), null),
                   title('Password'),
-                  card('********', Icon(Icons.lock, color: Colors.grey), null),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () => navigatePage('/changePass')),
                   title('Pin'),
                   card('********', Icon(Icons.vpn_key, color: Colors.grey), null),
                 ],
