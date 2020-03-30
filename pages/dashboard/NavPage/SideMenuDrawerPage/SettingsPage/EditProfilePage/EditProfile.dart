@@ -54,7 +54,7 @@ class _EditProfileState extends State<EditProfile> {
                   title('Email'),
                   card(_email, Icon(Icons.email, color: Colors.grey), null),
                   title('Password'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () => navigatePage('/changePass')),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () => confirmDialog()),
                   title('Pin'),
                   card('********', Icon(Icons.edit, color: Colors.grey), () => navigatePage('/changePin')),
                 ],
@@ -88,5 +88,35 @@ class _EditProfileState extends State<EditProfile> {
 	securePhone(phone) {
 		return phone == null ? "" : phone.replaceRange(4, 9, '*' * 5);
 	}
+
+  confirmDialog() => showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
+    ),
+    title: Column(children: <Widget>[
+      Text('CHANGE PASSWORD', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      Padding(padding: const EdgeInsets.only(top: 10)),
+      Text('To proceed with your request, please enter your confirmation code sent to your email:',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+    ],),
+    content: TextField(
+      autofocus: true,
+      decoration: InputDecoration(
+        hintText: 'Enter Confirmation Code',
+        hintStyle: TextStyle(fontSize: 12),
+        prefixIcon: Icon(Icons.code),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
+    actions: <Widget>[
+      FlatButton(
+        child: Text('SUBMIT'),
+        onPressed: () => navigatePage('/changePass'),
+      )
+    ],
+  )); 
+
+  
 
 }

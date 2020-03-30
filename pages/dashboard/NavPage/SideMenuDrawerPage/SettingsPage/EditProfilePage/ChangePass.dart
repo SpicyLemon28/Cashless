@@ -12,13 +12,26 @@ class _ChangePassState extends State<ChangePass> {
   final _formKey = GlobalKey<FormState>();
 	final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final _newPassword = TextEditingController();
-	final _cfmPassword = TextEditingController();
-
   //bool _isLoading = false;
   bool _autoValidate = false;
 
   bool newPasswordVisible, cfmPasswordVisible;
+
+  final _newPassword = TextEditingController();
+	final _cfmPassword = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+		newPasswordVisible = true;
+		cfmPasswordVisible = true;
+  }
+
+	void dispose() {
+    super.dispose();
+		_newPassword.dispose();
+		_cfmPassword.dispose();
+	}
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +52,27 @@ class _ChangePassState extends State<ChangePass> {
             fit: StackFit.expand,
             children: <Widget>[
               ListView(children: <Widget>[
-                Column(children: <Widget>[
-                  Padding(padding: const EdgeInsets.only(top: 200)),
-                  text('Change your Password', TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                  text('A password should contain 6 characters or longer', TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
-                  textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
-                  textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
-                  submitButton('Submit', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
-                ],)
+                Container(
+                    margin: EdgeInsets.only(top: 30),
+                    child: Column(children: <Widget>[
+                      Padding(padding: const EdgeInsets.only(top: 180)),
+                      text('Create a Strong Password', TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                    ],)
+                  ),
+                Container(
+                  height: 480,
+                  child: Column(children: <Widget>[
+                    Padding(padding: const EdgeInsets.only(top: 20),),
+                    text('A password should contain 6 characters or longer', TextStyle(color: Colors.white, fontSize: 12, fontStyle: FontStyle.italic)),
+                    textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
+                    textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
+                    saveBtn('Save Changes', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
+                  ],),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF2c3e50),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
+                    ),
+                )
               ],)
             ],
           ),
@@ -91,44 +117,21 @@ class _ChangePassState extends State<ChangePass> {
     ),
   );
 
-  Widget submitButton(buttonText, styleText) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: ButtonTheme(
-        minWidth: 300,
-        height: 50,
-        child: RaisedButton(
-          color: Colors.green,
-          child: Text(buttonText, style: styleText),
-          onPressed: null,/*() => _submit(),*/
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            ),
-          ),	
-    );
-  }
-
-  /*Widget submitButton(buttonText, styleText) {
-		return Padding(
-		  padding: const EdgeInsets.only(top: 20),
-		  child: _isLoading
-      ? CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
-        )
-    	: Padding(
-		  			padding: const EdgeInsets.only(top: 30),
-		  		  child: ButtonTheme(
-              minWidth: 300,
-              height: 50,
-              child: RaisedButton(
-                color: Colors.green,
-                child: Text(buttonText, style: styleText,),
-                onPressed: () => _submit(),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-              ),
-            ),	
-		  		),
-      );
-	} */
+  Widget saveBtn(btnText, styleText) => Padding(
+    padding: const EdgeInsets.only(top: 30),
+    child: ButtonTheme(
+      minWidth: 300,
+      height: 50,
+      child: RaisedButton(
+        elevation: 5,
+        color: Colors.green,
+        child: Text(
+          btnText, style: styleText
+          ),
+          onPressed: () => _submit(),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),),
+    ),
+  );
 
   _suffixIcon(lblText, blnObscure) {
     if (lblText == 'New Password' || lblText == 'Confirm Password') {
@@ -156,54 +159,39 @@ class _ChangePassState extends State<ChangePass> {
     }
   }
 
+  pswdSccsful() => showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
+    ),
+    title: Column(
+      children: <Widget>[
+      Icon(Icons.check_circle_outline, color: Colors.green, size: 60),
+      Padding(padding: const EdgeInsets.only(top: 8)),
+      Text('Password changed succesfully!', style: TextStyle(fontSize: 13),)
+    ],),
+    actions: <Widget>[
+      FlatButton(
+        child: Text('OKAY'),
+        onPressed: () => navigatePage('/editProfile'),
+      )
+    ],
+    ),
+  );
+
+
+  void _submit() {
+		final form = _formKey.currentState;
+		if (form.validate()) {
+			pswdSccsful();
+		} else {
+			setState(() => _autoValidate = true);
+		}
+	}
+
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
 
-  /*void _submit() {
-		final form = _formKey.currentState;
-		if (form.validate()) {
-			setState(() => _isLoading = true);
-			//_resetPassword(); 
-		} else {
-			setState(() => _autoValidate = true);
-		}*/
-  
-  /*void _resetPassword() async {
-		SharedPreferences preferences = await SharedPreferences.getInstance();
-		setState(() {
-			_phone = preferences.getString("phone");
-			_token = preferences.getString("token");
-		});
-
-		var data = {
-			"token"       : _token,
-			"newPassword" : Password.hash(_newPassword.text, PBKDF2()),
-			"cfmPassword" : Password.hash(_cfmPassword.text, PBKDF2())
-		};
-
-    http.Response response = await http.post(RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-		setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
-			if (result == 3) {
-				result = await users.resetPassword(_phone, _newPassword.text);
-				if (result == 1) {
-					_formKey.currentState.reset();
-					Navigator.pushReplacementNamed(context, '/login');
-				} else {
-					register.snackBarShow(scaffoldKey, 'Problem reseting password');
-				}
-			}
-		} else {
-  		register.snackBarShow(scaffoldKey, responseData['error']);
-		}
-  }*/
-    
-  
-
-  
 }
