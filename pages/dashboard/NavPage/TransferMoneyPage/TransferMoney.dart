@@ -60,12 +60,12 @@ class _TransferMoneyState extends State<TransferMoney> {
                         ),
                         textFormField('Amount', 'Enter desired amount', TextInputType.number, false),
                         textFormField('Message (optional)', null, TextInputType.text, false),
-                        continueButton('Continue') 
+                        continueButton('Continue')
                       ],
                     ),
                   ),
                 ],
-              ), 
+              ),
             ],
           ),
         ),
@@ -121,7 +121,7 @@ class _TransferMoneyState extends State<TransferMoney> {
     Navigator.pushReplacementNamed(context, navTo);
   }
 
-  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
 
   void _submit() {
     final form = _formKey.currentState;
@@ -150,9 +150,9 @@ class _TransferMoneyState extends State<TransferMoney> {
 
         case 'Amount':
           return value.isEmpty ? '$lblText should not be empty' : null;
-        
+
         case 'Pin':
-          return value.length < 6 ? '$lblText must be 6 digits or longer' : null;   
+          return value.length < 6 ? '$lblText must be 6 digits or longer' : null;
       }
-    
+
 }

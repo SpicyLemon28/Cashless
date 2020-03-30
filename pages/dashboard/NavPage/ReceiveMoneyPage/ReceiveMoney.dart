@@ -14,7 +14,7 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
       onWillPop: (){ navigatePreviousPage(context);},
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF2c3e50), 
+          backgroundColor: Color(0xFF2c3e50),
           title: Text('Receive Money'),
           leading: IconButton(icon: Icon(Icons.arrow_back),
             onPressed: () => navigatePreviousPage(context),
@@ -24,5 +24,5 @@ class _ReceiveMoneyState extends State<ReceiveMoney> {
     );
   }
 
-  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
 }

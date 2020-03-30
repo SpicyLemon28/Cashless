@@ -8,3 +8,6 @@ const SIGNUP_CONFIRMED = "https://$HOST_NAME/api/users/signup/confirmed";
 const REQUEST_RESET_PASSWORD = "https://$HOST_NAME/api/users/reset_password_request";
 const CONFIRMED_REQUEST_RESET_PASSWORD = "https://$HOST_NAME/api/users/reset_password_request/confirmed";
 const RESET_PASSWORD = "https://$HOST_NAME/api/users/reset_password";
+
+const UPDATE_FULLNAME = "https://$HOST_NAME/api/users/update_fullname";
+
