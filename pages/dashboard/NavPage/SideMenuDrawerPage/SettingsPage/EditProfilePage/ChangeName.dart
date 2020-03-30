@@ -154,13 +154,13 @@ class _ChangeNameState extends State<ChangeName> {
     if (form.validate()) {
       form.save();
       setState(() => _isLoading = true);
-      //_updateFullname();
+      _updateFullname();
     } else {
       setState(() => _autoValidate = true);
     }
   }
 
-	/*void _updateFullname() async {
+	void _updateFullname() async {
   	var data = { "phone" : _phone, "name" : _newname };
 
     http.Response response = await http.post(UPDATE_FULLNAME, body: data);
@@ -185,7 +185,7 @@ class _ChangeNameState extends State<ChangeName> {
 		} else {
     	register.snackBarShow(scaffoldKey, responseData['error']);
 		}
-  } */
+  } 
 
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(

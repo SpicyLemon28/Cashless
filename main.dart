@@ -13,12 +13,9 @@ import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoneyDetails.dart';
 import './pages/dashboard/NavPage/ReceiveMoneyPage/ReceiveMoney.dart';
 import './pages/dashboard/NavPage/SideMenuDrawerPage/SettingsPage/EditProfilePage/EditProfile.dart';
 import './pages/dashboard/NavPage/SideMenuDrawerPage/SettingsPage/EditProfilePage/ChangeName.dart';
-<<<<<<< HEAD
 import './pages/dashboard/NavPage/SideMenuDrawerPage/SettingsPage/EditProfilePage/ChangePass.dart';
 import './pages/dashboard/NavPage/SideMenuDrawerPage/SettingsPage/EditProfilePage/ChangePin.dart';
-=======
 import './pages/dashboard/NavPage/SideMenuDrawerPage/About.dart';
->>>>>>> 20_refractoring
 
 
 // import './pages/list/user_list.dart';
@@ -36,25 +33,6 @@ class MyApp extends StatelessWidget {
 			debugShowCheckedModeBanner: false,
 			title: "Cashless",
 			routes: {
-<<<<<<< HEAD
-				'/':                      (BuildContext context) => LoginPage(),
-				'/login':                 (BuildContext context) => LoginPage(),
-				'/register':              (BuildContext context) => Register(),
-				'/forgetPassword':        (BuildContext context) => ForgetPassword(),
-				'/resetPassword':         (BuildContext context) => ResetPassword(),
-        '/dashboard':             (BuildContext context) => Dashboard(null),
-        '/loadWallet':            (BuildContext context) => LoadWallet(),
-        '/loadWalletQR':          (BuildContext context) => LoadWalletQR(),
-        '/scantoPay':             (BuildContext context) => ScantoPay(),
-        '/transferMoney':         (BuildContext context) => TransferMoney(),
-        '/transferMoneyDetails':  (BuildContext context) => TransferMoneyDetails(),
-        '/receiveMoney':          (BuildContext context) => ReceiveMoney(),
-        '/editProfile':           (BuildContext context) => EditProfile(),
-        '/changeName':            (BuildContext context) => ChangeName(),
-        '/changePass':            (BuildContext context) => ChangePass(),
-        '/changePin':             (BuildContext context) => ChangePin(),
-        '/about':                 (BuildContext context) => About(),
-=======
 				'/'                     : (BuildContext context) => LoginPage(),
 				'/login'                : (BuildContext context) => LoginPage(),
 				'/register'             : (BuildContext context) => Register(),
@@ -68,8 +46,9 @@ class MyApp extends StatelessWidget {
 				'/receiveMoney'         : (BuildContext context) => ReceiveMoney(),
 				'/editProfile'          : (BuildContext context) => EditProfile(),
 				'/changeName'           : (BuildContext context) => ChangeName(),
+        '/changePass'           : (BuildContext context) => ChangePass(),
+        '/changePin'            : (BuildContext context) => ChangePin(),
 				'/about'                : (BuildContext context) => About()
->>>>>>> 20_refractoring
 			},
 			// home: UserList()
 		);

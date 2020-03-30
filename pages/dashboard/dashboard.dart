@@ -49,7 +49,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 				return Future.value(false);
 			},
 			child: Scaffold(
-				drawer: SideMenuDrawer(/*_fullname, _phone*/),
+				drawer: SideMenuDrawer(_fullname, _phone),
 				appBar: AppBar(
           elevation: 0,
 					backgroundColor: Color(0xFF2c3e50),
