@@ -23,5 +23,5 @@ class _ScantoPayState extends State<ScantoPay> {
       ),
     );
   }
-   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
+   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
 }

@@ -126,7 +126,7 @@ class _LoadWalletState extends State<LoadWallet> {
       onChanged: (value) {
         setState(()=> _selectedLoadType = value);
       },
-      
+
     )
   );
 
@@ -157,8 +157,8 @@ class _LoadWalletState extends State<LoadWallet> {
     Navigator.pushReplacementNamed(context, navTo);
   }
 
-  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/dashboard');
-  
+  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
+
   textValidation(lblText, value) {
     if (lblText == 'Amount') {
       return value.isEmpty ? '$lblText should not be empty' : null;

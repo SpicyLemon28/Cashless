@@ -54,7 +54,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
                       margin: EdgeInsets.only(left: 50, top: 30),
                       child: amountNValid('Valid Until : ', TextStyle(color: Colors.white, fontWeight: FontWeight.w600))),
                     instructions('• Wait for a SMS confirmation before leaving.', TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontSize: 11, fontWeight: FontWeight.w500)),
-                    
+
                     Padding(
                       padding: const EdgeInsets.only(top: 40, left: 70, right: 70),
                       child: Image.asset('assets/SampleQR.png'),
