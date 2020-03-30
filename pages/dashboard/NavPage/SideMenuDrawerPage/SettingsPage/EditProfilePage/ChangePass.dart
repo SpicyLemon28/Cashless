@@ -63,7 +63,6 @@ class _ChangePassState extends State<ChangePass> {
                   height: 480,
                   child: Column(children: <Widget>[
                     Padding(padding: const EdgeInsets.only(top: 20),),
-                    text('A password should contain 6 characters or longer', TextStyle(color: Colors.white, fontSize: 12, fontStyle: FontStyle.italic)),
                     textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
                     textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
                     saveBtn('Save Changes', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
@@ -97,7 +96,7 @@ class _ChangePassState extends State<ChangePass> {
   );
 
   Widget textFormField(txtController, lblText, hntText, blnObscure) => Padding(
-    padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
     child: TextFormField(
       style: TextStyle(color: Colors.white),
 			controller: txtController,
@@ -118,7 +117,7 @@ class _ChangePassState extends State<ChangePass> {
   );
 
   Widget saveBtn(btnText, styleText) => Padding(
-    padding: const EdgeInsets.only(top: 30),
+    padding: const EdgeInsets.only(top: 50),
     child: ButtonTheme(
       minWidth: 300,
       height: 50,

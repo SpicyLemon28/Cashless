@@ -10,24 +10,27 @@ class ChangePin extends StatefulWidget {
 class _ChangePinState extends State<ChangePin> {
 
   final _formKey = GlobalKey<FormState>();
+	final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  //bool _isLoading = false;
   bool _autoValidate = false;
-  bool newPasswordVisible, cfmPasswordVisible;
 
-  final _newPassword = TextEditingController();
-	final _cfmPassword = TextEditingController();
+  bool newPinVisible, cfmPinVisible;
+
+  final _newPin = TextEditingController();
+	final _cfmPin = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-		newPasswordVisible = true;
-		cfmPasswordVisible = true;
+		newPinVisible = true;
+		cfmPinVisible = true;
   }
 
 	void dispose() {
     super.dispose();
-		_newPassword.dispose();
-		_cfmPassword.dispose();
+		_newPin.dispose();
+		_cfmPin.dispose();
 	}
 
   @override
@@ -49,14 +52,26 @@ class _ChangePinState extends State<ChangePin> {
             fit: StackFit.expand,
             children: <Widget>[
               ListView(children: <Widget>[
-                Column(children: <Widget>[
-                  Padding(padding: const EdgeInsets.only(top: 200)),
-                  text('Create a Strong Pin', TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                  text('A pin must contain 6 digits or longer', TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
-                  textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
-                  textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
-                  submitButton('Submit', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
-                ],)
+                Container(
+                    margin: EdgeInsets.only(top: 30),
+                    child: Column(children: <Widget>[
+                      Padding(padding: const EdgeInsets.only(top: 180)),
+                      text('Create a Strong Pin', TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                    ],)
+                  ),
+                Container(
+                  height: 480,
+                  child: Column(children: <Widget>[
+                    Padding(padding: const EdgeInsets.only(top: 20)),
+                    textFormField(_newPin, 'New Pin', 'Enter New Pin', newPinVisible),
+                    textFormField(_cfmPin, 'Confirm Pin', 'Re-type Pin', cfmPinVisible),
+                    saveBtn('Save Changes', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
+                  ],),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF2c3e50),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
+                    ),
+                )
               ],)
             ],
           ),
@@ -81,14 +96,17 @@ class _ChangePinState extends State<ChangePin> {
   );
 
   Widget textFormField(txtController, lblText, hntText, blnObscure) => Padding(
-    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+    padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
     child: TextFormField(
+      style: TextStyle(color: Colors.white),
+			controller: txtController,
       validator: (value) => textValidation(lblText, value),
-      controller: txtController,
       obscureText: blnObscure,
       decoration: InputDecoration(
         labelText: lblText,
+        labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         hintText: hntText,
+        hintStyle: TextStyle(color: Colors.grey[300], fontSize: 15),
         suffixIcon: _suffixIcon(lblText, blnObscure),
         focusedBorder: greenBorder,
         enabledBorder: greenBorder,
@@ -98,39 +116,30 @@ class _ChangePinState extends State<ChangePin> {
     ),
   );
 
-  Widget submitButton(btnText, styleText) {
-    return Padding(
-      padding: const EdgeInsets.only(),
-      child: ButtonTheme(
-        minWidth: 300,
-        height: 50,
-        child: RaisedButton(
-          color: Colors.green,
-          child: Text(btnText, style: styleText),
+  Widget saveBtn(btnText, styleText) => Padding(
+    padding: const EdgeInsets.only(top: 50),
+    child: ButtonTheme(
+      minWidth: 300,
+      height: 50,
+      child: RaisedButton(
+        elevation: 5,
+        color: Colors.green,
+        child: Text(
+          btnText, style: styleText
+          ),
           onPressed: () => _submit(),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        ),
-      ),
-    );
-  }
-
-  void _submit() {
-		final form = _formKey.currentState;
-		if (form.validate()) {
-			dialog();
-		} else {
-			setState(() => _autoValidate = true);
-		}
-	}
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),),
+    ),
+  );
 
   _suffixIcon(lblText, blnObscure) {
-    if (lblText == 'New Password' || lblText == 'Confirm Password') {
+    if (lblText == 'New Pin' || lblText == 'Confirm Pin') {
       return IconButton(
         icon: Icon(blnObscure ? Icons.visibility_off : Icons.visibility, color: Colors.grey[300],),
         onPressed: () {
-          lblText == 'New Password'
-            ? setState(() => newPasswordVisible = !newPasswordVisible)
-            : setState(() => cfmPasswordVisible = !cfmPasswordVisible);
+          lblText == 'New Pin'
+            ? setState(() => newPinVisible = !newPinVisible)
+            : setState(() => cfmPinVisible = !cfmPinVisible);
         },
       );
     }
@@ -141,30 +150,43 @@ class _ChangePinState extends State<ChangePin> {
       return '$lblText should not be empty';
     } else {
       switch (lblText) {
-        case 'New Password':
-          return value.length < 6 ? 'Password must be 6 characters or longer' : null;
-				case 'Confirm Password':
-					return _newPassword.text != value ? 'Password does not match' : null;
+        case 'New Pin':
+          return value.length < 6 ? 'Pin must be 6 digits or longer' : null;
+				case 'Confirm Pin':
+					return _newPin.text != value ? 'Pin does not match' : null;
       }
     }
   }
 
-  dialog() => showDialog(
-    context:  context,
+  pswdSccsful() => showDialog(
+    context: context,
     builder: (BuildContext context) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
-      title: Icon(Icons.check_circle, size: 80, color: Colors.green,),
-      content: Text('Pin changed successfully!'),
-      actions: <Widget>[
-        FlatButton(
-          child: Text('OKAY'),
-          onPressed: () => navigatePage('/editProfile'),
-        )
-      ],
-    )
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
+    ),
+    title: Column(
+      children: <Widget>[
+      Icon(Icons.check_circle_outline, color: Colors.green, size: 80),
+      Padding(padding: const EdgeInsets.only(top: 15)),
+      Text('Pin changed succesfully!', style: TextStyle(fontSize: 16),)
+    ],),
+    actions: <Widget>[
+      FlatButton(
+        child: Text('OKAY'),
+        onPressed: () => navigatePage('/editProfile'),
+      )
+    ],
+    ),
   );
+
+
+  void _submit() {
+		final form = _formKey.currentState;
+		if (form.validate()) {
+			pswdSccsful();
+		} else {
+			setState(() => _autoValidate = true);
+		}
+	}
 
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
