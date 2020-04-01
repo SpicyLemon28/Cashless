@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class SideMenuDrawer extends StatefulWidget {
-	final String fullname, phone;
+	final String fullname;
 
-  SideMenuDrawer(this.fullname, this.phone);
+  SideMenuDrawer(this.fullname);
 
   @override
-  _SideMenuDrawerState createState() => _SideMenuDrawerState(this.fullname, this.phone);
+  _SideMenuDrawerState createState() => _SideMenuDrawerState(this.fullname);
 }
 
 class _SideMenuDrawerState extends State<SideMenuDrawer> {
-  String fullname, phone;
+  String fullname;
 
-	_SideMenuDrawerState(this.fullname, this.phone);
+	_SideMenuDrawerState(this.fullname);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,6 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
                     child: Icon(Icons.account_circle, size: 80,color: Colors.white,),
                   ),
                   text(fullname),
-                  text(securePhone(phone)),
                   Padding(padding: const EdgeInsets.only(top: 30)),
                   listTile(Image.asset('assets/SmartPayIcons/Profile.png'), 'Profile', () => navigatePage('/editProfile')),
                   listTile(Image.asset('assets/SmartPayIcons/Terms-Conditions.png'), 'Terms & Conditions', null),
@@ -59,9 +58,7 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
 
-	securePhone(phone) {
-		return phone == null ? "" : phone.replaceRange(4, 9, '*' * 5);
-	}
+	
 
 	userAvatar(fullname) {
 		return fullname == null ? "" : fullname[0];

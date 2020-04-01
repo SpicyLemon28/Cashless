@@ -23,14 +23,13 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 		setState(() { widget.signOut(); });
 	}
 
-	var signIn, _phone, _fullname;
+	var signIn, _fullname;
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var userInfo = json.decode(preferences.getString("user"));
 		setState(() {
 			signIn    = userInfo["signIn"];
-      _phone    = userInfo["phone"];
       _fullname = preferences.getString("name");
 		});
   }
@@ -49,7 +48,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 				return Future.value(false);
 			},
 			child: Scaffold(
-				drawer: SideMenuDrawer(_fullname, _phone),
+				drawer: SideMenuDrawer(_fullname),
 				appBar: AppBar(
           elevation: 0,
 					backgroundColor: Color(0xFF2c3e50),
