@@ -85,7 +85,6 @@ class RegistrationUtilities {
     if (response.statusCode == 200) {
 			int result = await users.confirmAccount(phone);
 			if (result > 0) {
-				// savePref(setState, 1, phone, "");
 				redirectLogin(context);
 			} else {
 				showAlertDialog(context, 'Warning', 'Problem confirming account');
@@ -106,17 +105,17 @@ class RegistrationUtilities {
     ));
   }
 
-  savePref(setState, int signIn, user) async {
+  savePref(setState, int signIn, String name, user) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    
     var userInfo = json.encode({
       "signIn" : signIn,
       "phone"  : user.phone,
-      "name"   : user.name,
       "email"  : user.email
     });
-
-    setState(() { preferences.setString("user", userInfo); });
+    setState(() {
+      preferences.setString("name", name);
+      preferences.setString("user", userInfo);
+    });
   }
 
 	void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/login');

@@ -30,8 +30,8 @@ class _ChangeNameState extends State<ChangeName> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var userInfo = json.decode(preferences.getString("user"));
 		setState(() {
-      _phone = userInfo["phone"];
-      _currentname =  userInfo["phone"];
+      _phone       = userInfo["phone"];
+      _currentname =  preferences.getString("name");
 		});
   }
 
@@ -185,7 +185,7 @@ class _ChangeNameState extends State<ChangeName> {
 		} else {
     	register.snackBarShow(scaffoldKey, responseData['error']);
 		}
-  } 
+  }
 
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(

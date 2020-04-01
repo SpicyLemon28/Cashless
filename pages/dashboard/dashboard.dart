@@ -29,9 +29,9 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var userInfo = json.decode(preferences.getString("user"));
 		setState(() {
-			signIn = userInfo["signIn"];
-      _phone = userInfo["phone"];
-      _fullname =  userInfo["name"];
+			signIn    = userInfo["signIn"];
+      _phone    = userInfo["phone"];
+      _fullname = preferences.getString("name");
 		});
   }
 

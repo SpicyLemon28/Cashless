@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
                               card('PHP', TextStyle(color: Colors.white, fontSize: 16)),
                             ],
                           ),
-                        ),
+                       ),
 
                         Container(
                           alignment: Alignment.topLeft,

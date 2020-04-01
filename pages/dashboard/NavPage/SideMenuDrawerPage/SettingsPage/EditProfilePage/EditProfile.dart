@@ -18,9 +18,9 @@ class _EditProfileState extends State<EditProfile> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var userInfo = json.decode(preferences.getString("user"));
 		setState(() {
-      _phone = userInfo["phone"];
-			_fullname =  userInfo["name"];
-      _email =  userInfo["email"];
+      _fullname = preferences.getString("name");
+      _phone    = userInfo["phone"];
+      _email    = userInfo["email"];
 		});
   }
 
@@ -88,7 +88,8 @@ class _EditProfileState extends State<EditProfile> {
 	securePhone(phone) {
 		return phone == null ? "" : phone.replaceRange(4, 9, '*' * 5);
 	}
-  //Password Confirmation Code 
+
+  //Password Confirmation Code
   cfmPassDialog() => showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
@@ -115,7 +116,7 @@ class _EditProfileState extends State<EditProfile> {
         onPressed: () => navigatePage('/changePass'),
       )
     ],
-  )); 
+  ));
 
   //Pin Confirmation Code
   cfmPinDialog() => showDialog(
@@ -144,8 +145,8 @@ class _EditProfileState extends State<EditProfile> {
         onPressed: () => navigatePage('/changePin'),
       )
     ],
-  )); 
+  ));
 
-  
+
 
 }

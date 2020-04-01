@@ -46,8 +46,8 @@ class MyApp extends StatelessWidget {
 				'/receiveMoney'         : (BuildContext context) => ReceiveMoney(),
 				'/editProfile'          : (BuildContext context) => EditProfile(),
 				'/changeName'           : (BuildContext context) => ChangeName(),
-        '/changePass'           : (BuildContext context) => ChangePass(),
-        '/changePin'            : (BuildContext context) => ChangePin(),
+				'/changePass'           : (BuildContext context) => ChangePass(),
+				'/changePin'            : (BuildContext context) => ChangePin(),
 				'/about'                : (BuildContext context) => About()
 			},
 			// home: UserList()
