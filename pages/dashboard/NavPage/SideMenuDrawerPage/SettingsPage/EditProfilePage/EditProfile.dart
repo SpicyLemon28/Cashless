@@ -17,7 +17,13 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
 
+  RegistrationUtilities register = RegistrationUtilities();
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   var _phone, _fullname, _email , _confirmationCode;
+
+  bool _isLoading = false;
 
 
   getPref() async {
@@ -48,6 +54,7 @@ class _EditProfileState extends State<EditProfile> {
             onPressed: () => navigatePreviousPage(context),
           ),
         ),
+        key: scaffoldKey,
         body: Stack(
             fit:StackFit.expand,
             children: <Widget>[
@@ -60,9 +67,9 @@ class _EditProfileState extends State<EditProfile> {
                   title('Email'),
                   card(_email, Icon(Icons.email, color: Colors.grey), null),
                   title('Password'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () => cfmPassDialog()),//_verifyForgetPassword('CHANGE PASSWORD', 'Password')
+                  card('********', Icon(Icons.edit, color: Colors.grey), () => _verifyForgetPassword('CHANGE PASSWORD', 'Password')),
                   title('Pin'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () => cfmPinDialog()),//_verifyForgetPassword('CHANGE PIN', 'Pin')
+                  card('********', Icon(Icons.edit, color: Colors.grey), () =>  _verifyForgetPassword('CHANGE PIN', 'Pin')),
                 ],
               )
             ],
@@ -95,7 +102,7 @@ class _EditProfileState extends State<EditProfile> {
 		return phone == null ? "" : phone.replaceRange(4, 9, '*' * 5);
 	}
 
-  /*void _verifyForgetPassword(txtLabel, navFor) async {
+  void _verifyForgetPassword(txtLabel, navFor) async {
   	var data = { "phone" : _phone };
 
     http.Response response = await http.post(REQUEST_RESET_PASSWORD, body: data);
@@ -108,43 +115,14 @@ class _EditProfileState extends State<EditProfile> {
 		} else {
     	register.snackBarShow(scaffoldKey, responseData['error']);
 		}
-  } */
+  } 
 
-  /*savePref(String token) async {
+  savePref(String token) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() => preferences.setString("token", token));
-  } */
+  }
 
-  //Password Confirmation Code
-  cfmPassDialog() => showDialog(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
-    ),
-    title: Column(children: <Widget>[
-      Text('CHANGE PASSWORD', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      Padding(padding: const EdgeInsets.only(top: 10)),
-      Text('To proceed with your request, please enter your confirmation code sent to your email:',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-    ],),
-    content: TextField(
-      autofocus: true,
-      decoration: InputDecoration(
-        hintText: 'Enter Confirmation Code',
-        hintStyle: TextStyle(fontSize: 12),
-        prefixIcon: Icon(Icons.code),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    ),
-    actions: <Widget>[
-      FlatButton(
-        child: Text('SUBMIT'),
-        onPressed: () => navigatePage('/changePass'),
-      )
-    ],
-  ));
-
-  /*cfmDialog(String txtLabel, String navFor) => showDialog(
+  cfmDialog(String txtLabel, String navFor) => showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
@@ -171,9 +149,8 @@ class _EditProfileState extends State<EditProfile> {
       )
     ],
   ));
-   */
-
-  /*void _verifyConfirmationCode(navFor) async {
+   
+  void _verifyConfirmationCode(navFor) async {
   	var data = { "confirmationCode" : _confirmationCode };
 
     http.Response response = await http.post(CONFIRMED_REQUEST_RESET_PASSWORD, body: data);
@@ -185,37 +162,5 @@ class _EditProfileState extends State<EditProfile> {
     if (navFor == 'Pin') {
       Navigator.pushReplacementNamed(context, '/changePin');
     }
-  } */
-
-  //Pin Confirmation Code
-  cfmPinDialog() => showDialog(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
-    ),
-    title: Column(children: <Widget>[
-      Text('CHANGE PIN', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      Padding(padding: const EdgeInsets.only(top: 10)),
-      Text('To proceed with your request, please enter your confirmation code sent to your email:',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-    ],),
-    content: TextField(
-      autofocus: true,
-      decoration: InputDecoration(
-        hintText: 'Enter Confirmation Code',
-        hintStyle: TextStyle(fontSize: 12),
-        prefixIcon: Icon(Icons.code),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    ),
-    actions: <Widget>[
-      FlatButton(
-        child: Text('SUBMIT'),
-        onPressed: () => navigatePage('/changePin'),
-      )
-    ],
-  ));
-
-
-
+  }
 }
