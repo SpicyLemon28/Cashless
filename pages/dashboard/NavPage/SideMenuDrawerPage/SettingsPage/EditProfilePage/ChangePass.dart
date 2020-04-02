@@ -12,7 +12,7 @@ class _ChangePassState extends State<ChangePass> {
   final _formKey = GlobalKey<FormState>();
 	final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  //bool _isLoading = false;
+  bool _isLoading = false;
   bool _autoValidate = false;
 
   bool newPasswordVisible, cfmPasswordVisible;

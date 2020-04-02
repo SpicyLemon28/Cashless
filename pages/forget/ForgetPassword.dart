@@ -48,6 +48,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 									ListView(
 									  children: <Widget>[
                       Column(
+                        
 									  	  children: <Widget>[
 									  		  Padding(padding: const EdgeInsets.only(top: 200)),
 									  		  textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number),
