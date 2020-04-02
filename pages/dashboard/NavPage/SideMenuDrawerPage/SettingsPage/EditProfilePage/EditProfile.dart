@@ -104,7 +104,7 @@ class _EditProfileState extends State<EditProfile> {
 		setState(() => _isLoading = false);
     if (response.statusCode == 200) {
 			int result = responseData['result'];
-			if (result == 1) dialog();
+			if (result == 1) cfmDialog(txtLabel, navFor);
 		} else {
     	register.snackBarShow(scaffoldKey, responseData['error']);
 		}
@@ -167,7 +167,7 @@ class _EditProfileState extends State<EditProfile> {
     actions: <Widget>[
       FlatButton(
         child: Text('SUBMIT'),
-        onPressed: () => _verifyConfirmationCode(),
+        onPressed: () => _verifyConfirmationCode(navFor),
       )
     ],
   ));
