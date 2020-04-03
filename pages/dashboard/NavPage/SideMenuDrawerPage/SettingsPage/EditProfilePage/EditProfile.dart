@@ -9,8 +9,6 @@ import '../../../../../../utilities/registration_utilities.dart';
 import '../../../../../../global.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile({Key key}) : super(key: key);
-
   @override
   _EditProfileState createState() => _EditProfileState();
 }
@@ -24,7 +22,6 @@ class _EditProfileState extends State<EditProfile> {
   var _phone, _fullname, _email , _confirmationCode;
 
   bool _isLoading = false;
-
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -67,9 +64,9 @@ class _EditProfileState extends State<EditProfile> {
                   title('Email'),
                   card(_email, Icon(Icons.email, color: Colors.grey), null),
                   title('Password'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () => _verifyForgetPassword('CHANGE $txtLabel', 'Password')),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () => _verifyForgetPassword('Password')),
                   title('Pin'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () =>  _verifyForgetPassword('CHANGE $txtLabel', 'Pin')),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () =>  _verifyForgetPassword('Pin')),
                 ],
               )
             ],
@@ -102,7 +99,7 @@ class _EditProfileState extends State<EditProfile> {
 		return phone == null ? "" : phone.replaceRange(4, 9, '*' * 5);
 	}
 
-  void _verifyForgetPassword(txtLabel, navFor) async {
+  void _verifyForgetPassword(txtLabel) async {
   	var data = { "phone" : _phone };
 
     http.Response response = await http.post(REQUEST_RESET_PASSWORD, body: data);
@@ -111,50 +108,43 @@ class _EditProfileState extends State<EditProfile> {
 		setState(() => _isLoading = false);
     if (response.statusCode == 200) {
 			int result = responseData['result'];
-			if (result == 1) cfmDialog(txtLabel, navFor);
+			if (result == 1) cfmDialog(txtLabel);
 		} else {
     	register.snackBarShow(scaffoldKey, responseData['error']);
 		}
-  } 
+  }
 
-  void _verifyConfirmationCode(navFor) async {
+void _verifyConfirmationCode(String navFor) async {
   	var data = { "confirmationCode" : _confirmationCode };
 
     http.Response response = await http.post(CONFIRMED_REQUEST_RESET_PASSWORD, body: data);
     final responseData = json.decode(response.body);
 
+		setState(() => _isLoading = false);
     if (response.statusCode == 200) {
-      int result = responseData['result'];
-
-      if (result == 2) {
-        savePref(responseData['token']);
-        
-        if (navFor == 'Password' || navFor == 'Pin') {
-          navFor == 'Password'
-          ? Navigator.pushReplacementNamed(context, '/changePass')
-          : Navigator.pushReplacementNamed(context, '/changePass');  
-        }
-      }
-    }
-
-    else {
-      register.showAlertDialog(context, 'Error', responseData['error']);
-    }
-
+			int result = responseData['result'];
+			if (result == 2) {
+				savePref(_phone,responseData['token']);
+        navigatePage(navFor=='Password' ? '/changePass' : '/changePin');
+			}
+		} else {
+			register.showAlertDialog(context, 'Error', responseData['error']);
+		}
   }
 
-  savePref(String token) async {
+  savePref(String phone, String token) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("phone", phone);
     setState(() => preferences.setString("token", token));
   }
 
-  cfmDialog(String txtLabel, String navFor) => showDialog(
+  cfmDialog(String txtLabel) => showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
     ),
     title: Column(children: <Widget>[
-      Text(txtLabel, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      Text('Change $txtLabel', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       Padding(padding: const EdgeInsets.only(top: 10)),
       Text('To proceed with your request, please enter your confirmation code sent to your email:',
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
@@ -171,7 +161,7 @@ class _EditProfileState extends State<EditProfile> {
     actions: <Widget>[
       FlatButton(
         child: Text('SUBMIT'),
-        onPressed: () => _verifyConfirmationCode(navFor),
+        onPressed: () => _verifyConfirmationCode(txtLabel),
       )
     ],
   ));
