@@ -67,9 +67,9 @@ class _EditProfileState extends State<EditProfile> {
                   title('Email'),
                   card(_email, Icon(Icons.email, color: Colors.grey), null),
                   title('Password'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () => _verifyForgetPassword('CHANGE PASSWORD', 'Password')),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () => _verifyForgetPassword('CHANGE $txtLabel', 'Password')),
                   title('Pin'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () =>  _verifyForgetPassword('CHANGE PIN', 'Pin')),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () =>  _verifyForgetPassword('CHANGE $txtLabel', 'Pin')),
                 ],
               )
             ],
@@ -117,6 +117,32 @@ class _EditProfileState extends State<EditProfile> {
 		}
   } 
 
+  void _verifyConfirmationCode(navFor) async {
+  	var data = { "confirmationCode" : _confirmationCode };
+
+    http.Response response = await http.post(CONFIRMED_REQUEST_RESET_PASSWORD, body: data);
+    final responseData = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      int result = responseData['result'];
+
+      if (result == 2) {
+        savePref(responseData['token']);
+        
+        if (navFor == 'Password' || navFor == 'Pin') {
+          navFor == 'Password'
+          ? Navigator.pushReplacementNamed(context, '/changePass')
+          : Navigator.pushReplacementNamed(context, '/changePass');  
+        }
+      }
+    }
+
+    else {
+      register.showAlertDialog(context, 'Error', responseData['error']);
+    }
+
+  }
+
   savePref(String token) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() => preferences.setString("token", token));
@@ -149,18 +175,4 @@ class _EditProfileState extends State<EditProfile> {
       )
     ],
   ));
-   
-  void _verifyConfirmationCode(navFor) async {
-  	var data = { "confirmationCode" : _confirmationCode };
-
-    http.Response response = await http.post(CONFIRMED_REQUEST_RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-    if (navFor == 'Password') {
-      Navigator.pushReplacementNamed(context, '/changePass');
-    }
-    if (navFor == 'Pin') {
-      Navigator.pushReplacementNamed(context, '/changePin');
-    }
-  }
 }
