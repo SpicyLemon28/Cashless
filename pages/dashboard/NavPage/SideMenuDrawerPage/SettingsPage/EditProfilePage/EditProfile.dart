@@ -124,7 +124,7 @@ void _verifyConfirmationCode(String navFor) async {
     if (response.statusCode == 200) {
 			int result = responseData['result'];
 			if (result == 2) {
-				savePref(_phone,responseData['token']);
+				savePref(responseData['token']);
         navigatePage(navFor=='Password' ? '/changePass' : '/changePin');
 			}
 		} else {
@@ -132,9 +132,8 @@ void _verifyConfirmationCode(String navFor) async {
 		}
   }
 
-  savePref(String phone, String token) async {
+  savePref(String token) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString("phone", phone);
     setState(() => preferences.setString("token", token));
   }
 
