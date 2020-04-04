@@ -1,13 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:password/password.dart';
+
+import '../../../../../../controller/users_controller.dart';
+import '../../../../../../utilities/registration_utilities.dart';
+import '../../../../../../global.dart';
 
 class ChangePass extends StatefulWidget {
-  ChangePass({Key key}) : super(key: key);
-
   @override
   _ChangePassState createState() => _ChangePassState();
 }
 
 class _ChangePassState extends State<ChangePass> {
+
+  UsersController users = UsersController();
+	RegistrationUtilities register = RegistrationUtilities();
 
   final _formKey = GlobalKey<FormState>();
 	final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -19,6 +29,8 @@ class _ChangePassState extends State<ChangePass> {
 
   final _newPassword = TextEditingController();
 	final _cfmPassword = TextEditingController();
+
+  String _phone, _token;
 
   @override
   void initState() {
@@ -116,7 +128,31 @@ class _ChangePassState extends State<ChangePass> {
     ),
   );
 
-  Widget saveBtn(btnText, styleText) => Padding(
+  Widget saveBtn(btnText, styleText) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: _isLoading
+      ? CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+      )
+      : Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: ButtonTheme(
+          minWidth: 300,
+          height: 50,
+          child: RaisedButton(
+            elevation: 5,
+            color: Colors.green,
+            child: Text(btnText, style: styleText),
+            onPressed: () => _submit(),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          ),
+        ),
+      )
+    );
+  }
+
+  /*Widget saveBtn(btnText, styleText) => Padding(
     padding: const EdgeInsets.only(top: 50),
     child: ButtonTheme(
       minWidth: 300,
@@ -130,7 +166,7 @@ class _ChangePassState extends State<ChangePass> {
           onPressed: () => _submit(),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),),
     ),
-  );
+  );*/
 
   _suffixIcon(lblText, blnObscure) {
     if (lblText == 'New Password' || lblText == 'Confirm Password') {
@@ -172,21 +208,61 @@ class _ChangePassState extends State<ChangePass> {
     actions: <Widget>[
       FlatButton(
         child: Text('OKAY'),
-        onPressed: () => navigatePage('/editProfile'),
+        onPressed: () => navigatePage('/'),
       )
     ],
     ),
-  );
-
+  ); 
 
   void _submit() {
 		final form = _formKey.currentState;
 		if (form.validate()) {
-			pswdSccsful();
+			//pswdSccsful();
+      setState(() => _isLoading = true);
+      _chngePass();
 		} else {
 			setState(() => _autoValidate = true);
 		}
 	}
+
+  void _chngePass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      _phone = preferences.getString("phone");
+      _token = preferences.getString("token");
+    });
+
+    var data = {
+      "token" : _token,
+      "newPassword" : Password.hash(_newPassword.text, PBKDF2()),
+      "cfmPassword" : Password.hash(_newPassword.text, PBKDF2()),
+    };
+
+    http.Response response = await http.post(RESET_PASSWORD, body: data);
+    final responseData = json.decode(response.body);
+
+    setState(() => _isLoading = false);
+    if (response.statusCode == 200) {
+      int result = responseData['result'];
+      
+      if (result == 3) {
+        result = await users.resetPassword(_phone, _newPassword.text);
+
+        if (result == 1) {
+          _formKey.currentState.reset();
+          pswdSccsful();
+        }
+
+        else {
+          register.snackBarShow(scaffoldKey, 'Problem changing password');
+        }
+      }
+    }
+    
+    else {
+      register.snackBarShow(scaffoldKey, responseData['error']);
+    }
+  }
 
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);
