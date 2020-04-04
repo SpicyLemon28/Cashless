@@ -82,12 +82,18 @@ class _EditProfileState extends State<EditProfile> {
   Widget card(listTxt, suffixIcon, goTo) => Card(
     elevation: 5,
     color: Colors.white,
-    child: ListTile(
-      trailing: suffixIcon,
-      onTap: goTo,
-      title: Text(listTxt, style: TextStyle(color: Colors.grey),),
+    child: Center(
+      child: _isLoading
+      ? CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
+          )
+      : ListTile(
+          trailing: suffixIcon,
+          onTap: goTo,
+          title: Text(listTxt, style: TextStyle(color: Colors.grey),),
+      ),
     ),
-  );
+  ); 
 
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);

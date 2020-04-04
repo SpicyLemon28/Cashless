@@ -152,22 +152,6 @@ class _ChangePassState extends State<ChangePass> {
     );
   }
 
-  /*Widget saveBtn(btnText, styleText) => Padding(
-    padding: const EdgeInsets.only(top: 50),
-    child: ButtonTheme(
-      minWidth: 300,
-      height: 50,
-      child: RaisedButton(
-        elevation: 5,
-        color: Colors.green,
-        child: Text(
-          btnText, style: styleText
-          ),
-          onPressed: () => _submit(),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),),
-    ),
-  );*/
-
   _suffixIcon(lblText, blnObscure) {
     if (lblText == 'New Password' || lblText == 'Confirm Password') {
       return IconButton(
@@ -217,7 +201,6 @@ class _ChangePassState extends State<ChangePass> {
   void _submit() {
 		final form = _formKey.currentState;
 		if (form.validate()) {
-			//pswdSccsful();
       setState(() => _isLoading = true);
       _chngePass();
 		} else {
