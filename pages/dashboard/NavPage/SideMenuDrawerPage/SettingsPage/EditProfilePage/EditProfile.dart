@@ -150,6 +150,7 @@ void _verifyConfirmationCode(String navFor) async {
     ],),
     content: TextField(
       autofocus: true,
+      onChanged: (value) { _confirmationCode = value; },
       decoration: InputDecoration(
         hintText: 'Enter Confirmation Code',
         hintStyle: TextStyle(fontSize: 12),
