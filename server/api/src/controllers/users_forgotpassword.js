@@ -63,4 +63,30 @@ export default {
     });
   },
 
+  resetPin: (req, res) => {
+    const { token, newPin, cfmPin } = req.body;
+    const { errors, isValid } = validateInput(
+      {newPin, cfmPin}, ['newPin', 'cfmPin']
+    );
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        res.status(401).json({ error: "Reset pin process expired, please reprocess again." })
+      } else {
+        const userResetPassword = (newPin) => {
+          new User({id: decoded.id}).fetch().then(user =>  {
+            if (user) {
+              user.save({ pin: newPin, reset_password_completed: 1 })
+                .then(() => res.json({ result: 3, description: 'reset pin reset_pin_completed' }) );
+            } else {
+              res.status(401).json({ error: "Reset pin process expired, please reprocess again." });
+            }
+          });
+        };
+
+        isValid ? userResetPassword(newPassword) : res.status(400).json(errors);
+      }
+    });
+  },
+
 }

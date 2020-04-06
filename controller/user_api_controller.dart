@@ -58,6 +58,20 @@ class UserAPIController {
 		return returnResult(statusCode, responseData['result'], responseData['error']);
   }
 
+  //
+  Future<dynamic> resetPin(String token, String newPassword, String cfmPassword) async {
+		var data = {
+			"token"       : token,
+			"newPin" : Password.hash(newPassword, PBKDF2()),
+			"cfmPin" : Password.hash(cfmPassword, PBKDF2())
+		};
+    final response = await http.post(RESET_PASSWORD, body: data);
+    final responseData = json.decode(response.body);
+		final statusCode = response.statusCode;
+
+		return returnResult(statusCode, responseData['result'], responseData['error']);
+  }
+
 	Future<dynamic> verifyConfirmationCode(String confirmationCode) async {
     final response = await http.post(
 			CONFIRMED_REQUEST_RESET_PASSWORD,

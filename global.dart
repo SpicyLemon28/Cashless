@@ -9,5 +9,7 @@ const REQUEST_RESET_PASSWORD = "https://$HOST_NAME/api/users/reset_password_requ
 const CONFIRMED_REQUEST_RESET_PASSWORD = "https://$HOST_NAME/api/users/reset_password_request/confirmed";
 const RESET_PASSWORD = "https://$HOST_NAME/api/users/reset_password";
 
+const RESET_PIN = "https://$HOST_NAME/api/users/reset_pin";
+
 const UPDATE_FULLNAME = "https://$HOST_NAME/api/users/update_fullname";
 

@@ -1,18 +1,28 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:password/password.dart';
+
+import '../../../../../../controller/users_controller.dart';
+import '../../../../../../utilities/registration_utilities.dart';
+import '../../../../../../global.dart';
 
 class ChangePin extends StatefulWidget {
-  ChangePin({Key key}) : super(key: key);
-
   @override
   _ChangePinState createState() => _ChangePinState();
 }
 
 class _ChangePinState extends State<ChangePin> {
 
+  UsersController users = UsersController();
+	RegistrationUtilities register = RegistrationUtilities();
+
   final _formKey = GlobalKey<FormState>();
 	final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  //bool _isLoading = false;
+  bool _isLoading = false;
   bool _autoValidate = false;
 
   bool newPinVisible, cfmPinVisible;
@@ -33,6 +43,8 @@ class _ChangePinState extends State<ChangePin> {
 		_cfmPin.dispose();
 	}
 
+  String _phone, _token;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -45,6 +57,7 @@ class _ChangePinState extends State<ChangePin> {
             onPressed: () => navigatePreviousPage(context),
           ),
         ),
+        key: scaffoldKey,
         body: Form(
           key: _formKey,
           autovalidate: _autoValidate,
@@ -116,7 +129,7 @@ class _ChangePinState extends State<ChangePin> {
     ),
   );
 
-  Widget saveBtn(btnText, styleText) => Padding(
+  /*Widget saveBtn(btnText, styleText) => Padding(
     padding: const EdgeInsets.only(top: 50),
     child: ButtonTheme(
       minWidth: 300,
@@ -130,7 +143,31 @@ class _ChangePinState extends State<ChangePin> {
           onPressed: () => _submit(),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),),
     ),
-  );
+  ); */
+
+  Widget saveBtn(btnText, styleText) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: _isLoading
+      ? CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+      )
+      : Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: ButtonTheme(
+          minWidth: 300,
+          height: 50,
+          child: RaisedButton(
+            elevation: 5,
+            color: Colors.green,
+            child: Text(btnText, style: styleText),
+            onPressed: () => _submit(),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          ),
+        ),
+      )
+    );
+  }
 
   _suffixIcon(lblText, blnObscure) {
     if (lblText == 'New Pin' || lblText == 'Confirm Pin') {
@@ -158,7 +195,7 @@ class _ChangePinState extends State<ChangePin> {
     }
   }
 
-  pswdSccsful() => showDialog(
+  pinSccsful() => showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),
@@ -172,7 +209,7 @@ class _ChangePinState extends State<ChangePin> {
     actions: <Widget>[
       FlatButton(
         child: Text('OKAY'),
-        onPressed: () => navigatePage('/editProfile'),
+        onPressed: () => navigatePage('/'),
       )
     ],
     ),
@@ -182,11 +219,54 @@ class _ChangePinState extends State<ChangePin> {
   void _submit() {
 		final form = _formKey.currentState;
 		if (form.validate()) {
-			pswdSccsful();
+			setState(() => _isLoading = true);
+      _chngePin();
 		} else {
 			setState(() => _autoValidate = true);
 		}
 	}
+
+  void _chngePin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var userInfo = json.decode(preferences.getString("user"));
+
+    setState(() {
+      _phone = userInfo["phone"];
+      _phone = preferences.getString("phone");
+      _token = preferences.getString("token");
+    });
+
+    var data = {
+      "token" : _token,
+      "newPin" : Password.hash(_newPin.text, PBKDF2()),
+      "cfmPin" : Password.hash(_newPin.text, PBKDF2()),
+    };
+
+    http.Response response = await http.post(RESET_PIN, body: data);
+    final responseData = json.decode(response.body);
+
+    setState(() => _isLoading = false);
+    if(response.statusCode == 200) {
+      int result = responseData['result'];
+
+      if (result == 3) {
+        result = await users.resetPin(_phone, _newPin.text);
+
+        if (result == 1) {
+          _formKey.currentState.reset();
+          pinSccsful();
+        }
+
+        else {
+          register.snackBarShow(scaffoldKey, 'Problem changing pin');
+        }
+      }
+    }
+
+    else {
+      register.snackBarShow(scaffoldKey, responseData['error']);
+    }
+  }
 
   void navigatePage(navTo) =>
 		Navigator.pushReplacementNamed(context, navTo);

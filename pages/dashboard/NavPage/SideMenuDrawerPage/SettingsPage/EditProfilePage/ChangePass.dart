@@ -210,7 +210,10 @@ class _ChangePassState extends State<ChangePass> {
 
   void _chngePass() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    var userInfo = json.decode(preferences.getString("user"));
+
     setState(() {
+      _phone = userInfo["phone"];
       _phone = preferences.getString("phone");
       _token = preferences.getString("token");
     });

@@ -52,6 +52,12 @@ class UsersController {
 		return await db.rawUpdate("Update $tblUsers Set password='$newPassword' Where phone = ?", [phone]);
 	}
 
+  Future<int> resetPin(String phone, String newPin) async {
+		Database db = await connect.database;
+		newPin = Password.hash(newPin, PBKDF2());
+		return await db.rawUpdate("Update $tblUsers Set pin='$newPin' Where phone = ?", [phone]);
+	} 
+
   Future<int> updateFullname(String phone, String newName) async {
     Database db = await connect.database;
     return await db.rawUpdate("Update $tblUsers Set name='$newName' Where phone = ?", [phone]);
