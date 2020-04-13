@@ -30,27 +30,27 @@ export default bookshelf.Model.extend({
     return this.get('confirm')
   },
 
-  isResetPasswordConfirmed: function() {
-    return this.get('reset_password_confirmed')
+  isResetSecureConfirmed: function() {
+    return this.get('reset_secure_confirmed')
   },
 
-  isResetPasswordCompleted: function() {
-    return this.get('reset_password_completed')
+  isResetSecureCompleted: function() {
+    return this.get('reset_secure_completed')
   },
 
-  generateResetPasswordToken: function() {
+  generateResetSecureToken: function() {
     const token = jwt.sign({id: this.get('id')}, JWT_SECRET, {expiresIn: "3m"});
-    this.set('reset_password_token', token);
-    this.set('reset_password_confirmed', 0);
-    this.set('reset_password_completed', 0);
+    this.set('reset_secure_token', token);
+    this.set('reset_secure_confirmed', 0);
+    this.set('reset_secure_completed', 0);
     this.save();
     return token;
   },
 
   generateConfirmationCode: function() {
-    const token = this.generateResetPasswordToken();
+    const token = this.generateResetSecureToken();
     const confirmationCode = token.slice(token.length-8);
-    this.set('reset_password_confirmation_code', confirmationCode);
+    this.set('reset_secure_confirmation_code', confirmationCode);
     this.save();
     return confirmationCode;
   },

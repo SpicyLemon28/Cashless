@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:password/password.dart';
 
 import '../../controller/users_controller.dart';
+import '../../controller/user_api_controller.dart';
 import '../../utilities/registration_utilities.dart';
-import '../../global.dart';
 
 class ResetPassword extends StatefulWidget {
   @override
@@ -17,6 +15,7 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
 
 	UsersController users = UsersController();
+	UserAPIController userAPI = UserAPIController();
 	RegistrationUtilities register = RegistrationUtilities();
 
   final _formKey = GlobalKey<FormState>();
@@ -90,12 +89,12 @@ class _ResetPasswordState extends State<ResetPassword> {
   var greenBorder = OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );  
+        );
 
   Widget text(txt, styleText) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
     child: Text(txt, style: styleText),
-  ); 
+  );
 
   Widget textFormField(txtController, lblText, hntText, blnObscure) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
@@ -136,7 +135,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 onPressed: () => _submit(),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
               ),
-            ),	
+            ),
 		  		),
       );
 	}
@@ -185,30 +184,26 @@ class _ResetPasswordState extends State<ResetPassword> {
 			_token = preferences.getString("token");
 		});
 
-		var data = {
-			"token"       : _token,
-			"newPassword" : Password.hash(_newPassword.text, PBKDF2()),
-			"cfmPassword" : Password.hash(_cfmPassword.text, PBKDF2())
-		};
+		var returnResult = await userAPI.resetSecure('PW', _token, _newPassword.text, _cfmPassword.text);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-		setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
-			if (result == 3) {
-				result = await users.resetPassword(_phone, _newPassword.text);
-				if (result == 1) {
-					_formKey.currentState.reset();
-					Navigator.pushReplacementNamed(context, '/login');
-				} else {
-					register.snackBarShow(scaffoldKey, 'Problem reseting password');
+		Future.delayed(Duration(seconds: 1), () async {
+			setState(() => _isLoading = false);
+			if (returnResult['statusCode'] == 200) {
+				int result = returnResult['result'];
+				if (result == 3) {
+					result = await users.resetSecure('PW', _phone, _newPassword.text);
+					if (result == 1) {
+						_formKey.currentState.reset();
+						Navigator.pushReplacementNamed(context, '/login');
+					} else {
+						register.snackBarShow(scaffoldKey, 'Problem reseting password');
+					}
 				}
+			} else {
+				register.snackBarShow(scaffoldKey, returnResult['result']);
 			}
-		} else {
-  		register.snackBarShow(scaffoldKey, responseData['error']);
-		}
+		});
   }
 
 }

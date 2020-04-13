@@ -20,16 +20,16 @@ router.post('/signin', (req, res) => {
 });
 
 // user_forgotpassword
-router.post('/reset_password_request', (req, res) => {
-  user_forgotpassword.requestResetPassword(req, res);
+router.post('/reset_secure_request', (req, res) => {
+  user_forgotpassword.requestResetSecure(req, res);
 });
 
-router.post('/reset_password_request/confirmed', (req, res) => {
-  user_forgotpassword.confirmedRequestResetPassword(req, res);
+router.post('/reset_secure_request/confirmed', (req, res) => {
+  user_forgotpassword.confirmedRequestResetSecure(req, res);
 });
 
-router.post('/reset_password', (req, res) => {
-  user_forgotpassword.resetPassword(req, res);
+router.post('/reset_secure', (req, res) => {
+  user_forgotpassword.ResetSecure(req, res);
 });
 
 // user_update

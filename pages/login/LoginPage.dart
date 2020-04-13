@@ -2,14 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'package:password/password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user.dart';
+import '../../controller/user_api_controller.dart';
 import '../../services/response/login_response.dart';
 import '../../utilities/registration_utilities.dart';
-import '../../global.dart';
 
 import '../../pages/dashboard/dashboard.dart';
 
@@ -24,6 +22,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 	User user = User('', '', '', '', '', '', '', 0);
 
 	LoginStatus _loginStatus = LoginStatus.notSignIn;
+	UserAPIController userAPI = UserAPIController();
 	RegistrationUtilities register = RegistrationUtilities();
 
   bool _isLoading = false;
@@ -119,14 +118,14 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 	}
 
   var redBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.redAccent, width: 2)
-        );
+				borderRadius: BorderRadius.circular(15),
+				borderSide: BorderSide(color: Colors.redAccent, width: 2)
+			);
 
   var greenBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );
+				borderRadius: BorderRadius.circular(15),
+				borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+			);
 
 
   Widget linkButton(txtLink, onClick) => Padding(
@@ -204,26 +203,23 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   }
 
 	void _signIn() async {
-    var data = {
-			"phone"    : _phone,
-			"password" : Password.hash(_password, PBKDF2())
-		};
+		var returnResult = await userAPI.signIn(_phone, _password);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(USER_SIGNIN, body: data);
-    final responseData = json.decode(response.body);
-
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
-			if (result == 1) {
-				_response.doLogin(_phone, _password);
-			} else if (result == 3) {
+		Future.delayed(Duration(seconds: 1), () {
+			if (returnResult['statusCode'] == 200) {
+				int result = returnResult['result'];
+				if (result == 1) {
+					_response.doLogin(_phone, _password);
+				} else if (result == 3) {
+					setState(() => _isLoading = false);
+					register.dialog(context, 'Account not yet confirmed', setState, _phone,  _password);
+				}
+			} else {
 				setState(() => _isLoading = false);
-				register.dialog(context, 'Account not yet confirmed', setState, _phone,  _password);
+				register.snackBarShow(scaffoldKey, returnResult['result']);
 			}
-		} else {
-			setState(() => _isLoading = false);
-    	register.snackBarShow(scaffoldKey, responseData['error']);
-		}
+		});
   }
 
   textValidation(hntText, value) {
@@ -249,10 +245,8 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
 	getPref() async {
 		SharedPreferences preferences = await SharedPreferences.getInstance();
-    var userInfo = json.decode(preferences.getString("user"));
 		setState(() {
-			signIn = userInfo["signIn"];
-      _phone = userInfo["phone"];
+			signIn = preferences.getInt("signIn");
       _loginStatus = signIn == 1 ? LoginStatus.signIn : LoginStatus.notSignIn;
 		});
 	}
@@ -261,9 +255,10 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
 			_isLoading = false;
-			_loginStatus = LoginStatus.notSignIn;
+			preferences.setInt("signIn", null);
 			preferences.setString("name", null);
 			preferences.setString("user", null);
+			_loginStatus = LoginStatus.notSignIn;
     });
   }
 

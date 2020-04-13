@@ -34,11 +34,11 @@ class UsersController {
 	}
 
 	Future<User> getLogin(String phone, String password) async {
-    Database db = await connect.database;
+		Database db = await connect.database;
 		password = Password.hash(password, PBKDF2());
-    var result = await db.rawQuery("SELECT * FROM $tblUsers WHERE confirm=1 and phone=? and password=?", [phone, password]);
-    return (result.length > 0) ? User.fromDb(result.first) : null;
-  }
+		var result = await db.rawQuery("SELECT * FROM $tblUsers WHERE confirm=1 and phone=? and password=?", [phone, password]);
+		return (result.length > 0) ? User.fromDb(result.first) : null;
+	}
 
 	// Update Operation: Update a user object to database
 	Future<int> updateAccount(User user) async {
@@ -46,22 +46,17 @@ class UsersController {
 		return await db.update(tblUsers, user.toMap(), where: 'phone = ?', whereArgs: [user.phone]);
 	}
 
-	Future<int> resetPassword(String phone, String newPassword) async {
+	Future<int> resetSecure(String type, String phone, String newSecure) async {
 		Database db = await connect.database;
-		newPassword = Password.hash(newPassword, PBKDF2());
-		return await db.rawUpdate("Update $tblUsers Set password='$newPassword' Where phone = ?", [phone]);
+		newSecure = Password.hash(newSecure, PBKDF2());
+		String field = (type == 'PW') ? 'password' : 'pin';
+		return await db.rawUpdate("Update $tblUsers Set $field='$newSecure' Where phone = ?", [phone]);
 	}
 
-  Future<int> resetPin(String phone, String newPin) async {
+	Future<int> updateFullname(String phone, String newName) async {
 		Database db = await connect.database;
-		newPin = Password.hash(newPin, PBKDF2());
-		return await db.rawUpdate("Update $tblUsers Set pin='$newPin' Where phone = ?", [phone]);
-	} 
-
-  Future<int> updateFullname(String phone, String newName) async {
-    Database db = await connect.database;
-    return await db.rawUpdate("Update $tblUsers Set name='$newName' Where phone = ?", [phone]);
-  }
+		return await db.rawUpdate("Update $tblUsers Set name='$newName' Where phone = ?", [phone]);
+	}
 
 	Future<int> deleteAccount(int id) async {
 		var db = await connect.database;

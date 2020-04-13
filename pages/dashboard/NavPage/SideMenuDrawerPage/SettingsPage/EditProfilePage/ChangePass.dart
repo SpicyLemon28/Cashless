@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:password/password.dart';
 
 import '../../../../../../controller/users_controller.dart';
+import '../../../../../../controller/user_api_controller.dart';
 import '../../../../../../utilities/registration_utilities.dart';
-import '../../../../../../global.dart';
 
 class ChangePass extends StatefulWidget {
   @override
@@ -17,6 +15,7 @@ class ChangePass extends StatefulWidget {
 class _ChangePassState extends State<ChangePass> {
 
   UsersController users = UsersController();
+	UserAPIController userAPI = UserAPIController();
 	RegistrationUtilities register = RegistrationUtilities();
 
   final _formKey = GlobalKey<FormState>();
@@ -100,7 +99,7 @@ class _ChangePassState extends State<ChangePass> {
   var greenBorder = OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );  
+        );
 
   Widget text(txt, styleText) => Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
@@ -187,16 +186,16 @@ class _ChangePassState extends State<ChangePass> {
       children: <Widget>[
       Icon(Icons.check_circle_outline, color: Colors.green, size: 60),
       Padding(padding: const EdgeInsets.only(top: 8)),
-      Text('Password changed succesfully!', style: TextStyle(fontSize: 13),)
+      Text('Password changed succesfully!', style: TextStyle(fontSize: 16),)
     ],),
     actions: <Widget>[
       FlatButton(
         child: Text('OKAY'),
-        onPressed: () => navigatePage('/'),
+        onPressed: () => navigatePreviousPage(context),
       )
     ],
     ),
-  ); 
+  );
 
   void _submit() {
 		final form = _formKey.currentState;
@@ -214,44 +213,30 @@ class _ChangePassState extends State<ChangePass> {
 
     setState(() {
       _phone = userInfo["phone"];
-      _phone = preferences.getString("phone");
       _token = preferences.getString("token");
     });
 
-    var data = {
-      "token" : _token,
-      "newPassword" : Password.hash(_newPassword.text, PBKDF2()),
-      "cfmPassword" : Password.hash(_newPassword.text, PBKDF2()),
-    };
+		var returnResult = await userAPI.resetSecure('PW', _token, _newPassword.text, _cfmPassword.text);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-    setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-      int result = responseData['result'];
-      
-      if (result == 3) {
-        result = await users.resetPassword(_phone, _newPassword.text);
-
-        if (result == 1) {
-          _formKey.currentState.reset();
-          pswdSccsful();
-        }
-
-        else {
-          register.snackBarShow(scaffoldKey, 'Problem changing password');
-        }
-      }
-    }
-    
-    else {
-      register.snackBarShow(scaffoldKey, responseData['error']);
-    }
+		Future.delayed(Duration(seconds: 1), () async {
+			setState(() => _isLoading = false);
+			if (returnResult['statusCode'] == 200) {
+				int result = returnResult['result'];
+				if (result == 3) {
+					result = await users.resetSecure('PW', _phone, _newPassword.text);
+					if (result == 1) {
+						_formKey.currentState.reset();
+						pswdSccsful();
+					} else {
+						register.snackBarShow(scaffoldKey, 'Problem changing password');
+					}
+				}
+			} else {
+				register.snackBarShow(scaffoldKey, returnResult['error']);
+			}
+		});
   }
-
-  void navigatePage(navTo) =>
-		Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
 

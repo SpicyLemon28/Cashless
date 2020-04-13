@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:password/password.dart';
 
 import '../../../../../../controller/users_controller.dart';
+import '../../../../../../controller/user_api_controller.dart';
 import '../../../../../../utilities/registration_utilities.dart';
-import '../../../../../../global.dart';
 
 class ChangePin extends StatefulWidget {
   @override
@@ -17,6 +15,7 @@ class ChangePin extends StatefulWidget {
 class _ChangePinState extends State<ChangePin> {
 
   UsersController users = UsersController();
+	UserAPIController userAPI = UserAPIController();
 	RegistrationUtilities register = RegistrationUtilities();
 
   final _formKey = GlobalKey<FormState>();
@@ -101,7 +100,7 @@ class _ChangePinState extends State<ChangePin> {
   var greenBorder = OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );  
+        );
 
   Widget text(txt, styleText) => Padding(
     padding: const EdgeInsets.only(top: 5, bottom: 20),
@@ -129,44 +128,28 @@ class _ChangePinState extends State<ChangePin> {
     ),
   );
 
-  /*Widget saveBtn(btnText, styleText) => Padding(
-    padding: const EdgeInsets.only(top: 50),
-    child: ButtonTheme(
-      minWidth: 300,
-      height: 50,
-      child: RaisedButton(
-        elevation: 5,
-        color: Colors.green,
-        child: Text(
-          btnText, style: styleText
-          ),
-          onPressed: () => _submit(),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),),
-    ),
-  ); */
-
   Widget saveBtn(btnText, styleText) {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: _isLoading
-      ? CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
-      )
-      : Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: ButtonTheme(
-          minWidth: 300,
-          height: 50,
-          child: RaisedButton(
-            elevation: 5,
-            color: Colors.green,
-            child: Text(btnText, style: styleText),
-            onPressed: () => _submit(),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          ),
-        ),
-      )
-    );
+				? CircularProgressIndicator(
+					valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+				)
+				: Padding(
+					padding: const EdgeInsets.only(top: 30),
+					child: ButtonTheme(
+						minWidth: 300,
+						height: 50,
+						child: RaisedButton(
+							elevation: 5,
+							color: Colors.green,
+							child: Text(btnText, style: styleText),
+							onPressed: () => _submit(),
+							shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+						),
+					),
+				)
+			);
   }
 
   _suffixIcon(lblText, blnObscure) {
@@ -209,12 +192,11 @@ class _ChangePinState extends State<ChangePin> {
     actions: <Widget>[
       FlatButton(
         child: Text('OKAY'),
-        onPressed: () => navigatePage('/'),
+        onPressed: () => navigatePreviousPage(context),
       )
     ],
     ),
   );
-
 
   void _submit() {
 		final form = _formKey.currentState;
@@ -232,44 +214,30 @@ class _ChangePinState extends State<ChangePin> {
 
     setState(() {
       _phone = userInfo["phone"];
-      _phone = preferences.getString("phone");
       _token = preferences.getString("token");
     });
 
-    var data = {
-      "token" : _token,
-      "newPin" : Password.hash(_newPin.text, PBKDF2()),
-      "cfmPin" : Password.hash(_newPin.text, PBKDF2()),
-    };
+		var returnResult = await userAPI.resetSecure('PN', _token, _newPin.text, _cfmPin.text);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(RESET_PIN, body: data);
-    final responseData = json.decode(response.body);
-
-    setState(() => _isLoading = false);
-    if(response.statusCode == 200) {
-      int result = responseData['result'];
-
-      if (result == 3) {
-        result = await users.resetPin(_phone, _newPin.text);
-
-        if (result == 1) {
-          _formKey.currentState.reset();
-          pinSccsful();
-        }
-
-        else {
-          register.snackBarShow(scaffoldKey, 'Problem changing pin');
-        }
-      }
-    }
-
-    else {
-      register.snackBarShow(scaffoldKey, responseData['error']);
-    }
+		Future.delayed(Duration(seconds: 1), () async {
+			setState(() => _isLoading = false);
+			if(returnResult['statusCode'] == 200) {
+				int result = returnResult['result'];
+				if (result == 3) {
+					result = await users.resetSecure('PN', _phone, _newPin.text);
+					if (result == 1) {
+						_formKey.currentState.reset();
+						pinSccsful();
+					} else {
+						register.snackBarShow(scaffoldKey, 'Problem changing pin');
+					}
+				}
+			} else {
+				register.snackBarShow(scaffoldKey, returnResult['result']);
+			}
+		});
   }
-
-  void navigatePage(navTo) =>
-		Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
 }

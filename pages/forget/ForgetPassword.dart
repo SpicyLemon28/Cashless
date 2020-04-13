@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../controller/user_api_controller.dart';
 import '../../utilities/registration_utilities.dart';
-import '../../global.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override
@@ -15,6 +14,7 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
 
+	UserAPIController userAPI = UserAPIController();
 	RegistrationUtilities register = RegistrationUtilities();
 
   final _formKey = GlobalKey<FormState>();
@@ -48,7 +48,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 									ListView(
 									  children: <Widget>[
                       Column(
-                        
 									  	  children: <Widget>[
 									  		  Padding(padding: const EdgeInsets.only(top: 200)),
 									  		  textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number),
@@ -72,7 +71,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   var greenBorder = OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );      
+        );
 
   Widget textFormField(lblText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
@@ -87,7 +86,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         hintText: hntText, hintStyle: TextStyle(color: Colors.grey[300], fontSize: 12),
         focusedBorder: greenBorder,
         errorBorder: redBorder,
-        focusedErrorBorder:redBorder 
+        focusedErrorBorder:redBorder
       ),
     ),
   );
@@ -98,7 +97,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 		  child: _isLoading
       ? CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
-          
+
         )
     	: Padding(
 		  			padding: const EdgeInsets.only(top: 30),
@@ -142,35 +141,32 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 	}
 
 	void _verifyForgetPassword() async {
-  	var data = { "phone" : _phone };
+		var returnResult = await userAPI.verifyForgetPassword(_phone);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(REQUEST_RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-		setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
-			if (result == 1) dialog();
-		} else {
-    	register.snackBarShow(scaffoldKey, responseData['error']);
-		}
+		Future.delayed(Duration(seconds: 1), () {
+			setState(() => _isLoading = false);
+			if (returnResult['statusCode'] == 200) {
+				int result = returnResult['result'];
+				if (result == 1) dialog();
+			} else {
+				register.snackBarShow(scaffoldKey, returnResult['reslt']);
+			}
+		});
   }
 
 	void _verifyConfirmationCode() async {
-  	var data = { "confirmationCode" : _confirmationCode };
+		var returnResult = await userAPI.verifyConfirmationCode(_confirmationCode);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(CONFIRMED_REQUEST_RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-		setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
+    if (returnResult['statusCode'] == 200) {
+			int result = returnResult['result']['result'];
 			if (result == 2) {
-				savePref(_phone, responseData['token']);
+				savePref(_phone, returnResult['result']['token']);
         Navigator.pushReplacementNamed(context, '/resetPassword');
 			}
 		} else {
-			register.showAlertDialog(context, 'Error', responseData['error']);
+			register.showAlertDialog(context, 'Error', returnResult['result']);
 		}
   }
 

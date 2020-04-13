@@ -11,9 +11,9 @@ export default function validateInput(data, fields) {
       if (field === 'email') {
         if (!validator.isEmail(data.email))
           errors[field] = 'Invalid email';
-      } else if (field === 'cfmPassword') {
-        if (data[field] !== data.newPassword)
-          errors[field] = 'Not match to Password';
+      } else if (field === 'cfmSecure') {
+        if (data[field] !== data.newSecure)
+          errors[field] = 'Not match';
       }
     }
   }

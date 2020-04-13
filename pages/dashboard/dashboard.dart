@@ -7,17 +7,16 @@ import './NavPage/Home.dart';
 import './NavPage/TransactionPage/Transaction.dart';
 import './NavPage/SideMenuDrawerPage/SideMenuDrawer.dart';
 
-
 class Dashboard extends StatefulWidget {
-  final VoidCallback signOut;
-  Dashboard(this.signOut);
-  @override
-  _DashboardState createState() => _DashboardState();
+	final VoidCallback signOut;
+	Dashboard(this.signOut);
+	@override
+	_DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMixin{
 
-  TabController _tabController;
+	TabController _tabController;
 
 	signOut() {
 		setState(() { widget.signOut(); });
@@ -25,32 +24,31 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 
 	var signIn, _fullname;
 
-  getPref() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var userInfo = json.decode(preferences.getString("user"));
+	getPref() async {
+		SharedPreferences preferences = await SharedPreferences.getInstance();
 		setState(() {
-			signIn    = userInfo["signIn"];
-      _fullname = preferences.getString("name");
+			signIn    = preferences.getInt("signIn");
+			_fullname = preferences.getString("name");
 		});
-  }
+	}
 
-  @override
+	@override
 	void initState() {
 		super.initState();
 		getPref();
-    _tabController = TabController(length: 2, vsync: this);
+		_tabController = TabController(length: 2, vsync: this);
 	}
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
+	@override
+	Widget build(BuildContext context) {
+		return WillPopScope(
 			onWillPop: () async {
 				return Future.value(false);
 			},
 			child: Scaffold(
 				drawer: SideMenuDrawer(_fullname),
 				appBar: AppBar(
-          elevation: 0,
+					elevation: 0,
 					backgroundColor: Color(0xFF2c3e50),
 					centerTitle: true,
 					title: Text('SmartPay', style: TextStyle(color: Colors.white),),
@@ -62,29 +60,27 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
 						)
 					],
 				),
-        bottomNavigationBar: Material(
-          color: Color(0xFF2c3e50),
-          shadowColor: Colors.white,
-          child: TabBar(
-            indicatorColor: Colors.greenAccent,
-            controller: _tabController,
-            tabs: <Widget>[
-              Tab(icon: Icon(Icons.home), text: 'Home',),
-              Tab(icon: Icon(Icons.receipt), text: 'Transaction',)
-            ],
-          ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: <Widget>[
-            Home(),
-            Transaction()
-          ],
-        ),
+				bottomNavigationBar: Material(
+					color: Color(0xFF2c3e50),
+					shadowColor: Colors.white,
+					child: TabBar(
+						indicatorColor: Colors.greenAccent,
+						controller: _tabController,
+						tabs: <Widget>[
+							Tab(icon: Icon(Icons.home), text: 'Home',),
+							Tab(icon: Icon(Icons.receipt), text: 'Transaction',)
+						],
+					),
+				),
+				body: TabBarView(
+					controller: _tabController,
+					children: <Widget>[
+						Home(),
+						Transaction()
+					],
+				),
 			)
-    );
-  }
+		);
+	}
 
 }
-
-

@@ -17,7 +17,7 @@ function setup() {
   });
 }
 
-export function sendResetPasswordEmail(user) {
+export function sendResetSecureEmail(user) {
   const email = {
     from, to: user.email,
     subject: "Reset Password",
@@ -26,6 +26,22 @@ export function sendResetPasswordEmail(user) {
     <p>
     Thank you for submitting a request to reset your password.
     <br />Here is your confirmation code: ${user.confirmationCode}<br />
+    <p>Regards, <br />System Admin</p>
+    `
+  };
+
+  const transport = setup();
+  transport.sendMail(email)
+}
+
+export function sendResetSecureCompletedEmail(user) {
+  const email = {
+    from, to: user.email,
+    subject: `Reset ${user.type} completed`,
+    html: `
+    <b>Hi ${user.name},</b><br/>
+    <p>
+    Reset ${user.type} completed, please verify.<br/>
     <p>Regards, <br />System Admin</p>
     `
   };

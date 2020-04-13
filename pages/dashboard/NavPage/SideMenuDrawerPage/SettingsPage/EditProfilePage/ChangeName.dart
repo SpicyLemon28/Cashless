@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../../controller/users_controller.dart';
+import '../../../../../../controller/user_api_controller.dart';
 import '../../../../../../utilities/registration_utilities.dart';
-import '../../../../../../global.dart';
 
 class ChangeName extends StatefulWidget {
   @override
@@ -16,6 +15,7 @@ class ChangeName extends StatefulWidget {
 class _ChangeNameState extends State<ChangeName> {
 
   UsersController users = UsersController();
+	UserAPIController userAPI = UserAPIController();
   RegistrationUtilities register = RegistrationUtilities();
 
   final _formKey = GlobalKey<FormState>();
@@ -31,7 +31,7 @@ class _ChangeNameState extends State<ChangeName> {
     var userInfo = json.decode(preferences.getString("user"));
 		setState(() {
       _phone       = userInfo["phone"];
-      _currentname =  preferences.getString("name");
+      _currentname = preferences.getString("name");
 		});
   }
 
@@ -161,30 +161,28 @@ class _ChangeNameState extends State<ChangeName> {
   }
 
 	void _updateFullname() async {
-  	var data = { "phone" : _phone, "name" : _newname };
-
-    http.Response response = await http.post(UPDATE_FULLNAME, body: data);
-    final responseData = json.decode(response.body);
-
-		setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
-			if (result == 1) {
-				result = await users.updateFullname(_phone, _newname);
+		var returnResult = await userAPI.updateFullname(_phone, _newname);
+  	returnResult = json.decode(returnResult);
+		Future.delayed(Duration(seconds: 1), () async {
+			setState(() => _isLoading = false);
+			if (returnResult['statusCode'] == 200) {
+				int result = returnResult['result'];
 				if (result == 1) {
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          setState(() {
-            preferences.setString("name", _newname);
-            _currentname = _newname;
-          });
-          dialog();
-				} else {
-					register.snackBarShow(scaffoldKey, 'Problem updating fullname');
+					result = await users.updateFullname(_phone, _newname);
+					if (result == 1) {
+						SharedPreferences preferences = await SharedPreferences.getInstance();
+						setState(() {
+							preferences.setString("name", _newname); _currentname = _newname;
+						});
+						dialog();
+					} else {
+						register.snackBarShow(scaffoldKey, 'Problem updating fullname');
+					}
 				}
-      }
-		} else {
-    	register.snackBarShow(scaffoldKey, responseData['error']);
-		}
+			} else {
+				register.snackBarShow(scaffoldKey, returnResult['result']);
+			}
+		});
   }
 
   dialog() => showDialog(
@@ -193,7 +191,7 @@ class _ChangeNameState extends State<ChangeName> {
       title: IconButton(icon: Icon(Icons.check_circle_outline),
         disabledColor: Colors.green, iconSize: 60, onPressed: null
       ),
-      content: Text('Name has been changed successfully!',style: TextStyle(fontSize: 16)),
+      content: Text('Name changed successfully!',style: TextStyle(fontSize: 16)),
       actions: <Widget>[
         FlatButton(
           child: Text('OKAY'), onPressed: () => navigatePage('/editProfile'),

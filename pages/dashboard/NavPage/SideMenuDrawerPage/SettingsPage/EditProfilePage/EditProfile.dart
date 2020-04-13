@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../../../controller/user_api_controller.dart';
 import '../../../../../../utilities/registration_utilities.dart';
-import '../../../../../../global.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -14,6 +13,7 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
 
+	UserAPIController userAPI = UserAPIController();
   RegistrationUtilities register = RegistrationUtilities();
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -66,6 +66,7 @@ class _EditProfileState extends State<EditProfile> {
                   card('********', Icon(Icons.edit, color: Colors.grey), () => _verifyForgetPassword('Password')),
                   title('Pin'),
                   card('********', Icon(Icons.edit, color: Colors.grey), () =>  _verifyForgetPassword('Pin')),
+									circularProgressIndicator(),
                 ],
               )
             ],
@@ -82,21 +83,26 @@ class _EditProfileState extends State<EditProfile> {
   Widget card(listTxt, suffixIcon, goTo) => Card(
     elevation: 5,
     color: Colors.white,
-    child: Center(
-      child: _isLoading
-      ? CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
-          )
-      : ListTile(
-          trailing: suffixIcon,
-          onTap: goTo,
-          title: Text(listTxt, style: TextStyle(color: Colors.grey),),
-      ),
+    child: ListTile(
+      trailing: suffixIcon,
+      onTap: goTo,
+      title: Text(listTxt, style: TextStyle(color: Colors.grey),),
     ),
-  ); 
+  );
 
-  void navigatePage(navTo) =>
-		Navigator.pushReplacementNamed(context, navTo);
+	Widget circularProgressIndicator() => _isLoading
+		? Padding(
+				padding: const EdgeInsets.all(20.0),
+				child: Container(
+					alignment: Alignment.center,
+					child: CircularProgressIndicator(
+						valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
+					)
+				)
+			)
+		: Container();
+
+	void navigatePage(navTo) => Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
 
@@ -104,36 +110,33 @@ class _EditProfileState extends State<EditProfile> {
 		return phone == null ? "" : phone.replaceRange(4, 9, '*' * 5);
 	}
 
-  void _verifyForgetPassword(txtLabel) async {
-  	var data = { "phone" : _phone };
-
-    http.Response response = await http.post(REQUEST_RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-		setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
-			if (result == 1) cfmDialog(txtLabel);
-		} else {
-    	register.snackBarShow(scaffoldKey, responseData['error']);
-		}
+  void _verifyForgetPassword(String txtLabel) async {
+		setState(() => _isLoading = true);
+  	var returnResult = await userAPI.verifyForgetPassword(_phone);
+		returnResult = json.decode(returnResult);
+		Future.delayed(Duration(seconds: 1), () {
+			setState(() => _isLoading = false);
+			if (returnResult['statusCode'] == 200) {
+				int result = returnResult['result'];
+				if (result == 1) cfmDialog(txtLabel);
+			} else {
+				register.snackBarShow(scaffoldKey, returnResult['result']);
+			}
+		});
   }
 
 void _verifyConfirmationCode(String navFor) async {
-  	var data = { "confirmationCode" : _confirmationCode };
+		var returnResult = await userAPI.verifyConfirmationCode(_confirmationCode);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(CONFIRMED_REQUEST_RESET_PASSWORD, body: data);
-    final responseData = json.decode(response.body);
-
-		setState(() => _isLoading = false);
-    if (response.statusCode == 200) {
-			int result = responseData['result'];
+    if (returnResult['statusCode'] == 200) {
+			int result = returnResult['result']['result'];
 			if (result == 2) {
-				savePref(responseData['token']);
+				savePref(returnResult['result']['token']);
         navigatePage(navFor=='Password' ? '/changePass' : '/changePin');
 			}
 		} else {
-			register.showAlertDialog(context, 'Error', responseData['error']);
+			register.showAlertDialog(context, 'Error', returnResult['result']);
 		}
   }
 
@@ -155,7 +158,7 @@ void _verifyConfirmationCode(String navFor) async {
     ],),
     content: TextField(
       autofocus: true,
-      onChanged: (value) { _confirmationCode = value; },
+			onChanged: (value) { _confirmationCode = value; },
       decoration: InputDecoration(
         hintText: 'Enter Confirmation Code',
         hintStyle: TextStyle(fontSize: 12),

@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:password/password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/users_controller.dart';
-import '../global.dart';
+import '../controller/user_api_controller.dart';
 
 class RegistrationUtilities {
 
 	String _confirmationCode;
+	UserAPIController userAPI = UserAPIController();
 	UsersController users = UsersController();
 
 	List shuffle(List items) {
@@ -77,12 +77,10 @@ class RegistrationUtilities {
 	}
 
 	void confirmAccount(context, setState, phone) async {
-    var data = { "phone" : phone };
+		var returnResult = await userAPI.confirmAccount(phone);
+		returnResult = json.decode(returnResult);
 
-    http.Response response = await http.post(SIGNUP_CONFIRMED, body: data);
-    final responseData = json.decode(response.body);
-
-    if (response.statusCode == 200) {
+    if (returnResult['statusCode'] == 200) {
 			int result = await users.confirmAccount(phone);
 			if (result > 0) {
 				redirectLogin(context);
@@ -90,7 +88,7 @@ class RegistrationUtilities {
 				showAlertDialog(context, 'Warning', 'Problem confirming account');
 			}
 		} else {
-      showAlertDialog(context, 'Error', responseData['error']);
+      showAlertDialog(context, 'Error', returnResult['result']);
 		}
   }
 
@@ -107,12 +105,9 @@ class RegistrationUtilities {
 
   savePref(setState, int signIn, String name, user) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var userInfo = json.encode({
-      "signIn" : signIn,
-      "phone"  : user.phone,
-      "email"  : user.email
-    });
+    var userInfo = json.encode({"phone": user.phone, "email": user.email});
     setState(() {
+      preferences.setInt("signIn", signIn);
       preferences.setString("name", name);
       preferences.setString("user", userInfo);
     });
