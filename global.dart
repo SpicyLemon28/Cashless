@@ -1,5 +1,5 @@
 // const HOST_NAME = "http://10.0.2.2:5000";
-const HOST_NAME = "cashless-api.herokuapp.com";
+const HOST_NAME = "https://cashless-api.herokuapp.com";
 
 const USER_SIGNUP = "$HOST_NAME/api/users/signup";
 const USER_SIGNIN = "$HOST_NAME/api/users/signin";

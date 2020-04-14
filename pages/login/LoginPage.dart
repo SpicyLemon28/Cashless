@@ -73,6 +73,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 				break;
     	default:
 				return Scaffold(
+          backgroundColor: Colors.greenAccent,
 					key: scaffoldKey,
 					body: Form(
 						key: _formKey,
@@ -117,28 +118,26 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 		}
 	}
 
-  var redBorder = OutlineInputBorder(
-				borderRadius: BorderRadius.circular(15),
-				borderSide: BorderSide(color: Colors.redAccent, width: 2)
-			);
+  var redBorder = outlineInputBorder(Colors.redAccent),
+      greenBorder = outlineInputBorder(Colors.green);
 
-  var greenBorder = OutlineInputBorder(
-				borderRadius: BorderRadius.circular(15),
-				borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-			);
+  static outlineInputBorder(color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(15),
+    borderSide: BorderSide(color: color, width: 2)
+  );
 
 
   Widget linkButton(txtLink, onClick) => Padding(
     padding: const EdgeInsets.only(left: 10, right: 10),
     child: FlatButton(
       onPressed: onClick,
-      child: Text(txtLink, style: TextStyle(fontSize: 12, color: Colors.greenAccent [400])),
+      child: Text(txtLink, style: TextStyle(fontSize: 14, color: Colors.greenAccent [400])),
     )
   );
 
 
   Widget textFormField(icnText, hntText, keyType) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
     child: TextFormField(
       style: TextStyle(color: Colors.white),
       keyboardType: keyType,
@@ -161,7 +160,8 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         errorBorder: redBorder,
         focusedErrorBorder: redBorder,
         enabledBorder: greenBorder,
-        focusedBorder: greenBorder
+        focusedBorder: greenBorder,
+        errorStyle: TextStyle(fontSize: 14)
       ),
     ),
   );
@@ -224,13 +224,13 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
   textValidation(hntText, value) {
 		if (value.isEmpty) {
-			return '$hntText should not be empty';
+			return '*Field should not be empty';
 		} else {
 			switch (hntText) {
 				case 'Phone Number':
-					return (value.length < 11) ? '$hntText should be 11 digits' : null;
+					return (value.length < 11) ? '*$hntText should be 11 digits' : null;
 				case 'Password':
-					return (value.length < 6) ? '$hntText must be 6 characters or longer' : null;
+					return (value.length < 6) ? '*$hntText must be 6 characters or longer' : null;
 			}
 		}
   }

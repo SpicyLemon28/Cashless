@@ -43,6 +43,7 @@ class _EditProfileState extends State<EditProfile> {
     return WillPopScope(
       onWillPop: () { navigatePreviousPage(context); },
       child: Scaffold(
+        backgroundColor: Colors.greenAccent,
         appBar: AppBar(
           backgroundColor: Color(0xFF2c3e50),
           title: Text('Profile'),
@@ -63,9 +64,9 @@ class _EditProfileState extends State<EditProfile> {
                   title('Email'),
                   card(_email, Icon(Icons.email, color: Colors.grey), null),
                   title('Password'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () => _verifyForgetPassword('Password')),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () => /*navigatePage('/changePass')*/ _verifyForgetPassword('Password')),
                   title('Pin'),
-                  card('********', Icon(Icons.edit, color: Colors.grey), () =>  _verifyForgetPassword('Pin')),
+                  card('********', Icon(Icons.edit, color: Colors.grey), () => /*navigatePage('/changePin')*/ _verifyForgetPassword('Pin')),
 									circularProgressIndicator(),
                 ],
               )
@@ -80,7 +81,9 @@ class _EditProfileState extends State<EditProfile> {
     child: Text(txt, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
   );
 
-  Widget card(listTxt, suffixIcon, goTo) => Card(
+  Widget card(listTxt, suffixIcon, goTo) => Padding(
+    padding: const EdgeInsets.only(left: 5, right: 5),
+    child: Card(
     elevation: 5,
     color: Colors.white,
     child: ListTile(
@@ -88,6 +91,7 @@ class _EditProfileState extends State<EditProfile> {
       onTap: goTo,
       title: Text(listTxt, style: TextStyle(color: Colors.grey),),
     ),
+    )
   );
 
 	Widget circularProgressIndicator() => _isLoading
@@ -172,5 +176,5 @@ void _verifyConfirmationCode(String navFor) async {
         onPressed: () => _verifyConfirmationCode(txtLabel),
       )
     ],
-  ));
+  )); 
 }

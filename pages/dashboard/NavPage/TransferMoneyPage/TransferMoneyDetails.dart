@@ -36,7 +36,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 30),
                 alignment: Alignment.topLeft,
-                child: text('Message: '),
+                child: text('Message(optional): '),
               ),
               transferButton('Transfer')
             ],
@@ -58,7 +58,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
         minWidth: 400,
         height: 50,
         child: RaisedButton(
-          elevation: 5,
+          elevation: 10,
           color: Colors.green,
           child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
           onPressed: () => dialog(),
@@ -88,7 +88,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
           ),
           Padding(padding: const EdgeInsets.only(top: 20)),
           Text(
-            'To proceed with your request, please enter your pin:',
+            'To proceed with your request, please enter your pin',
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic)
 					),
         ],
@@ -108,7 +108,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
       actions: <Widget>[
             FlatButton(
             onPressed: () {},
-            child: Text('Submit')
+            child: Text('SUBMIT')
           )
       ]
       ),

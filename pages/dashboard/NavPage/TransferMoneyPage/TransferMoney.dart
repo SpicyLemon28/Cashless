@@ -43,11 +43,11 @@ class _TransferMoneyState extends State<TransferMoney> {
               ListView(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 30),
-                    child: Image.asset("assets/SmartPayIcons/Transfer.png", width: 400, height: 200)
+                    margin: EdgeInsets.symmetric(vertical: 50),
+                    child: Image.asset("assets/SmartPayIcons/Transfer.png", width: 400, height: 150)
                   ),
                   Container(
-                    height: 460,
+                    height: 480,
                     decoration: BoxDecoration(
                       color: Color(0xFF2c3e50),
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
@@ -73,15 +73,13 @@ class _TransferMoneyState extends State<TransferMoney> {
     );
   }
 
-  var redBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.redAccent, width: 2)
-        );
+  var redBorder = outlineInputBorder(Colors.redAccent),
+      greenBorder = outlineInputBorder(Colors.green);
 
-  var greenBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );
+  static outlineInputBorder(color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(15),
+    borderSide: BorderSide(color: color, width: 2)
+  );
 
   Widget textFormField(lblText, hntText, keyType, blnObscure) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
@@ -98,7 +96,8 @@ class _TransferMoneyState extends State<TransferMoney> {
         enabledBorder: greenBorder,
         focusedBorder: greenBorder,
         errorBorder: redBorder,
-        focusedErrorBorder: redBorder
+        focusedErrorBorder: redBorder,
+        errorStyle: TextStyle(fontSize: 14)
       ),
     ),
   );
@@ -109,6 +108,7 @@ class _TransferMoneyState extends State<TransferMoney> {
       minWidth: 300,
       height: 50,
       child: RaisedButton(
+        elevation: 5,
         color: Colors.green,
         child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
         onPressed: _submit,
@@ -125,11 +125,12 @@ class _TransferMoneyState extends State<TransferMoney> {
 
   void _submit() {
     final form = _formKey.currentState;
+    //navigatePage('/transferMoneyDetails');
     if (form.validate()) {
       navigatePage('/transferMoneyDetails');
     } else {
       setState(() => _autoValidate = true);
-    }
+    } 
   }
   _suffixIcon(lblText, blnObscure){
     switch (lblText) {
@@ -146,13 +147,13 @@ class _TransferMoneyState extends State<TransferMoney> {
   textValidation(lblText, value) {
       switch (lblText) {
         case 'Phone Number':
-          return value.length < 11 ? '$lblText must be 11 digits' : null;
+          return value.length < 11 ? '*$lblText must be 11 digits' : null;
 
         case 'Amount':
-          return value.isEmpty ? '$lblText should not be empty' : null;
+          return value.isEmpty ? '*$lblText should not be empty' : null;
 
         case 'Pin':
-          return value.length < 6 ? '$lblText must be 6 digits or longer' : null;
+          return value.length < 6 ? '*$lblText must be 6 digits or longer' : null;
       }
 
 }

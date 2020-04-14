@@ -29,7 +29,7 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
 										padding: const EdgeInsets.only(top: 30),
 										child: Icon(Icons.account_circle, size: 80,color: Colors.white,),
 									),
-									text(fullname),
+									text(fullname),  
 									Padding(padding: const EdgeInsets.only(top: 30)),
 									listTile(Image.asset('assets/SmartPayIcons/Profile.png'), 'Profile', () => navigatePage('/editProfile')),
 									listTile(Image.asset('assets/SmartPayIcons/Terms-Conditions.png'), 'Terms & Conditions', null),
@@ -47,11 +47,14 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
 		child: Text(txt, style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
 	);
 
- Widget listTile(iconText, txt, goTo) => ListTile(
-			leading: IconButton(icon: iconText, onPressed: null),
-			title: Text(txt, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400)),
-			onTap: goTo
-		);
+ Widget listTile(iconText, txt, goTo) => Padding(
+   padding: const EdgeInsets.only(bottom: 20),
+   child: ListTile(
+     leading: IconButton(icon: iconText, onPressed: null),
+		 title: Text(txt, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400)),
+		 onTap: goTo
+    )
+	);
 
 	void navigatePage(navTo) => Navigator.pushReplacementNamed(context, navTo);
 

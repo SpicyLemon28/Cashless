@@ -51,7 +51,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 									  	  children: <Widget>[
 									  		  Padding(padding: const EdgeInsets.only(top: 200)),
 									  		  textFormField('Phone Number','Enter phone number you used to sign in', TextInputType.number),
-									  		  continueButton('Continue', TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w400)),
+									  		  continueButton('Continue', TextStyle(color: Colors. white, fontSize: 18, fontWeight: FontWeight.w500)),
 									  	  ],
 									    ),
                     ]
@@ -63,15 +63,13 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     );
   }
 
-  var redBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.redAccent, width: 2)
-        );
+ var redBorder = outlineInputBorder(Colors.redAccent),
+      greenBorder = outlineInputBorder(Colors.green);
 
-  var greenBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );
+  static outlineInputBorder(color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(15),
+    borderSide: BorderSide(color: color, width: 2)
+  );
 
   Widget textFormField(lblText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
@@ -86,7 +84,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         hintText: hntText, hintStyle: TextStyle(color: Colors.grey[300], fontSize: 12),
         focusedBorder: greenBorder,
         errorBorder: redBorder,
-        focusedErrorBorder:redBorder
+        focusedErrorBorder:redBorder,
+        errorStyle: TextStyle(fontSize: 14)
       ),
     ),
   );
@@ -105,6 +104,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             minWidth: 300,
             height: 50,
             child: RaisedButton(
+              elevation: 5,
               color: Colors.green,
               child: Text(buttonText, style: styleText),
               onPressed: () => _submit(),
@@ -117,8 +117,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   textValidation(value) {
     return (value.isEmpty)
-			? 'Phone Number  should not be empty'
-			: (value.length < 11) ? 'Phone Number must be 11 digits' : null;
+			? '*Field should not be empty'
+			: (value.length < 11) ? '*Phone Number must be 11 digits' : null;
 	}
 
 	void updateTextFormField(lblText, txtValue) {

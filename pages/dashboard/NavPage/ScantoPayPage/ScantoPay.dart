@@ -43,15 +43,14 @@ class _ScantoPayState extends State<ScantoPay> {
     );
   }
 
-  var redBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.redAccent, width: 2)
-        );
+  var redBorder = outlineInputBorder(Colors.redAccent),
+      greenBorder = outlineInputBorder(Colors.green);
 
-  var greenBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.green, width: 2)
-        );
+  static outlineInputBorder(color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(15),
+    borderSide: BorderSide(color: color, width: 2)
+  );
+
 
    Widget textFormField(hntText) => Padding(
      padding: const EdgeInsets.only(left: 30, right: 30, top: 250),
@@ -63,7 +62,8 @@ class _ScantoPayState extends State<ScantoPay> {
          enabledBorder: greenBorder,
          focusedBorder: greenBorder,
          errorBorder: redBorder,
-         focusedErrorBorder: redBorder
+         focusedErrorBorder: redBorder,
+         errorStyle: TextStyle(fontSize: 14, color: Colors.redAccent)
        ),
      ),
    );
@@ -74,10 +74,11 @@ class _ScantoPayState extends State<ScantoPay> {
       minWidth: 300,
       height: 50,
       child: RaisedButton(
+        elevation: 5,
         color: Colors.green,
-        child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400)),
+        child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
         onPressed: _submit,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       ),
     ),
   );
@@ -93,7 +94,7 @@ class _ScantoPayState extends State<ScantoPay> {
 
    textValidation(hntText, value) {
     if (hntText == 'Enter amount to pay') {
-      return value.isEmpty ? '$hntText should not be empty' : null;
+      return value.isEmpty ? '*Field should not be empty' : null;
     }
   }
   

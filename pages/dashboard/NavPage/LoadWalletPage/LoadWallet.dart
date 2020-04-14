@@ -58,10 +58,10 @@ class _LoadWalletState extends State<LoadWallet> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 50),
-                      child: Image.asset("assets/SmartPayIcons/Load.png", width: 400, height: 200)
+                      child: Image.asset("assets/SmartPayIcons/Load.png", width: 400, height: 150)
                     ),
                     Container(
-                      height: 420,
+                      height: 480,
                       decoration: BoxDecoration(
                         color: Color(0xFF2c3e50),
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
@@ -83,15 +83,13 @@ class _LoadWalletState extends State<LoadWallet> {
     );
   }
 
-  var redBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.redAccent, width: 2)
-        );
+  var redBorder = outlineInputBorder(Colors.redAccent),
+      greenBorder = outlineInputBorder(Colors.green);
 
-  var greenBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-        );
+  static outlineInputBorder(color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(15),
+    borderSide: BorderSide(color: color, width: 2)
+  );
 
   Widget textFormField(lblText, hntText) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
@@ -106,7 +104,8 @@ class _LoadWalletState extends State<LoadWallet> {
         enabledBorder: greenBorder,
         focusedBorder: greenBorder,
         errorBorder: redBorder,
-        focusedErrorBorder: redBorder
+        focusedErrorBorder: redBorder,
+        errorStyle: TextStyle(fontSize: 14)
       ),
     ),
   );
@@ -136,6 +135,7 @@ class _LoadWalletState extends State<LoadWallet> {
       minWidth: 300,
       height: 50,
       child: RaisedButton(
+        elevation: 5,
         color: Colors.green,
         child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
         onPressed: _submit,
@@ -161,11 +161,11 @@ class _LoadWalletState extends State<LoadWallet> {
 
   textValidation(lblText, value) {
     if (lblText == 'Amount') {
-      return value.isEmpty ? '$lblText should not be empty' : null;
+      return value.isEmpty ? '*$lblText should not be empty' : null;
     }
 
     if (lblText == 'Load Wallet For'){
-      return value == null ? '$lblText should not be empty' : null;
+      return value == null ? '*$lblText should not be empty' : null;
     }
   }
 }

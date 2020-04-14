@@ -77,6 +77,7 @@ class _RegisterState extends State<Register> {
 			child: Scaffold(
 				backgroundColor: Color(0xFF2c3e50),
 				appBar: AppBar(
+          elevation: 0,
 					title: Text('Registration'),
 					backgroundColor: Color(0xFF2c3e50),
 					leading: IconButton(icon: Icon(Icons.arrow_back),
@@ -115,15 +116,13 @@ class _RegisterState extends State<Register> {
 		);
 	}
 
-	var redBorder = OutlineInputBorder(
-					borderRadius: BorderRadius.circular(15),
-					borderSide: BorderSide(color: Colors.redAccent, width: 2)
-				);
+	var redBorder = outlineInputBorder(Colors.redAccent),
+      greenBorder = outlineInputBorder(Colors.green);
 
-	var greenBorder = OutlineInputBorder(
-					borderRadius: BorderRadius.circular(15),
-					borderSide: BorderSide(color: Colors.greenAccent, width: 2)
-				);
+  static outlineInputBorder(color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(15),
+    borderSide: BorderSide(color: color, width: 2)
+  );
 
 	Widget textFormField(txtController, icnText, lblText, hntText, keyType, blnObscure) => Padding(
 		padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 8),
@@ -148,7 +147,8 @@ class _RegisterState extends State<Register> {
 				enabledBorder: greenBorder,
 				focusedBorder: greenBorder,
 				errorBorder: redBorder,
-				focusedErrorBorder: redBorder
+				focusedErrorBorder: redBorder,
+        errorStyle: TextStyle(fontSize: 14)
 			),
 		),
 	);
@@ -198,23 +198,23 @@ class _RegisterState extends State<Register> {
 
 	textValidation(lblText, value) {
 		if (value.isEmpty) {
-			return '$lblText should not be empty';
+			return '*Field should not be empty';
 		} else {
 			switch (lblText) {
 				case 'Phone Number':
-					return value.length < 11 ? '$lblText must be 11 digits' : null;
+					return value.length < 11 ? '*$lblText must be 11 digits' : null;
 				case 'School ID':
-					return value.length < 6 ? '$lblText must be 6 digits' : null;
+					return value.length < 6 ? '*$lblText must be 6 digits' : null;
 				case 'Name':
-					return !value.contains(' ') ? 'Invalid Full $lblText' : null;
+					return !value.contains(' ') ? '*Invalid Full $lblText' : null;
 				case 'Email':
 					Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 					RegExp regex = RegExp(pattern);
-					return !regex.hasMatch(value) ? 'Invalid $lblText' : null;
+					return !regex.hasMatch(value) ? '*Invalid $lblText' : null;
 				case 'Password':
-					return value.length < 6 ? '$lblText must be 6 characters or longer' : null;
+					return value.length < 6 ? '*$lblText must be 6 characters or longer' : null;
 				case 'Pin':
-					return value.length < 6 ? '$lblText must be 6 digits or longer' : null;
+					return value.length < 6 ? '*$lblText must be 6 digits or longer' : null;
 			}
 		}
 	}
