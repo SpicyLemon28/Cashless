@@ -11,7 +11,6 @@ class _TransactionState extends State<Transaction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent,
        body: Padding(
            padding: const EdgeInsets.symmetric(horizontal: 10),
            child: ListView(

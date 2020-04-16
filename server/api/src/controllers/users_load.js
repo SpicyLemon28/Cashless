@@ -1,4 +1,5 @@
 import User from '../models/User';
+import LoadType from '../models/LoadType';
 import UserLoadDetail from '../models/UserLoadDetail';
 import UserCurrentLoad from '../models/UserCurrentLoad';
 import UserPayDetail from '../models/UserPayDetail';
@@ -7,6 +8,14 @@ import UserLoadTransferDetail from '../models/UserLoadTransferDetail';
 import validateInput from '../shared/validations/common';
 
 export default {
+
+  loadType: (req, res) => {
+    LoadType.fetchAll().then(load =>
+      res.json({ result: 1, load: load })
+    ).catch(err =>
+      res.status(500).json({ error: err })
+    );
+  },
 
   currentLoad: (req, res) => {
     const phone = req.params.phone;

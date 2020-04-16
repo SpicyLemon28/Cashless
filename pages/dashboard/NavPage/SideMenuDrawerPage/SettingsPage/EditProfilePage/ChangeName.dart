@@ -63,12 +63,12 @@ class _ChangeNameState extends State<ChangeName> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 30, bottom: 30),
-                    child: Image.asset("assets/SmartPayIcons/Name.png", width: 200, height: 180),
+                    child: Image.asset("assets/SmartPayIcons/Name.png", width: 200, height: 200),
                   ),
                   Container(
-                    height: 480,
+                    height: 458.5,
                     child: Column(children: <Widget>[
-                      text('Current Name : $_currentname'),
+                      text('Current Name: $_currentname'),
                       textFormField('New Name', 'Enter Full Name'),
                       saveBtn('Save Changes')
                     ],),
@@ -86,13 +86,15 @@ class _ChangeNameState extends State<ChangeName> {
     );
   }
 
-  var redBorder = outlineInputBorder(Colors.redAccent),
-      greenBorder = outlineInputBorder(Colors.green);
+  var redBorder = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: Colors.redAccent, width: 2)
+      );
 
-  static outlineInputBorder(color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(15),
-    borderSide: BorderSide(color: color, width: 2)
-  );
+  var greenBorder = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+      );
 
   Widget text(listTxt) => Padding(
     padding: const EdgeInsets.only(top: 30),
@@ -108,7 +110,8 @@ class _ChangeNameState extends State<ChangeName> {
       validator: (value) => textValidation(hntText, value),
       decoration: InputDecoration(
         labelText: lblText, labelStyle: TextStyle(color: Colors.grey[300], fontSize: 15, fontWeight: FontWeight.w500),
-        hintText: hntText, hintStyle: TextStyle(color: Colors.grey[300], fontSize: 14),
+        hintText: hntText, hintStyle: TextStyle(color: Colors.grey[300], fontSize: 15),
+				errorStyle: TextStyle(fontSize: 16.0),
         enabledBorder: greenBorder,
         focusedBorder: greenBorder,
         errorBorder: redBorder,
@@ -118,14 +121,12 @@ class _ChangeNameState extends State<ChangeName> {
   );
 
   Widget saveBtn(btnText) {
-		return Padding(
-		  padding: const EdgeInsets.only(top: 30),
-		  child: _isLoading
+		return _isLoading
       ? CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
         )
     	: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
           child: ButtonTheme(
             minWidth: 300,
             height: 50,
@@ -136,8 +137,7 @@ class _ChangeNameState extends State<ChangeName> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             ),
           ),
-        ),
-		);
+        );
   }
 
   textValidation(hntText, value) {
@@ -152,14 +152,13 @@ class _ChangeNameState extends State<ChangeName> {
 
   void _submit() {
     final form = _formKey.currentState;
-    //dialog();
     if (form.validate()) {
       form.save();
       setState(() => _isLoading = true);
       _updateFullname();
     } else {
       setState(() => _autoValidate = true);
-    } 
+    }
   }
 
 	void _updateFullname() async {
@@ -190,12 +189,10 @@ class _ChangeNameState extends State<ChangeName> {
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      title: Column(
-        children: <Widget>[
-          Icon(Icons.check_circle_outline, color: Colors.green, size: 80),
-          Padding(padding: const EdgeInsets.only(top: 10)),
-          Text('Name changed succesfully!', style: TextStyle(fontSize: 16),)
-    ],),
+      title: IconButton(icon: Icon(Icons.check_circle_outline),
+        disabledColor: Colors.green, iconSize: 60, onPressed: null
+      ),
+      content: Text('Name changed successfully!',style: TextStyle(fontSize: 16)),
       actions: <Widget>[
         FlatButton(
           child: Text('OKAY'), onPressed: () => navigatePage('/editProfile'),

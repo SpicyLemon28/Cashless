@@ -46,6 +46,10 @@ router.post('/update_pin', (req, res) => {
 });
 
 // user_load
+router.get('/load_type', (req, res) => {
+  user_load.loadType(req, res);
+});
+
 router.get('/current_load/:phone', (req, res) => {
   user_load.currentLoad(req, res);
 });

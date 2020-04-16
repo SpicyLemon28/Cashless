@@ -29,7 +29,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent,
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: ListView(
@@ -56,39 +55,36 @@ class _HomeState extends State<Home> {
                           ),
                        ),
 
-                       Container(
-                         alignment: Alignment.topLeft,
-                         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                           children: <Widget>[
-                           blnceText('Allowance :', TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                           blnceText('₱ 1000.00', TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w800)),
-                         ],),
-                       ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          child: Table(
+                            border: TableBorder.all(color: Colors.black26, width: 1, style: BorderStyle.none),
+                            children: [
+                              TableRow(children: [
+                                TableCell(child: Text('Allowance')),
+                                TableCell(child: Text(': ₱')),
+                                TableCell(child: Text('123,456'))
+                              ]),
+                              TableRow(children: [
+                                TableCell(child: Text('Tuition')),
+                                TableCell(child: Text(': ₱')),
+                                TableCell(child: Text('123,456'))
+                              ]),
+                            ],
+                          ),
+                        ),
 
-                       Container(
-                         alignment: Alignment.topLeft,
-                         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                           children: <Widget>[
-                           blnceText('Tuition :', TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                           blnceText('₱ 123,456.00', TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w800)),
-                         ],),
-                       ),
-
-                        
                         Container(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.only(top: 34, left: 20),
-                                child: card(securePhone(_phone), TextStyle(color: Colors.white, fontSize: 14.5, fontWeight: FontWeight.w400)),
+                               padding: const EdgeInsets.only(top: 30, left: 30),
+                                child: card(securePhone(_phone), TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w300)),
                               ),
+
                               Padding(
-                                padding: const EdgeInsets.only(top: 10, right: 10),
+                                padding: const EdgeInsets.only(left: 130, top: 10),
                                 child: loadIcon(Icons.add),
                               )
                             ],
@@ -113,8 +109,8 @@ class _HomeState extends State<Home> {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10, top: 30),
             child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              elevation: 5,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               child: ListTile(
                 leading: IconButton(
                   icon: Image.asset('assets/FunctionIcons/ScantoPay.png'),
@@ -129,8 +125,8 @@ class _HomeState extends State<Home> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              elevation: 5,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               child: ListTile(
                 leading: IconButton(
                   icon: Image.asset('assets/FunctionIcons/TransferMoney.png'),
@@ -145,8 +141,8 @@ class _HomeState extends State<Home> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              elevation: 5,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               child: ListTile(
                 leading: IconButton(
                   icon: Image.asset('assets/FunctionIcons/ReceiveMoney.png'),
@@ -162,8 +158,6 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
-  Widget blnceText(txt, styleText) => Text(txt, style: styleText);
 
   Widget card(txt, styleText) => Text(txt, style: styleText);
 

@@ -77,7 +77,7 @@ class _ChangePinState extends State<ChangePin> {
                     Padding(padding: const EdgeInsets.only(top: 20)),
                     textFormField(_newPin, 'New Pin', 'Enter New Pin', newPinVisible),
                     textFormField(_cfmPin, 'Confirm Pin', 'Re-type Pin', cfmPinVisible),
-                    saveBtn('Save Changes', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500))
+                    saveBtn('Save Changes', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
                   ],),
                   decoration: BoxDecoration(
                       color: Color(0xFF2c3e50),
@@ -92,13 +92,15 @@ class _ChangePinState extends State<ChangePin> {
     );
   }
 
-  var redBorder = outlineInputBorder(Colors.redAccent),
-      greenBorder = outlineInputBorder(Colors.green);
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
 
-  static outlineInputBorder(color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(15),
-    borderSide: BorderSide(color: color, width: 2)
-  );
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );
 
   Widget text(txt, styleText) => Padding(
     padding: const EdgeInsets.only(top: 5, bottom: 20),
@@ -121,8 +123,7 @@ class _ChangePinState extends State<ChangePin> {
         focusedBorder: greenBorder,
         enabledBorder: greenBorder,
         errorBorder: redBorder,
-        focusedErrorBorder: redBorder,
-        errorStyle: TextStyle(fontSize: 14)
+        focusedErrorBorder: redBorder
       ),
     ),
   );
@@ -144,7 +145,7 @@ class _ChangePinState extends State<ChangePin> {
 							color: Colors.green,
 							child: Text(btnText, style: styleText),
 							onPressed: () => _submit(),
-							shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+							shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
 						),
 					),
 				)
@@ -166,13 +167,13 @@ class _ChangePinState extends State<ChangePin> {
 
   textValidation(lblText, value) {
     if (value.isEmpty) {
-      return '*Field should not be empty';
+      return '$lblText should not be empty';
     } else {
       switch (lblText) {
         case 'New Pin':
-          return value.length < 6 ? '*Pin must be 6 digits or longer' : null;
+          return value.length < 6 ? 'Pin must be 6 digits or longer' : null;
 				case 'Confirm Pin':
-					return _newPin.text != value ? '*Pin does not match' : null;
+					return _newPin.text != value ? 'Pin does not match' : null;
       }
     }
   }
@@ -199,7 +200,6 @@ class _ChangePinState extends State<ChangePin> {
 
   void _submit() {
 		final form = _formKey.currentState;
-    //pinSccsful();
 		if (form.validate()) {
 			setState(() => _isLoading = true);
       _chngePin();
@@ -238,8 +238,6 @@ class _ChangePinState extends State<ChangePin> {
 			}
 		});
   }
-
-  void navigatePage(navTo) => Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
 }

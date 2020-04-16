@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class LoadWalletQR extends StatefulWidget {
-  LoadWalletQR({Key key}) : super(key: key);
+	final load;
+	final lstType;
+
+  LoadWalletQR(this.load, this.lstType);
 
   @override
-  _LoadWalletQRState createState() => _LoadWalletQRState();
+  _LoadWalletQRState createState() => _LoadWalletQRState(this.load, this.lstType);
 }
 
 class _LoadWalletQRState extends State<LoadWalletQR> {
+	final load;
+	final lstType;
+
+	_LoadWalletQRState(this.load, this.lstType);
+
+	_loadType(t) => lstType[t];
+
+	_loadData(ld) => ld['phone']+'|'+(ld['type']+1).toString()+'|'+ld['amount'].toString();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () { navigatePreviousPage(context); },
+      onWillPop: () { navigatePage('/loadWallet'); },
       child: Scaffold(
         backgroundColor: Color(0xFF2c3e50),
         appBar: AppBar(
@@ -19,7 +32,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
           title: Text("QR Code"),
           backgroundColor: Color(0xFF2c3e50),
           leading: IconButton(icon: Icon(Icons.arrow_back),
-            onPressed: () => navigatePreviousPage('/loadWallet')),
+            onPressed: () => navigatePage('/loadWallet')),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),
@@ -39,25 +52,21 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
                 ),
               ),
             ),
-
             ListView(
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    instructions('Scan QR to Load Wallet', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(left: 50, top: 50),
-                      child: amountNValid('Amount : ', TextStyle(color: Colors.white, fontWeight: FontWeight.w600,))),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(left: 50, top: 30),
-                      child: amountNValid('Valid Until : ', TextStyle(color: Colors.white, fontWeight: FontWeight.w600))),
-                    instructions('• Wait for a SMS confirmation before leaving.', TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontSize: 11, fontWeight: FontWeight.w500)),
-
+                    textInstructions(
+											'Scan QR to Load Wallet',
+											TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)
+										),
+										textInstructions(
+											'Amount : '+load['amount'].toString()+'  Type : ' + _loadType(load['type']),
+											TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500)
+										),
                     Padding(
-                      padding: const EdgeInsets.only(top: 40, left: 70, right: 70),
-                      child: Image.asset('assets/SampleQR.png'),
+                      padding: const EdgeInsets.only(top: 60, left: 70, right: 70),
+                      child: QrImage(data: _loadData(load), version: QrVersions.auto, size: 800.0),
                     ),
                   ],
                 )
@@ -69,14 +78,12 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
     );
   }
 
-  Widget instructions(txt, txtStyle) => Padding(
-    padding: const EdgeInsets.only(left: 50, right: 50, top: 50),
+  Widget textInstructions(txt, txtStyle) => Padding(
+    padding: const EdgeInsets.only(left: 50, right: 50, top: 60),
     child: Text(txt, style: txtStyle),
   );
 
-  Widget amountNValid(txt, txtStyle) => Text(txt, style: txtStyle);
-
-  void navigatePreviousPage(navTo) => Navigator.pushReplacementNamed(context, navTo);
+  void navigatePage(navTo) => Navigator.pushReplacementNamed(context, navTo);
 
   dialog() => showDialog(
     context: context, builder: (BuildContext context) => AlertDialog(
@@ -84,12 +91,11 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
       actions: <Widget>[
         FlatButton(
           child: Text('No'),
-          onPressed: () =>  Navigator.pop(context)
+          onPressed: () =>  Navigator.pop(context, true)
         ),
-
         FlatButton(
           child: Text('Yes'),
-          onPressed: () => navigatePreviousPage('/dashboard')
+          onPressed: () => navigatePage('/')
         )
       ],
     )

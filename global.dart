@@ -12,3 +12,5 @@ const CONFIRMED_REQUEST_RESET_SECURE = "$HOST_NAME/api/users/reset_secure_reques
 const RESET_SECURE = "$HOST_NAME/api/users/reset_secure";
 
 const UPDATE_FULLNAME = "$HOST_NAME/api/users/update_fullname";
+
+const LOAD_TYPE = "$HOST_NAME/api/users/load_type";

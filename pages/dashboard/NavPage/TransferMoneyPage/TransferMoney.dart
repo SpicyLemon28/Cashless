@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TransferMoney extends StatefulWidget {
-  TransferMoney({Key key}) : super(key: key);
-
   @override
   _TransferMoneyState createState() => _TransferMoneyState();
 }
-
-
 
 class _TransferMoneyState extends State<TransferMoney> {
 
@@ -25,7 +22,7 @@ class _TransferMoneyState extends State<TransferMoney> {
   Widget build(BuildContext context) {
 
     return WillPopScope(
-      onWillPop: () { navigatePreviousPage(context);},
+      onWillPop: () { navigatePreviousPage(context); },
       child: Scaffold(
         appBar: AppBar(
           title: Text('Transfer Money'),
@@ -43,11 +40,11 @@ class _TransferMoneyState extends State<TransferMoney> {
               ListView(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 50),
-                    child: Image.asset("assets/SmartPayIcons/Transfer.png", width: 400, height: 150)
+                    margin: EdgeInsets.symmetric(vertical: 30),
+                    child: Image.asset("assets/SmartPayIcons/Transfer.png", width: 400, height: 200)
                   ),
                   Container(
-                    height: 480,
+                    height: 460,
                     decoration: BoxDecoration(
                       color: Color(0xFF2c3e50),
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
@@ -56,10 +53,9 @@ class _TransferMoneyState extends State<TransferMoney> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(top: 30),
-                          child: textFormField('Phone Number', 'Enter Phone Number', TextInputType.phone, false),
+                          child: textFormField('Phone Number', 'Enter Phone Number', TextInputType.number),
                         ),
-                        textFormField('Amount', 'Enter desired amount', TextInputType.number, false),
-                        textFormField('Message (optional)', null, TextInputType.text, false),
+                        textFormField('Amount', 'Enter desired amount', TextInputType.number),
                         continueButton('Continue')
                       ],
                     ),
@@ -73,42 +69,41 @@ class _TransferMoneyState extends State<TransferMoney> {
     );
   }
 
-  var redBorder = outlineInputBorder(Colors.redAccent),
-      greenBorder = outlineInputBorder(Colors.green);
+  var redBorder = outlineInputBorder(Colors.redAccent);
 
-  static outlineInputBorder(color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(15),
-    borderSide: BorderSide(color: color, width: 2)
-  );
+  var greenBorder = outlineInputBorder(Colors.greenAccent);
 
-  Widget textFormField(lblText, hntText, keyType, blnObscure) => Padding(
+	static outlineInputBorder(color) => OutlineInputBorder(
+		borderRadius: BorderRadius.circular(15),
+		borderSide: BorderSide(color: color, width: 2)
+	);
+
+  Widget textFormField(lblText, hntText, keyType) => Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
     child: TextFormField(
       autofocus: true,
       style: TextStyle(color: Colors.white),
       keyboardType: keyType,
+			inputFormatters: keyType == TextInputType.number
+				? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly] : null,
       validator: (value) => textValidation(lblText, value),
-      obscureText: blnObscure,
       decoration: InputDecoration(
         labelText: lblText, labelStyle: TextStyle(color: Colors.grey [300]),
         hintText: hntText, hintStyle: TextStyle(color: Colors.grey [300], fontSize: 14),
-        suffixIcon: _suffixIcon(lblText, blnObscure),
+        suffixIcon: _suffixIcon(lblText),
         enabledBorder: greenBorder,
         focusedBorder: greenBorder,
         errorBorder: redBorder,
-        focusedErrorBorder: redBorder,
-        errorStyle: TextStyle(fontSize: 14)
+        focusedErrorBorder: redBorder
       ),
     ),
   );
 
   Widget continueButton(buttonText) => Padding(
-    padding: const EdgeInsets.only(top: 30),
+    padding: const EdgeInsets.only(top: 20),
     child: ButtonTheme(
-      minWidth: 300,
-      height: 50,
+      minWidth: 300, height: 50,
       child: RaisedButton(
-        elevation: 5,
         color: Colors.green,
         child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
         onPressed: _submit,
@@ -117,43 +112,71 @@ class _TransferMoneyState extends State<TransferMoney> {
     ),
   );
 
-  void navigatePage(navTo){
-    Navigator.pushReplacementNamed(context, navTo);
-  }
+	navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
 
-  void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
+  _suffixIcon(lblText) => lblText.contains('Phone')
+		? Icon(Icons.phone_android, color: Colors.grey[300]) : null;
+
+  textValidation(lblText, value) {
+		if (value.isEmpty) {
+			return '$lblText should not be empty';
+		} else {
+			return ((lblText=='Phone Number') && (value.length < 11))
+				? '$lblText must be 11 digits' : null;
+		}
+	}
 
   void _submit() {
     final form = _formKey.currentState;
-    //navigatePage('/transferMoneyDetails');
     if (form.validate()) {
-      navigatePage('/transferMoneyDetails');
+      dialog();
     } else {
       setState(() => _autoValidate = true);
-    } 
-  }
-  _suffixIcon(lblText, blnObscure){
-    switch (lblText) {
-
-      case 'Phone Number':
-        return Icon(Icons.phone_android, color: Colors.grey[300],);
-
-      case 'Message (optional)':
-        return Icon(Icons.message, color: Colors.grey[300],);
-      }
     }
   }
 
-  textValidation(lblText, value) {
-      switch (lblText) {
-        case 'Phone Number':
-          return value.length < 11 ? '*$lblText must be 11 digits' : null;
-
-        case 'Amount':
-          return value.isEmpty ? '*$lblText should not be empty' : null;
-
-        case 'Pin':
-          return value.length < 6 ? '*$lblText must be 6 digits or longer' : null;
-      }
+  dialog() => showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
+      title: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text('TRANSFER MONEY', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text('CONFIRMATION', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          Padding(padding: const EdgeInsets.only(top: 20)),
+          Text(
+            'To proceed with your request, please enter your pin:',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic)
+					),
+        ],
+      ),
+			content: TextFormField(
+        autofocus: true,
+        decoration: InputDecoration(
+          hintText: 'Enter pin for payment',
+          hintStyle: TextStyle(fontSize: 14),
+          suffixIcon: IconButton(
+            tooltip: 'Forgot Pin?',
+              icon: Text('?', style: TextStyle(color: Colors.blue)),
+              onPressed: () {},
+            ),
+          )
+        ),
+      actions: <Widget>[
+            FlatButton(
+            onPressed: () {},
+            child: Text('Submit')
+          )
+      ]
+      ),
+  );
 
 }

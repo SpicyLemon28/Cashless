@@ -76,7 +76,7 @@ class _ChangePassState extends State<ChangePass> {
                     Padding(padding: const EdgeInsets.only(top: 20),),
                     textFormField(_newPassword, 'New Password', 'Enter New Password', newPasswordVisible),
                     textFormField(_cfmPassword, 'Confirm Password', 'Re-type Password', cfmPasswordVisible),
-                    saveBtn('Save Changes', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500))
+                    saveBtn('Save Changes', TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400))
                   ],),
                   decoration: BoxDecoration(
                       color: Color(0xFF2c3e50),
@@ -91,17 +91,18 @@ class _ChangePassState extends State<ChangePass> {
     );
   }
 
-  var redBorder = outlineInputBorder(Colors.redAccent),
-      greenBorder = outlineInputBorder(Colors.green);
+  var redBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.redAccent, width: 2)
+        );
 
-  static outlineInputBorder(color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(15),
-    borderSide: BorderSide(color: color, width: 2)
-  );
-
+  var greenBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.greenAccent, width: 2)
+        );
 
   Widget text(txt, styleText) => Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
+    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
     child: Text(txt, style: styleText),
   );
 
@@ -121,8 +122,7 @@ class _ChangePassState extends State<ChangePass> {
         focusedBorder: greenBorder,
         enabledBorder: greenBorder,
         errorBorder: redBorder,
-        focusedErrorBorder: redBorder,
-        errorStyle: TextStyle(color: Colors.red, fontSize: 14)
+        focusedErrorBorder: redBorder
       ),
     ),
   );
@@ -144,7 +144,7 @@ class _ChangePassState extends State<ChangePass> {
             color: Colors.green,
             child: Text(btnText, style: styleText),
             onPressed: () => _submit(),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
         ),
       )
@@ -166,13 +166,13 @@ class _ChangePassState extends State<ChangePass> {
 
   textValidation(lblText, value) {
     if (value.isEmpty) {
-      return '*Field should not be empty';
+      return '$lblText should not be empty';
     } else {
       switch (lblText) {
         case 'New Password':
-          return value.length < 6 ? '*Password must be 6 characters or longer' : null;
+          return value.length < 6 ? 'Password must be 6 characters or longer' : null;
 				case 'Confirm Password':
-					return _newPassword.text != value ? '*Password does not match' : null;
+					return _newPassword.text != value ? 'Password does not match' : null;
       }
     }
   }
@@ -184,14 +184,14 @@ class _ChangePassState extends State<ChangePass> {
     ),
     title: Column(
       children: <Widget>[
-      Icon(Icons.check_circle_outline, color: Colors.green, size: 80),
-      Padding(padding: const EdgeInsets.only(top: 10)),
-      Text('Password changed succesfully!', style: TextStyle(fontSize: 14))
+      Icon(Icons.check_circle_outline, color: Colors.green, size: 60),
+      Padding(padding: const EdgeInsets.only(top: 8)),
+      Text('Password changed succesfully!', style: TextStyle(fontSize: 16),)
     ],),
     actions: <Widget>[
       FlatButton(
         child: Text('OKAY'),
-        onPressed: () => navigatePage('/editProfile'),
+        onPressed: () => navigatePreviousPage(context),
       )
     ],
     ),
@@ -199,7 +199,6 @@ class _ChangePassState extends State<ChangePass> {
 
   void _submit() {
 		final form = _formKey.currentState;
-    //pswdSccsful();
 		if (form.validate()) {
       setState(() => _isLoading = true);
       _chngePass();
@@ -238,8 +237,6 @@ class _ChangePassState extends State<ChangePass> {
 			}
 		});
   }
-
-  void navigatePage(navTo) => Navigator.pushReplacementNamed(context, navTo);
 
   void navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/editProfile');
 

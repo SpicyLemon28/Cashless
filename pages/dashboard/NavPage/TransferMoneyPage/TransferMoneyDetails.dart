@@ -11,7 +11,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){ navigatePreviousPage(context);},
+      onWillPop: (){ navigatePreviousPage(context); },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF2c3e50),
@@ -22,7 +22,6 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
         ),
       body: ListView(
         children: <Widget>[
-          
               Container(
                 margin: EdgeInsets.only(top: 170, left: 30, right: 30),
                 alignment: Alignment.topLeft,
@@ -36,12 +35,11 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 30),
                 alignment: Alignment.topLeft,
-                child: text('Message(optional): '),
+                child: text('Message: '),
               ),
               transferButton('Transfer')
             ],
           ),
-        
       )
     );
   }
@@ -58,7 +56,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
         minWidth: 400,
         height: 50,
         child: RaisedButton(
-          elevation: 10,
+          elevation: 5,
           color: Colors.green,
           child: Text(buttonText, style: TextStyle(color: Colors.white, fontSize: 18),),
           onPressed: () => dialog(),
@@ -88,7 +86,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
           ),
           Padding(padding: const EdgeInsets.only(top: 20)),
           Text(
-            'To proceed with your request, please enter your pin',
+            'To proceed with your request, please enter your pin:',
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic)
 					),
         ],
@@ -108,7 +106,7 @@ class _TransferMoneyDetailsState extends State<TransferMoneyDetails> {
       actions: <Widget>[
             FlatButton(
             onPressed: () {},
-            child: Text('SUBMIT')
+            child: Text('Submit')
           )
       ]
       ),

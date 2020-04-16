@@ -6,9 +6,7 @@ import './pages/register/RegisterPage.dart';
 import './pages/forget/ForgetPassword.dart';
 import './pages/forget/ResetPassword.dart';
 import './pages/dashboard/NavPage/LoadWalletPage/LoadWallet.dart';
-import './pages/dashboard/NavPage/LoadWalletPage/LoadWalletQR.dart';
 import './pages/dashboard/NavPage/ScantoPayPage/ScantoPay.dart';
-import './pages/dashboard/NavPage/ScantoPayPage/PayQR.dart';
 import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoney.dart';
 import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoneyDetails.dart';
 import './pages/dashboard/NavPage/ReceiveMoneyPage/ReceiveMoney.dart';
@@ -40,7 +38,6 @@ class MyApp extends StatelessWidget {
 				'/forgetPassword'       : (BuildContext context) => ForgetPassword(),
 				'/resetPassword'        : (BuildContext context) => ResetPassword(),
 				'/loadWallet'           : (BuildContext context) => LoadWallet(),
-				'/loadWalletQR'         : (BuildContext context) => LoadWalletQR(),
 				'/scantoPay'            : (BuildContext context) => ScantoPay(),
 				'/transferMoney'        : (BuildContext context) => TransferMoney(),
 				'/transferMoneyDetails' : (BuildContext context) => TransferMoneyDetails(),
@@ -49,8 +46,7 @@ class MyApp extends StatelessWidget {
 				'/changeName'           : (BuildContext context) => ChangeName(),
 				'/changePass'           : (BuildContext context) => ChangePass(),
 				'/changePin'            : (BuildContext context) => ChangePin(),
-				'/about'                : (BuildContext context) => About(),
-        '/payQR'                : (BuildContext context) => PayQR(),
+				'/about'                : (BuildContext context) => About()
 			},
 			// home: UserList()
 		);
