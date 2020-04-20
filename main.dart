@@ -8,6 +8,7 @@ import './pages/forget/ResetPassword.dart';
 import './pages/dashboard/NavPage/LoadWalletPage/LoadWallet.dart';
 import './pages/dashboard/NavPage/ScantoPayPage/ScantoPay.dart';
 import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoney.dart';
+import './pages/dashboard/NavPage/TransferMoneyPage/PinInput.dart';
 import './pages/dashboard/NavPage/TransferMoneyPage/TransferMoneyDetails.dart';
 import './pages/dashboard/NavPage/ReceiveMoneyPage/ReceiveMoney.dart';
 import './pages/dashboard/NavPage/SideMenuDrawerPage/SettingsPage/EditProfilePage/EditProfile.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
 				'/loadWallet'           : (BuildContext context) => LoadWallet(),
 				'/scantoPay'            : (BuildContext context) => ScantoPay(),
 				'/transferMoney'        : (BuildContext context) => TransferMoney(),
+        '/pinInput'             : (BuildContext context) => PinInput(),
 				'/transferMoneyDetails' : (BuildContext context) => TransferMoneyDetails(),
 				'/receiveMoney'         : (BuildContext context) => ReceiveMoney(),
 				'/editProfile'          : (BuildContext context) => EditProfile(),

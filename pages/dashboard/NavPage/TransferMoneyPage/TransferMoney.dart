@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
 class TransferMoney extends StatefulWidget {
   @override
   _TransferMoneyState createState() => _TransferMoneyState();
@@ -112,6 +113,8 @@ class _TransferMoneyState extends State<TransferMoney> {
     ),
   );
 
+  void navigatePage(navTo) => Navigator.pushReplacementNamed(context, navTo);
+
 	navigatePreviousPage(context) => Navigator.pushReplacementNamed(context, '/');
 
   _suffixIcon(lblText) => lblText.contains('Phone')
@@ -129,13 +132,14 @@ class _TransferMoneyState extends State<TransferMoney> {
   void _submit() {
     final form = _formKey.currentState;
     if (form.validate()) {
-      dialog();
+      navigatePage('/pinInput');
     } else {
       setState(() => _autoValidate = true);
     }
   }
-
-  dialog() => showDialog(
+  
+  
+  /*dialog() => showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       shape: RoundedRectangleBorder(
@@ -177,6 +181,6 @@ class _TransferMoneyState extends State<TransferMoney> {
           )
       ]
       ),
-  );
+  ); */
 
 }
