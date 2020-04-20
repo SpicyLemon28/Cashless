@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+//import 'package:qr_flutter/qr_flutter.dart';
 
 class LoadWalletQR extends StatefulWidget {
 	final load;
@@ -19,7 +19,7 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
 
 	_loadType(t) => lstType[t];
 
-	_loadData(ld) => ld['phone']+'|'+(ld['type']+1).toString()+'|'+ld['amount'].toString();
+	//_loadData(ld) => ld['phone']+'|'+(ld['type']+1).toString()+'|'+ld['amount'].toString();
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +64,10 @@ class _LoadWalletQRState extends State<LoadWalletQR> {
 											'Amount : '+load['amount'].toString()+'  Type : ' + _loadType(load['type']),
 											TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500)
 										),
-                    Padding(
+                    /*Padding(
                       padding: const EdgeInsets.only(top: 60, left: 70, right: 70),
                       child: QrImage(data: _loadData(load), version: QrVersions.auto, size: 800.0),
-                    ),
+                    ), */
                   ],
                 )
               ],
